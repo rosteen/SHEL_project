@@ -54,7 +54,7 @@ def create_shel_db():
 
 
 def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
-                   target_col=None, target=None, inst_list=None, delimiter="/t"):
+                   target_col=None, target=None, inst_list=None, delimiter="\t"):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
@@ -69,14 +69,16 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
 
     # Insert into target table if needed
     if target is not None:
+        pass
 
     with open(filename) as f:
         freader = csv.reader(f, delimiter=delimiter)
         for row in freader:
-            if row[0][0] == "#"
+            if row[0][0] == "#":
                 if inst_list is not None and row[0][1:] in inst_list:
                     instrument = row[0][1:]
                 continue
+            print(row[0])
             bjd = row[t_col]
             rv = row[rv_col]
             rv_err = row[err_col]
@@ -84,7 +86,7 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                 if row[target_col] != target:
                     target = row[target_col]
                     # Insert into target table if needed, get target ID
-
+            print(instrument, bjd, rv, rv_err, target)
 
 
 
