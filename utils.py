@@ -8,7 +8,7 @@ def create_shel_db():
 
     create_targets_table = """CREATE TABLE IF NOT EXISTS targets (
                             id integer PRIMARY KEY,
-                            name text NOT NULL,
+                            name text NOT NULL UNIQUE,
                             ra text NOT NULL,
                             dec text NOT NULL
                             );"""
@@ -23,27 +23,34 @@ def create_shel_db():
                             url text NOT NULL,
                             local_filename text);"""
 
+    create_int_table = """CREATE TABLE IF NOT EXISTS instruments (
+                            id integer PRIMARY KEY,
+                            name text NOT NULL);"""
+
     create_rv_table = """CREATE TABLE IF NOT EXISTS radial_velocities (
                             target_id int,
                             reference_id int,
-                            instrument text,
+                            instrument int,
                             bjd real,
                             rv real,
                             rv_err real,
                             FOREIGN KEY (target_id) REFERENCES targets (id),
+                            FOREIGN KEY (instrument) REFERENCES instruments (id),
                             FOREIGN KEY (reference_id) REFERENCES data_refs (id));"""
 
-    create_lc_table = """CREATE TABLE IF NOT EXISTS radial_velocities (
+    create_lc_table = """CREATE TABLE IF NOT EXISTS light_curves (
                             target_id int,
                             reference_id int,
-                            instrument text,
+                            instrument int,
                             bjd real,
                             flux real,
                             flux_err real,
                             FOREIGN KEY (target_id) REFERENCES targets (id),
-                            FOREIGN KEY (reference_id) REFERENCES data_refs (id));"""
+                            FOREIGN KEY (reference_id) REFERENCES data_refs (id),
+                            FOREIGN KEY (instrument) REFERENCES instruments (id));"""
 
     cur.execute(create_targets_table)
+    cur.execute(create_int_table)
     cur.execute(create_hubble_table)
     cur.execute(create_ref_table)
     cur.execute(create_rv_table)
