@@ -9,8 +9,8 @@ def create_shel_db():
     create_targets_table = """CREATE TABLE IF NOT EXISTS targets (
                             id integer PRIMARY KEY,
                             name text NOT NULL UNIQUE,
-                            ra text NOT NULL,
-                            dec text NOT NULL
+                            ra text,
+                            dec text
                             );"""
 
     create_hubble_table = """CREATE TABLE IF NOT EXISTS hubble_programs (
@@ -73,10 +73,6 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
     if instrument is None and inst_list is None:
         raise ValueError("Must specify either an instrument (for a single-instrument"
                          " file) or a list of instrument strings to look for in comment lines.")
-
-    # Insert into target table if needed
-    if target is not None:
-        pass
 
     with open(filename) as f:
         freader = csv.reader(f, delimiter=delimiter)
