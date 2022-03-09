@@ -1,0 +1,129 @@
+J/A+A/596/A47     FORS2 transmission spectroscopy of WASP-17b (Sedaghati+, 2016)
+================================================================================
+Potassium detection in the clear atmosphere of a hot-Jupiter:
+FORS2 transmission spectroscopy of WASP-17b.
+    Sedaghati E., Boffin H.M.J., Jerabkova T., Garcia Munoz A., Grenfell J.L.,
+    Smette A., Ivanov V.D., Csizmadia Sz., Cabrera J., Kabath P., Rocchetto M.,
+    Rauer H.
+    <Astron. Astrophys. 596, A47 (2016)>
+    =2016A&A...596A..47S        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Occultations ; Spectroscopy
+Keywords: planets and satellites: atmospheres -
+          planets and satellites: individual: WASP-17b -
+          techniques: spectroscopic - instrumentation: spectrographs -
+          stars: individual: WASP-17 - methods: data analysis
+
+Abstract:
+    We present FORS2 (attached to ESO's Very Large Telescope) observations
+    of the exoplanet WASP-17b during its primary transit, for the purpose
+    of differential spectrophotometry analysis. We use the instrument in
+    its Mask eXchange Unit (MXU) mode to simultaneously obtain low
+    resolution spectra of the planet hosting star, as well as several
+    reference stars in the field of view. The integration of these spectra
+    within broadband and smaller 100{AA} bins provides us with 'white' and
+    spectrophotometric light curves, from 5700 to 8000{AA}. Through
+    modelling the white light curve, we obtain refined bulk and transit
+    parameters of the planet, as well as wavelength-dependent variations
+    of the planetary radius from smaller spectral bins through which the
+    transmission spectrum is obtained. The inference of transit
+    parameters, as well as the noise statistics, is performed using a
+    Gaussian Process model. We achieve a typical precision in the transit
+    depth of a few hundred parts per million from various transit light
+    curves. From the transmission spectra we rule out a flat spectrum at
+    >3{sigma} and detect marginal presence of the pressure-broadened
+    sodium wings. Furthermore, we detect the wing of the potassium
+    absorption line in the upper atmosphere of the planet with 3-{sigma}
+    confidence, both facts pointing to a relatively shallow temperature
+    gradient in the atmosphere. These conclusions are mostly consistent
+    with previous studies of this exo-atmosphere, although previous
+    potassium measurements have been inconclusive.
+
+Description:
+    In producing the transmission spectrum, we model spectrophotometric
+    light curves, produced with small integration bins throughout
+    wavelength domain. The data for all the light curves presented in
+    Figure 7 are given. These are normalised light curves that are also
+    corrected for the common mode systematics. From modelling these light
+    curves using Gaussian processes, we detect signature of Potassium in
+    the atmosphere this exoplanet, WASP-17b.
+
+Objects:
+    ----------------------------------------------
+       RA   (2000)   DE        Designation(s)
+    ----------------------------------------------
+    15 59 50.95  -28 03 42.3   WASP-17b = WASP-17b
+    ----------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName      Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe            80        .   This file
+lcdata.dat       693      477  *Normalised light curve fluxes
+--------------------------------------------------------------------------------
+Note on lcdata.dat : These are the data for the transit light curves corrected
+ for the common mode systematics, as plotted in the Fig. 7 of the paper.
+--------------------------------------------------------------------------------
+
+See also:
+  J/ApJ/709/159    : Relative Ic photometry of WASP-17 (Anderson+, 2010)
+  J/MNRAS/426/1338 : Transiting planetary system WASP-17 (Southworth+, 2012)
+
+Byte-by-byte Description of file: lcdata.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 18 F18.15 d       Time      Time stamps of each observation, JD-2457192.5
+  20- 33 F14.12 ---     F5750     Normalized flux at bin centre 5750{AA}
+  35- 48 F14.12 ---     F5800     Normalized flux at bin centre 5800{AA}
+  50- 63 F14.12 ---     F5850     Normalized flux at bin centre 5850{AA}
+  65- 78 F14.12 ---     F5900     Normalized flux at bin centre 5900{AA}
+  80- 93 F14.12 ---     F5950     Normalized flux at bin centre 5950{AA}
+  95-108 F14.12 ---     F6000     Normalized flux at bin centre 6000{AA}
+ 110-123 F14.12 ---     F6050     Normalized flux at bin centre 6050{AA}
+ 125-138 F14.12 ---     F6100     Normalized flux at bin centre 6100{AA}
+ 140-153 F14.12 ---     F6150     Normalized flux at bin centre 6150{AA}
+ 155-168 F14.12 ---     F6200     Normalized flux at bin centre 6200{AA}
+ 170-183 F14.12 ---     F6250     Normalized flux at bin centre 6250{AA}
+ 185-198 F14.12 ---     F6300     Normalized flux at bin centre 6300{AA}
+ 200-213 F14.12 ---     F6350     Normalized flux at bin centre 6350{AA}
+ 215-228 F14.12 ---     F6400     Normalized flux at bin centre 6400{AA}
+ 230-243 F14.12 ---     F6450     Normalized flux at bin centre 6450{AA}
+ 245-258 F14.12 ---     F6500     Normalized flux at bin centre 6500{AA}
+ 260-273 F14.12 ---     F6550     Normalized flux at bin centre 6550{AA}
+ 275-288 F14.12 ---     F6600     Normalized flux at bin centre 6600{AA}
+ 290-303 F14.12 ---     F6650     Normalized flux at bin centre 6650{AA}
+ 305-318 F14.12 ---     F6700     Normalized flux at bin centre 6700{AA}
+ 320-333 F14.12 ---     F6750     Normalized flux at bin centre 6750{AA}
+ 335-348 F14.12 ---     F6800     Normalized flux at bin centre 6800{AA}
+ 350-363 F14.12 ---     F6850     Normalized flux at bin centre 6850{AA}
+ 365-378 F14.12 ---     F6900     Normalized flux at bin centre 6900{AA}
+ 380-393 F14.12 ---     F6950     Normalized flux at bin centre 6950{AA}
+ 395-408 F14.12 ---     F7000     Normalized flux at bin centre 7000{AA}
+ 410-423 F14.12 ---     F7050     Normalized flux at bin centre 7050{AA}
+ 425-438 F14.12 ---     F7100     Normalized flux at bin centre 7100{AA}
+ 440-453 F14.12 ---     F7150     Normalized flux at bin centre 7150{AA}
+ 455-468 F14.12 ---     F7200     Normalized flux at bin centre 7200{AA}
+ 470-483 F14.12 ---     F7250     Normalized flux at bin centre 7250{AA}
+ 485-498 F14.12 ---     F7300     Normalized flux at bin centre 7300{AA}
+ 500-513 F14.12 ---     F7350     Normalized flux at bin centre 7350{AA}
+ 515-528 F14.12 ---     F7400     Normalized flux at bin centre 7400{AA}
+ 530-543 F14.12 ---     F7450     Normalized flux at bin centre 7450{AA}
+ 545-558 F14.12 ---     F7500     Normalized flux at bin centre 7500{AA}
+ 560-573 F14.12 ---     F7550     Normalized flux at bin centre 7550{AA}
+ 575-588 F14.12 ---     F7600     Normalized flux at bin centre 7600{AA}
+ 590-603 F14.12 ---     F7650     Normalized flux at bin centre 7650{AA}
+ 605-618 F14.12 ---     F7700     Normalized flux at bin centre 7700{AA}
+ 620-633 F14.12 ---     F7750     Normalized flux at bin centre 7750{AA}
+ 635-648 F14.12 ---     F7800     Normalized flux at bin centre 7800{AA}
+ 650-663 F14.12 ---     F7850     Normalized flux at bin centre 7850{AA}
+ 665-678 F14.12 ---     F7900     Normalized flux at bin centre 7900{AA}
+ 680-693 F14.12 ---     F7950     Normalized flux at bin centre 7950{AA}
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Elyar Sedaghati, esedagha(at)eso.org
+
+================================================================================
+(End)       Elyar Sedaghati [DLR, Berlin], Patricia Vannier [CDS]    12-Oct-2016
