@@ -25,7 +25,8 @@ def create_shel_db():
 
     create_int_table = """CREATE TABLE IF NOT EXISTS instruments (
                             id integer PRIMARY KEY,
-                            name text NOT NULL);"""
+                            name text NOT NULL,
+                            sitename text);"""
 
     create_rv_table = """CREATE TABLE IF NOT EXISTS radial_velocities (
                             target_id int,
@@ -90,7 +91,4 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                     target = row[target_col]
                     # Insert into target table if needed, get target ID
             print(instrument, bjd, rv, rv_err, target)
-
-
-
 
