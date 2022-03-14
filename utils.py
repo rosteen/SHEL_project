@@ -1,6 +1,9 @@
 import sqlite3 as sql
 import csv
 
+from astropy.coordinates import SkyCoord, EarthLocation
+from astropy import units as u
+from astropy.time import Time
 
 def create_shel_db():
     conn = sql.connect("shel_database.sqlite")
@@ -61,8 +64,38 @@ def create_shel_db():
     conn.close()
 
 
+def helio_to_bary(coords, hjd, obs_name):
+    """
+    From https://gist.github.com/StuartLittlefair/4ab7bb8cf21862e250be8cb25f72bb7a
+    with some minor edits to the coordinate handling
+    """
+
+    ra = coords[0].split(":")
+    ra = int(ra[0]) + int(ra[1])/60 + float(ra[2])/3600
+    dec = coords[1].split(":")
+    if int(dec[0]) < 1:
+        dec = int(dec[0]) - int(dec[1])/60 - float(dec[2])/3600
+    else:
+        dec = int(dec[0]) + int(dec[1])/60 + float(dec[2])/3600
+    star = SkyCoord(ra=ra*u.hour, dec=dec*u.deg)
+
+    helio = Time(hjd, scale='utc', format='jd')
+    obs = EarthLocation.of_site(obs_name)
+    ltt = helio.light_travel_time(star, 'heliocentric', location=obs)
+    guess = helio - ltt
+    # if we assume guess is correct - how far is heliocentric time away from true value?
+    delta = (guess + guess.light_travel_time(star, 'heliocentric', obs)).jd  - helio.jd
+    # apply this correction
+    guess -= delta * u.d
+
+    ltt = guess.light_travel_time(star, 'barycentric', obs)
+
+    return guess.tdb + ltt
+
+
 def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
-                   target_col=None, target=None, inst_list=None, delimiter="\t"):
+                   target_col=None, target=None, inst_list=None, delimiter="\t",
+                   time_type="BJD-UTC", time_offset=0):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
@@ -75,6 +108,11 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
         raise ValueError("Must specify either an instrument (for a single-instrument"
                          " file) or a list of instrument strings to look for in comment lines.")
 
+
+    # If we need to convert HJD->BJD, get observatory name and target coords
+    if time_type == "HJD":
+        pass
+
     with open(filename) as f:
         freader = csv.reader(f, delimiter=delimiter)
         for row in freader:
@@ -83,7 +121,11 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                     instrument = row[0][1:]
                 continue
             print(row[0])
-            bjd = row[t_col]
+
+            t = row[t_col] + time_offset
+            if time_type == "HJD":
+                t = helio_to_bary()
+
             rv = row[rv_col]
             rv_err = row[err_col]
             if target_col is not None:
