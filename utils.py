@@ -4,6 +4,7 @@ import csv
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
 from astropy.time import Time
+from barycorrpy import utc_tdb
 
 def create_shel_db():
     conn = sql.connect("shel_database.sqlite")
@@ -95,11 +96,12 @@ def helio_to_bary(coords, hjd, obs_name):
 
 def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                    target_col=None, target=None, inst_list=None, delimiter="\t",
-                   time_type="BJD-UTC", time_offset=0):
+                   time_type="BJD-UTC", time_offset=0, debug=False):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
     """
+    # Check for required inputs
     if target_col is None and target is None:
         raise ValueError("Must specify either a target (for single-target file) or"
                          "column with target names.")
@@ -108,10 +110,16 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
         raise ValueError("Must specify either an instrument (for a single-instrument"
                          " file) or a list of instrument strings to look for in comment lines.")
 
+    # Connect to database
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
 
-    # If we need to convert HJD->BJD, get observatory name and target coords
-    if time_type == "HJD":
-        pass
+    # Get target_id as well as RA and Dec in case we need them for time conversion
+    if target is not None:
+        res = cur.execute(f'select id, ra, dec from targets where name = "{target}"').fetchone()
+        target_id, ra, dec = res
+        if debug:
+            print(target_id, ra, dec)
 
     with open(filename) as f:
         freader = csv.reader(f, delimiter=delimiter)
@@ -120,17 +128,32 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                 if inst_list is not None and row[0][1:] in inst_list:
                     instrument = row[0][1:]
                 continue
-            print(row[0])
+            if debug:
+                print(row[0])
 
-            t = row[t_col] + time_offset
-            if time_type == "HJD":
-                t = helio_to_bary()
-
-            rv = row[rv_col]
-            rv_err = row[err_col]
             if target_col is not None:
                 if row[target_col] != target:
                     target = row[target_col]
-                    # Insert into target table if needed, get target ID
+                    stmt = f'select id, ra, dec from targets where name = "{target}"'
+                    res = cur.execute(stmt).fetchone()
+                    target_id, ra, dec = res
+                    if debug:
+                        print(target_id, ra, dec)
+
+            t = row[t_col] + time_offset
+            #TODO: If we need to convert to BJD, get observatory name
+            if time_type != "BJD":
+                stmt = f'select sitename from instruments where name = "{instrument}"'
+                obsname = cur.execute(stmt).fetchone()[0]
+
+            if time_type == "HJD":
+                t = helio_to_bary((ra, dec), t, obsname)
+            elif time_type == "JD":
+                JDUTC = Time(2458000, format='jd', scale='utc')
+                t = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=rec, obsname=obsname)
+
+
+            rv = row[rv_col]
+            rv_err = row[err_col]
             print(instrument, bjd, rv, rv_err, target)
 
