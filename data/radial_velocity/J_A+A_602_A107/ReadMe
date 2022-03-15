@@ -1,0 +1,317 @@
+# From https://www.aanda.org/articles/aa/full_html/2017/06/aa29882-16/aa29882-16.html
+J/A+A/602/A107      231 transiting planets eccentricity and mass (Bonomo+, 2017)
+================================================================================
+The GAPS Programme with HARPS-N at TNG.
+XIV. Investigating giant planet migration history via improved eccentricity and
+mass determination for 231 transiting planets.
+    Bonomo A.S., Desidera S., Benatti S., Borsa F., Crespi S., Damasso M.,
+    Lanza A.F., Sozzetti A., Lodato G., Marzari F., Boccato C., Claudi R.U.,
+    Cosentino R., Covino E., Gratton R., Maggio A., Micela G., Molinari E.,
+    Pagano I., Piotto G., Poretti E., Smareglia R., Affer L., Biazzo K.,
+    Bignamini A., Esposito M., Giacobbe P., Hebrard G., Malavolta L.,
+    Maldonado J., Mancini L., Martinez Fiorenzano A., Masiero S.,
+    Nascimbeni V., Pedani M., Rainer M., Scandariato G.
+    <Astron. Astrophys. 602, A107 (2017)>
+    =2017A&A...602A.107B        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Radial velocities ;
+              Stars, masses
+Keywords: planetary systems - techniques: radial velocities -
+          stars: fundamental parameters - planet-star interactions
+
+Abstract:
+    We carried out a Bayesian homogeneous determination of the orbital
+    parameters of 231 transiting giant planets (TGPs) that are alone or
+    have distant companions; we employed differential evolution Markov
+    chain Monte Carlo methods to analyse radial-velocity (RV) data from
+    the literature and 782 new high-accuracy RVs obtained with the HARPS-N
+    spectrograph for 45 systems over ~3 years. Our work yields the largest
+    sample of systems with a transiting giant exoplanet and coherently
+    determined orbital, planetary, and stellar parameters.
+
+    We found that the orbital parameters of TGPs in non-compact planetary
+    systems are clearly shaped by tides raised by their host stars.
+    Indeed, the most eccentric planets have relatively large orbital
+    separations and/or high mass ratios, as expected from the equilibrium
+    tide theory. This feature would be the outcome of planetary migration
+    from highly eccentric orbits excited by planet-planet scattering,
+    Kozai-Lidov perturbations, or secular chaos. The distribution of
+    {alpha}=a/a_R_, where a and a_R_ are the semi-major axis and the Roche
+    limit, for well-determined circular orbits peaks at 2.5; this agrees
+    with expectations from the high-eccentricity migration (HEM), although
+    it might not be limited to this migration scenario. The few planets of
+    our sample with circular orbits and {alpha}>5 values may have migrated
+    through disc-planet interactions instead of HEM. By comparing
+    circularisation times with stellar ages, we found that hot Jupiters
+    with a<0.05au have modified tidal quality factors 10^5^<~Qp<~10^9^,
+    and that stellar Qs>~10^6^-10^7^ are required to explain the presence
+    of eccentric planets at the same orbital distance.
+
+Description:
+    We carried out a homogeneous determination of the orbital parameters
+    of 231 TGPs by analysing with our Bayesian DEMCMC tool both the
+    literature RVs and the new high-accuracy and high-precision HARPS-N
+    data we acquired for 45 TGPs orbiting relatively bright stars over
+    ~3 years. We thus produced the largest uniform catalogue of giant
+    planet orbital and physical parameters. For several systems we
+    combined for the first time RV datasets collected with different
+    spectrographs by different groups thus improving the orbital solution.
+    In general, we fitted a separate jitter term for each dataset by
+    allowing for different values of extra noise caused by instrumental
+    effects and/or changing levels of stellar activity in different
+    observing seasons. This way, we uniformly derived the orbital
+    eccentricities of
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName    Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .   This file
+table5.dat     112      231   Summary of the radial-velocity data used in
+                               the present work
+table6.dat     254      231   Priors on orbital periods, and transit and
+                               occultation midtimes from ground-based and/or
+                               space-based photometry
+table7.dat     272      231   Parameters of the 231 systems with giant
+                               transiting planets considered in this study
+table8.dat     187      231   Orbital parameters of the 231 giant transiting
+                               planets considered in this study
+table9.dat     157      231   Orbital and planetary parameters of the 231
+                               giant transiting planets considered in this study
+refs.dat       317      328   References
+table1.dat      46      782   HARPS-N radial-velocity measurements and
+                               associated photon-noise
+table2.dat      29       69   TRES radial-velocity measurements of Qatar-2
+                               and associated
+--------------------------------------------------------------------------------
+
+See also:
+ J/A+A/554/A28  : Qatar-1 differential light curve (Covino+, 2013)
+ J/A+A/575/A111 : GAPS V: Global analysis of the XO-2 system (Damasso+, 2015)
+ J/A+A/575/L15  : TrES-4b RV and Ic curves (Sozzetti+, 2015)
+ J/A+A/578/A64  : Velocity curve of {tau} Boo A (Borsa+, 2015)
+ J/A+A/579/A136 : HAT-P-36 and WASP-11/HAT-P-10 light curves (Mancini+, 2015)
+ J/A+A/583/A135 : XO-2N and XO-2S spectra (Biazzo+, 2015)
+ J/A+A/588/A118 : Pr0211 RVs, photometry and activity indexes (Malavolta+, 2016)
+ J/A+A/599/A90  : Characterization of HD 108874 system (Benatti+, 2017)
+
+Byte-by-byte Description of file: table5.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 13  A13   ---     Star      Star name
+  15- 17  I3    ---     NRVtot    Total number of RVs
+  19- 21  I3    ---     NRVHN     ?=- Number of the HARPS-N RVs (1)
+  23- 26  I4    d       Dur       Duration
+      28  I1    ---     Ndat      Number of different RV datasets
+      29  A1    ---   n_Ndat      [*] Note for Qatar-1 (2)
+  31-112  A82   ---     Ref       Reference(s), in refs.dat file
+--------------------------------------------------------------------------------
+Note (1): only refers to the 45 systems that we monitored
+Note (2): * : For Qatar-1, the two datasets refer to HARPS-N data taken before
+  and after the replacement of the HARPS-N CCD in September 2012 because of the
+  failure of the CCD red side readout. Owing to different RV zero points,
+  these data were considered as independent datasets.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table6.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 12  A12   ---     Planet    Planet name
+  13- 26  F14.9 d       Per       Period
+  29- 36  E8.3  d     e_Per       Error on Per
+  38- 49  F12.7 d       BJD1      Transit Midtime
+  52- 59  E8.4  d     e_BJD1      Error on Transit Midtime
+  61- 79  A19   ---     Ref1      Reference for Transit Midtime
+  82- 92  F11.6 d       BJD2      ? Occultation Midtime
+  94-100  F7.5  d     e_BJD2      ? Error for Occultation Midtime
+ 102-120  A19   ---     Ref2      Reference for Occultation Midtime
+ 122-132  F11.6 d       BJD3      ? Second Transit Midtime
+ 134-140  F7.5  d     e_BJD3      ? Error on Second Transit Midtime
+ 142-160  A19   ---     Ref3      Reference for Second Transit Midtime
+ 162-171  F10.5 d       BJD4      ? Third Transit Midtime
+ 173-179  F7.5  d     e_BJD4      ? Error for Second Occultation Midtime
+ 181-199  A19   ---     Ref4      Reference for Second Transit Midtime
+ 201-254  A54   ---     Other     Other quantities
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table7.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label    Explanations
+--------------------------------------------------------------------------------
+   1- 11  A11   ---     Star     Host star name
+  13- 17  F5.3  Msun    Mstar    Stellar mass
+  19- 23  F5.3  Msun  e_Mstar    1sigma negative (left) error on Mstar
+  25- 29  F5.3  Msun  E_Mstar    1sigma positive (right) error on Mstar
+  31- 36  F6.4  Rsun    Rstar    Stellar radius
+  38- 43  F6.4  Rsun  e_Rstar    1sigma negative (left) error on Rstar
+  45- 50  F6.4  Rsun  E_Rstar    1sigma positive (right) error on Rstar
+  52- 55  I4    K       Teff     Effective temperature
+  57- 59  I3    K     e_Teff     1sigma negative (left) error on Teff
+  61- 63  I3    K     E_Teff     1sigma positive (right) error on Teff
+  65- 70  F6.3  [-]     [Fe/H]   Stellar metallicity
+  72- 76  F5.3  [-]   e_[Fe/H]   1sigma negative (left) error on [Fe/H]
+  78- 82  F5.3  [-]   E_[Fe/H]   1sigma positive (right) error on [Fe/H]
+  84- 91  F8.3  km/s    vsini    ?=-999 Stellar projected rotational velocity
+  93-100  F8.3  km/s  e_vsini    ?=-999 1sigma negative (left) error on vsini
+ 102-109  F8.3  km/s  E_vsini    ?=-999 1sigma positive (right) error on vsini
+ 111-119  F9.4  d       Prot     ?=-999 Photometric stellar rotation period
+ 121-129  F9.4  d     e_Prot     ?=-999 Error on prot
+ 131-138  F8.3  Gyr     Age      Stellar age
+ 140-144  F5.3  Gyr   e_Age      1sigma negative (left) error on Age
+ 146-149  F4.2  Gyr   E_Age      1sigma positive (right) error on Age
+ 151-156  F6.3  deg     Incl     Orbital inclination
+ 158-162  F5.3  deg   e_Incl     1sigma negative (left) error on Incl
+ 164-168  F5.3  deg   E_Incl     1sigma positive (right) error on Incl
+ 170-175  F6.4  Rjup    Rplanet  Planet radius
+ 177-182  F6.4  Rjup  e_Rplanet  1sigma negative (left) error on Rplanet
+ 184-189  F6.4  Rjup  E_Rplanet  1sigma positive (right) error on Rplanet
+ 191-272  A82   ---     Ref      References (1)
+--------------------------------------------------------------------------------
+Note (1): References in refs.dat file.
+ thiswork1 : The new system parameters Mstar, Rstar, Rplanet, and age were
+               derived by using the Y2 evolutionary tracks and the published
+               values of stellar atmospheric parameters, stellar density from
+               the transit fitting, and Rplanet/Rstar (as reported in the
+               corresponding reference)
+ thiswork2 : The system age was estimated by using the Y2 evolutionary tracks
+              and the published values of stellar atmospheric parameters and
+              stellar density from the transit fitting (as reported in the
+              corresponding reference)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table8.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 12  A12   ---     Planet    Planet name
+      14  A1    ---     Forbit    [CUE] Orbit flag (1)
+      16  A1    ---     Fcirc     [0/1] Circ flag (2)
+  18- 26  F9.4  ---     ecc1s     ?=-999 1sigma upper limit on ecc
+  28- 36  F9.4  ---     ecc2s     ?=-999 2sigma upper limit on ecc
+  38- 47  F10.5 ---     ecc       ?=-999 Eccentricity
+  49- 58  F10.5 ---   e_ecc       ?=-999 1sigma negative (left) error on ecc
+  60- 69  F10.5 ---   E_ecc       ?=-999 1sigma positive (right) error on ecc
+  71- 77  F7.2  deg     omega     ?=-999 argument of periastron
+  79- 85  F7.2  deg   e_omega     ?=-999 1sigma negative (left) error on omega
+  87- 93  F7.2  deg   E_omega     ?=-999 1sigma positive (right) error on omega
+  95-102  F8.2  m/s     K         radial-velocity semi-amplitude
+ 104-108  F5.2  m/s   e_K         1sigma negative (left) error on K
+ 110-116  F7.2  m/s   E_K         1sigma positive (right) error on K
+ 118-126  F9.4  m/s/d   slope     ?=-999 linear trend
+ 128-136  F9.4  m/s/d e_slope     ?=-999 1sigma negative (left) error on slope
+ 138-146  F9.4  m/s/d E_slope     ?=-999 1sigma positive (right) error on slope
+     148  A1    ---     Fjit      [0/1] jitter flag (3)
+ 150-155  F6.1  m/s     jit1s     ?=-999 1sigma upper limit on jit
+ 157-163  F7.2  m/s     jit       ?=-999 radial-velocity jitter
+ 165-171  F7.2  m/s   e_jit       ?=-999 1sigma negative (left) error on jit
+ 173-179  F7.2  m/s   E_jit       ?=-999 1sigma positive (right) error on jit
+ 181-187  A7    ---     Fcomp     Flag for outer companions (4)
+--------------------------------------------------------------------------------
+Note (1): Orbit flag as follows:
+  C = circular orbit
+  U = undetermined eccentricity
+  E = significantly eccentric orbit
+Note (2): Circ flag as follows:
+  1 = ecc1s and ecc2s are provided while
+      ecc, e_ecc, E_ecc, omega, e_omega, and E_omega are set to -999
+  0 = ecc, e_ecc, and E_ecc, omega, e_omega, and E_omega are given while
+      ecc1s and ecc2s are set to -999
+Note (3): jit flag as follows:
+  1 = jit1s is provided while jit, e_jit, and E_jit are set to -999
+  0 = jit, e_jit, and E_jit are given while jit1s is set to -999
+Note (4): Companion flag as follows:
+  NDS = no detected slope
+  YDS = detected slope;
+  CURV = detected curvature in RV data
+  PLC = detected planetary companion in RV data
+  YDS/PLC = YDS and PLC
+
+  if flag_companion does not contain 'YDS', slope, e_slope, and E_slope are
+    set to -999
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table9.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label     Explanations
+--------------------------------------------------------------------------------
+   1- 12  A12   ---       Planet    Planet name
+  14- 20  F7.3  d         Period    Orbital period
+  22- 29  F8.6  AU        smaxis    Semi-major axis
+  31- 38  F8.6  AU      e_smaxis    1sigma negative/left error on smaxis
+  40- 47  F8.6  AU      E_smaxis    1sigma positive/right error on smaxis
+      49  A1    ---       Fcirc     [0/1] Orbit flag (1)
+  51- 59  F9.4  ---       ecc1s     ?=-999 1sigma upper limit on ecc
+  61- 70  F10.5 ---       ecc       ?=-999 Eccentricity
+  72- 81  F10.5 ---     e_ecc       ?=-999 1sigma negative (left) error on ecc
+  83- 92  F10.5 ---     E_ecc       ?=-999 1sigma positive (right) error on ecc
+  94-100  F7.4  Mjup      Mp        Planet Mass
+ 102-107  F6.4  Mjup    e_Mp        1sigma negative (left) error on Mp
+ 109-114  F6.4  Mjup    E_Mp        1sigma positive (right) error on Mp
+ 116-122  F7.4  g/cm+3    rhop      Planet density
+ 124-129  F6.4  g/cm+3  e_rhop      1sigma negative (left) error on rhop
+ 131-136  F6.4  g/cm+3  E_rhop      1sigma positive (right) error on rhop
+ 138-143  F6.4  [cm/s2]   loggp     Planet surface gravity
+ 145-150  F6.4  [cm/s2] e_loggp     1sigma negative/left error on loggp
+ 152-157  F6.4  [cm/s2] E_loggp     1sigma positive/right error on loggp
+--------------------------------------------------------------------------------
+Note (1): Circ flag as follows:
+  1 = only ecc1s is provided (for all the orbits classified as circular or
+       undetermined) while ecc, e_ecc, and E_ecc are set to -999
+  0 = ecc, e_ecc, and e_ecc are given while ecc1s is set to -999
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: refs.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 19  A19   ---     Ref       Reference (BibCode)
+  21- 46  A26   ---     Aut       Author's name
+  48-317  A270  ---     Com       Comments
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Star  Host star name (1)
+  13- 24  F12.7 d       BJD   Epochs of the radial velocities (BJD_UTC-2450000)
+  29- 37  F9.5  m/s     RV    Radial velocity
+  40- 46  F7.5  m/s   e_RV    Radial-velocity uncertainty
+--------------------------------------------------------------------------------
+Note (1): RV measurements of Qatar-1 taken before and after 6200 BJD
+  (BJD_UTC-2450000) should be considered as two independent datasets;
+  indeed, they were acquired before and after the replacement of the HARPS-N
+  CCD, which gives slightly different zero points for the two datasets.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label  Explanations
+--------------------------------------------------------------------------------
+   1-  9  F9.4  d       BJD    Epochs of the radial velocities (BJD_UTC-2450000)
+  13- 19  F7.2  m/s     RV     Radial velocity
+  25- 29  F5.2  m/s   e_RV     Radial-velocity uncertainty
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Aldo Bonomo, bonomo(at)oato.inaf.it
+
+References:
+   Covino et al.,    Paper I     2013A&A...554A..28C, Cat. J/A+A/554/A28
+   Desidera et al.,  Paper II    2013A&A...554A..29D
+   Esposito et al.,  Paper III   2014A&A...564L..13E
+   Desidera et al.,  Paper IV    2014A&A...567L...6D
+   Damasso et al.,   Paper V     2015A&A...575A.111D, Cat. J/A+A/575/A111
+   Sozzetti et al.,  Paper VI    2015A&A...575L..15S, Cat. J/A+A/575/L15
+   Borsa et al.,     Paper VII   2015A&A...578A..64B, Cat. J/A+A/578/A64
+   Mancini et al.,   Paper VIII  2015A&A...579A.136M, Cat. J/A+A/579/A136
+   Damasso et al.,   Paper IX    2015A&A...581L...6D, Cat. J/A+A/581/L6
+   Biazzo et al.,    Paper X     2015A&A...583A.135B, Cat. J/A+A/583/A135
+   Malavolta et al., Paper XI    2016A&A...588A.118M, Cat. J/A+A/588/A118
+   Benatti et al.,   Paper XII   2017A&A...599A..90B, Cat. J/A+A/599/A90
+   Esposito et al.,  Paper XIII  2017A&A...601A..53E
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  24-Apr-2017
