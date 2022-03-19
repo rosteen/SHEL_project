@@ -94,7 +94,7 @@ def helio_to_bary(coords, hjd, obs_name):
     return guess.tdb + ltt
 
 
-def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
+def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, instrument=None,
                    target_col=None, target=None, inst_list=None, delimiter="\t",
                    time_type="BJD-UTC", time_offset=0, debug=False):
     """
@@ -114,6 +114,15 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
 
+    # get reference ID
+    refnum = cur.execute(f"select id from data_refs where url='{url}'").fetchone()
+    if refnum is None:
+        stmt = f"insert into data_refs (local_filename, url) values ('{fname}', '{url}')"
+        cur.execute(stmt)
+        refnum = cur.execute(f"select id from data_refs where url='{url}'").fetchone()
+    if debug:
+        print(f"Refnum: {refnum}")
+
     # Get target_id as well as RA and Dec in case we need them for time conversion
     if target is not None:
         res = cur.execute(f'select id, ra, dec from targets where name = "{target}"').fetchone()
@@ -128,8 +137,6 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
                 if inst_list is not None and row[0][1:] in inst_list:
                     instrument = row[0][1:]
                 continue
-            if debug:
-                print(row[0])
 
             if target_col is not None:
                 if row[target_col] != target:
@@ -145,6 +152,9 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
             if time_type != "BJD":
                 stmt = f'select sitename from instruments where name = "{instrument}"'
                 obsname = cur.execute(stmt).fetchone()[0]
+                if obsname is None or ra is None or dec is None:
+                    raise ValueError("Observatory sitename and target RA and Dec "
+                                     "must be populated to convert to BJD")
 
             if time_type == "HJD":
                 t = helio_to_bary((ra, dec), t, obsname)
@@ -155,5 +165,16 @@ def ingest_rv_data(filename, t_col, rv_col, err_col, instrument=None,
 
             rv = row[rv_col]
             rv_err = row[err_col]
-            print(instrument, bjd, rv, rv_err, target)
+            if debug:
+                print(instrument, bjd, rv, rv_err, target)
 
+            stmt = ("insert into radial_velocity (target_id, reference_id, instrument,"
+                    f"bjd, rv, rv_err) values ({target}, {ref_id}, {instrument}, "
+                    f"{bjd}, {rv}, {rv_err})")
+
+            if debug:
+                print(stmt)
+            else:
+                # Leaving this commented out until after testing, just in case
+                #cur.execute(stmt)
+                pass
