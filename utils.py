@@ -94,9 +94,9 @@ def helio_to_bary(coords, hjd, obs_name):
     return guess.tdb + ltt
 
 
-def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, instrument=None,
-                   target_col=None, target=None, inst_list=None, delimiter="\t",
-                   time_type="BJD-UTC", time_offset=0, debug=False):
+def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
+                   target=None, instrument=None, inst_list=None, inst_col=None,
+                   delimiter="\t", time_type="BJD-TDB", time_offset=0, debug=False):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
@@ -106,22 +106,30 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, instrument=None,
         raise ValueError("Must specify either a target (for single-target file) or"
                          "column with target names.")
 
-    if instrument is None and inst_list is None:
+    if instrument is None and inst_list is None and inst_col is None:
         raise ValueError("Must specify either an instrument (for a single-instrument"
-                         " file) or a list of instrument strings to look for in comment lines.")
+                         " file), a column holding instrument names, or a list of "
+                         "instrument strings to look for in comment lines.")
 
     # Connect to database
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
 
     # get reference ID
-    refnum = cur.execute(f"select id from data_refs where url='{url}'").fetchone()
-    if refnum is None:
-        stmt = f"insert into data_refs (local_filename, url) values ('{fname}', '{url}')"
+    ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()
+    if ref_id is None:
+        stmt = f"insert into data_refs (local_filename, url) values ('{filename}', '{ref_url}')"
         cur.execute(stmt)
-        refnum = cur.execute(f"select id from data_refs where url='{url}'").fetchone()
+        ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()[0]
+    else:
+        ref_id = ref_id[0]
     if debug:
-        print(f"Refnum: {refnum}")
+        print(f"Refnum: {ref_id}")
+
+    # Get instrument ID. Instrument info must be pre-loaded
+    if instrument is not None:
+        instrument_id = cur.execute("select id from instruments where "
+                                    f"name='{instrument}'").fetchone()[0]
 
     # Get target_id as well as RA and Dec in case we need them for time conversion
     if target is not None:
@@ -130,26 +138,49 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, instrument=None,
         if debug:
             print(target_id, ra, dec)
 
-    with open(filename) as f:
+    with open(f"data/radial_velocity/{filename}") as f:
         freader = csv.reader(f, delimiter=delimiter)
         for row in freader:
             if row[0][0] == "#":
                 if inst_list is not None and row[0][1:] in inst_list:
                     instrument = row[0][1:]
+                    instrument_id = cur.execute("select id from instruments where "
+                                                f"name='{instrument}'").fetchone()[0]
                 continue
+            else:
+                if delimiter == " ":
+                    data = [x for x in row if x != ""]
+                else:
+                    data = row
+
+            # Get instrument if stored in a column
+            if inst_col is not None:
+                instrument = data[inst_col]
+                instrument_id = cur.execute("select id from instruments where "
+                                            f"name='{instrument}'").fetchone()[0]
 
             if target_col is not None:
-                if row[target_col] != target:
-                    target = row[target_col]
+                if data[target_col] != target:
+                    bad_target = False
+                    target = data[target_col]
                     stmt = f'select id, ra, dec from targets where name = "{target}"'
                     res = cur.execute(stmt).fetchone()
+                    if res is None:
+                        # This isn't a target we care about
+                        print(target)
+                        bad_target = True
+                        continue
                     target_id, ra, dec = res
                     if debug:
                         print(target_id, ra, dec)
+                if bad_target:
+                    continue
 
-            t = row[t_col] + time_offset
+            t = float(data[t_col]) + time_offset
             #TODO: If we need to convert to BJD, get observatory name
-            if time_type != "BJD":
+            if time_type == "BJD-TDB":
+                bjd = t
+            else:
                 stmt = f'select sitename from instruments where name = "{instrument}"'
                 obsname = cur.execute(stmt).fetchone()[0]
                 if obsname is None or ra is None or dec is None:
@@ -157,19 +188,19 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, instrument=None,
                                      "must be populated to convert to BJD")
 
             if time_type == "HJD":
-                t = helio_to_bary((ra, dec), t, obsname)
+                bjd = helio_to_bary((ra, dec), t, obsname)
             elif time_type == "JD":
-                JDUTC = Time(2458000, format='jd', scale='utc')
-                t = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=rec, obsname=obsname)
+                JDUTC = Time(t, format='jd', scale='utc')
+                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=rec, obsname=obsname)
 
 
-            rv = row[rv_col]
-            rv_err = row[err_col]
+            rv = float(data[rv_col])
+            rv_err = float(data[err_col])
             if debug:
-                print(instrument, bjd, rv, rv_err, target)
+                print(instrument_id, bjd, rv, rv_err, target)
 
             stmt = ("insert into radial_velocity (target_id, reference_id, instrument,"
-                    f"bjd, rv, rv_err) values ({target}, {ref_id}, {instrument}, "
+                    f"bjd, rv, rv_err) values ({target_id}, {ref_id}, {instrument_id}, "
                     f"{bjd}, {rv}, {rv_err})")
 
             if debug:
