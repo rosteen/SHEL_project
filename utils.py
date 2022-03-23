@@ -153,12 +153,12 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 else:
                     data = row
 
-            # Get instrument if stored in a column
+            # Get instrument ID if there is an instrument name column
             if inst_col is not None:
                 instrument = data[inst_col]
                 instrument_id = cur.execute("select id from instruments where "
                                             f"name='{instrument}'").fetchone()[0]
-
+            # Get target ID if stored in a column
             if target_col is not None:
                 if data[target_col] != target:
                     bad_target = False
@@ -166,8 +166,7 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                     stmt = f'select id, ra, dec from targets where name = "{target}"'
                     res = cur.execute(stmt).fetchone()
                     if res is None:
-                        # This isn't a target we care about
-                        print(target)
+                        print(f"Skipping {target}")
                         bad_target = True
                         continue
                     target_id, ra, dec = res
@@ -193,19 +192,24 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 JDUTC = Time(t, format='jd', scale='utc')
                 bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=rec, obsname=obsname)
 
+            try:
+                rv = float(data[rv_col])
+            except ValueError:
+                # Generally this is due to an asterix flagging this RV
+                continue
 
-            rv = float(data[rv_col])
             rv_err = float(data[err_col])
             if debug:
                 print(instrument_id, bjd, rv, rv_err, target)
 
-            stmt = ("insert into radial_velocity (target_id, reference_id, instrument,"
+            stmt = ("insert into radial_velocities (target_id, reference_id, instrument,"
                     f"bjd, rv, rv_err) values ({target_id}, {ref_id}, {instrument_id}, "
                     f"{bjd}, {rv}, {rv_err})")
 
             if debug:
                 print(stmt)
             else:
-                # Leaving this commented out until after testing, just in case
-                #cur.execute(stmt)
-                pass
+                cur.execute(stmt)
+
+    # Commit the database changes
+    conn.commit()
