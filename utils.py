@@ -180,16 +180,16 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 if bad_target:
                     continue
 
+            # Convert time to BJD-UTC if needed
             t = float(data[t_col]) + time_offset
-            #TODO: If we need to convert to BJD, get observatory name
             if time_type == "BJD-TDB":
                 bjd = t
             else:
                 stmt = f'select sitename from instruments where name = "{instrument}"'
                 obsname = cur.execute(stmt).fetchone()[0]
                 if obsname is None or ra is None or dec is None:
-                    raise ValueError("Observatory sitename and target RA and Dec "
-                                     "must be populated to convert to BJD")
+                    raise ValueError(f"Observatory sitename and RA and Dec  for {target}"
+                                     " must be populated to convert to BJD")
 
             if time_type == "HJD":
                 bjd = helio_to_bary((ra, dec), t, obsname)
@@ -198,6 +198,10 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 star = coords_to_SkyCoord((ra, dec))
                 bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
                                               obsname=obsname)[0][0]
+            elif time_type == "BJD-UTC"
+                utc = Time(t, format='jd', scale='utc')
+                bjd = utc.tdb.value
+
             if debug:
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
 
