@@ -65,12 +65,7 @@ def create_shel_db():
     conn.close()
 
 
-def helio_to_bary(coords, hjd, obs_name):
-    """
-    From https://gist.github.com/StuartLittlefair/4ab7bb8cf21862e250be8cb25f72bb7a
-    with some minor edits to the coordinate handling
-    """
-
+def coords_to_SkyCoord(coords):
     ra = coords[0].split(":")
     ra = int(ra[0]) + int(ra[1])/60 + float(ra[2])/3600
     dec = coords[1].split(":")
@@ -78,7 +73,17 @@ def helio_to_bary(coords, hjd, obs_name):
         dec = int(dec[0]) - int(dec[1])/60 - float(dec[2])/3600
     else:
         dec = int(dec[0]) + int(dec[1])/60 + float(dec[2])/3600
+
     star = SkyCoord(ra=ra*u.hour, dec=dec*u.deg)
+    return star
+
+
+def helio_to_bary(coords, hjd, obs_name):
+    """
+    From https://gist.github.com/StuartLittlefair/4ab7bb8cf21862e250be8cb25f72bb7a
+    with some minor edits to the coordinate handling
+    """
+    star = coords_to_SkyCoord(coords)
 
     helio = Time(hjd, scale='utc', format='jd')
     obs = EarthLocation.of_site(obs_name)
@@ -190,7 +195,9 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 bjd = helio_to_bary((ra, dec), t, obsname)
             elif time_type == "JD":
                 JDUTC = Time(t, format='jd', scale='utc')
-                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=dec, obsname=obsname)
+                star = coords_to_SkyCoord((ra, dec))
+                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
+                                              obsname=obsname)[0][0]
             if debug:
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
 
