@@ -190,7 +190,9 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 bjd = helio_to_bary((ra, dec), t, obsname)
             elif time_type == "JD":
                 JDUTC = Time(t, format='jd', scale='utc')
-                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=rec, obsname=obsname)
+                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=ra, dec=dec, obsname=obsname)
+            if debug:
+                print(f"Original time: {t}, BJD-TDB: {bjd}")
 
             try:
                 rv = float(data[rv_col])
