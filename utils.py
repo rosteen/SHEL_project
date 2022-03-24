@@ -184,7 +184,7 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
             t = float(data[t_col]) + time_offset
             if time_type == "BJD-TDB":
                 bjd = t
-            else:
+            elif time_type in ("JD", "HJD"):
                 stmt = f'select sitename from instruments where name = "{instrument}"'
                 obsname = cur.execute(stmt).fetchone()[0]
                 if obsname is None or ra is None or dec is None:
@@ -198,7 +198,7 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 star = coords_to_SkyCoord((ra, dec))
                 bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
                                               obsname=obsname)[0][0]
-            elif time_type == "BJD-UTC"
+            elif time_type == "BJD-UTC":
                 utc = Time(t, format='jd', scale='utc')
                 bjd = utc.tdb.value
 
