@@ -104,7 +104,8 @@ def helio_to_bary(coords, hjd, obs_name):
 
 def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                    target=None, instrument=None, inst_list=None, inst_col=None,
-                   delimiter="\t", time_type="BJD-TDB", time_offset=0, debug=False):
+                   delimiter="\t", time_type="BJD-TDB", time_offset=0,
+                   filter_target=None, debug=False):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
@@ -171,6 +172,12 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 if data[target_col] != target:
                     bad_target = False
                     target = data[target_col]
+                    if filter_target is not None:
+                        # Skip anything but the one we're reprocessing
+                        if target != filter_target:
+                            print(f"Skipping {target}")
+                            bad_target=True
+                            continue
                     stmt = f'select id, ra, dec from targets where name = "{target}"'
                     res = cur.execute(stmt).fetchone()
                     if res is None:
