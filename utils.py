@@ -1,9 +1,12 @@
-import sqlite3 as sql
 import csv
+import numpy as np
+import os
+import sqlite3 as sql
 
 from astropy.coordinates import SkyCoord, EarthLocation
 from astropy import units as u
 from astropy.time import Time
+from astropy.io import fits
 from barycorrpy import utc_tdb
 
 def create_shel_db():
@@ -226,3 +229,67 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
 
     # Commit the database changes
     conn.commit()
+
+
+def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
+                     debug=False):
+    """
+    Ingest any TESS light curves in subdirectories of given directory.
+    Will look for subdirectories ending in '-s', which should hold light curves.
+    """
+    subdirs = [x[0] for x in os.walk(directory)]
+    lc_files = []
+    for subdir in subdirs:
+        if subdir[-2:] == "-s":
+            lc_files.append([subdir, subdir.split('/')[-1]])
+
+    # Connect to database and get target ID
+    conn = sql.connect(db_path)
+    cur = conn.cursor()
+
+    target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
+
+    for path_info in lc_files:
+        fname = f"{path_info[0]}/{path_info[1]}_lc.fits"
+        with fits.open(fname, mode="readonly") as hdulist:
+            tess_bjds = hdulist[1].data['TIME']
+            sap_fluxes = hdulist[1].data['SAP_FLUX']
+            pdcsap_fluxes = hdulist[1].data['PDCSAP_FLUX']
+            pdcsap_err = hdulist[1].data['PDCSAP_FLUX_ERR']
+            quality = hdulist[1].data['QUALITY']
+
+            # Reject bad quality flags
+            bad_bits = np.array([1,2,3,4,5,6,8,10,12])
+            value = 0
+            for v in bad_bits:
+                value = value + 2**(v-1)
+            bad_data = np.bitwise_and(quality, value) >= 1
+            bad_data[np.isnan(pdcsap_fluxes)] = True
+
+            # Reject anything below this to get non-transit mean
+            min_threshold = (np.nanmean(pdcsap_fluxes[~bad_data]) -
+                             2*np.nanstd(pdcsap_fluxes[~bad_data]))
+            non_transit = np.where(pdcsap_fluxes[~bad_data] > min_threshold)
+
+            # Convert the times to unsubtracted BJD
+            good_times = tess_bjds[~bad_data] + 2457000
+            normalized_flux = (pdcsap_fluxes[~bad_data] /
+                               np.nanmean(pdcsap_fluxes[~bad_data][non_transit]))
+            normalized_errs = normalized_flux*(pdcsap_err[~bad_data] /
+                                               pdcsap_fluxes[~bad_data])
+            for i in range(len(good_times)):
+                stmt = ("INSERT INTO light_curves (target_id, instrument, bjd, "
+                        f"flux, flux_err) values ({target_id}, 1, {good_times[i]},"
+                        f" {normalized_flux[i]}, {normalized_errs[i]})")
+                if debug:
+                    print(f"First insert for {fname}:")
+                    print(stmt)
+                    break
+                else:
+                    cur.execute(stmt)
+
+        # Commit the data from each file
+        conn.commit()
+
+    cur.close()
+    conn.close()
