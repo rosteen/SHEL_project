@@ -4,8 +4,9 @@ import numpy as np
 import sqlite3 as sql
 
 class SHEL_Fitter():
-    def __init__(self, target_name):
+    def __init__(self, target_name, debug=False):
         self.target = target_name
+        self.debug = debug
 
         # Connect to database
         self.conn = sql.connect("shel_database.sqlite")
@@ -18,6 +19,19 @@ class SHEL_Fitter():
     def close_db(self):
         self.cur.close()
         self.conn.close()
+
+    def _get_rv_inst_names(self):
+        # Get all instruments used for RV observations of this target, grouped by
+        # reference so we can treat the same instrument separately for different refs.
+        stmt = ("select reference_id, name from radial_velocities "
+                "a join instruments b on a.instrument = b.id where "
+                f"a.target_id = {self.target_id} group by reference_id")
+
+        rv_insts = self.cur.execute(stmt).fetchall()
+
+        # Concat ref_id with instrument name for
+        rv_inst_names = [f"{x[1]}-{x[0]}" for x in rv_insts]
+        return rv_inst_names
 
     def get_light_curve_data(self, TESS_only=False):
         times, fluxes, fluxes_error = {},{},{}
@@ -35,10 +49,35 @@ class SHEL_Fitter():
         times['TESS'], fluxes['TESS'], fluxes_error['TESS'] = t, f, f_err
         return times, fluxes, fluxes_error
 
-    def get_rv_data(self):
+    def get_rv_data(self, rv_inst_names=None):
         times_rv, data_rv, errors_rv = {}, {}, {}
 
-    def fit(self, period, t0, a, b, p, ecc="Fixed", oot=False, debug=False):
+        if rv_inst_names is None:
+            rv_inst_names = self._get_rv_inst_names()
+
+        for rv_inst_name in rv_inst_names:
+            instrument, ref_id = rv_inst_name.split("-")
+            stmt = ("select bjd, rv, rv_err from radial_velocities a join "
+                    "instruments b on a.instrument = b.id where "
+                    f"a.target_id = {self.target_id} and b.name = '{instrument}' "
+                    f"and reference_id = {ref_id}")
+            if self.debug:
+                print(stmt)
+            res = self.cur.execute(stmt).fetchall()
+            res = np.array(res)
+
+            t = res[:,0]
+            rv = res[:,1]
+            rv_err = res[:,2]
+
+            times_rv[rv_inst_name] = t 
+            data_rv[rv_inst_name] = rv 
+            errors_rv[rv_inst_name] = rv_err
+
+        return times_rv, data_rv, errors_rv
+
+    def fit(self, period, t0, a, b, period_err=0.1, t0_err=0.1, a_err=1, b_err=0.1,
+            ecc="Fixed", oot=False, debug=False, TESS_only=False):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet.
@@ -55,8 +94,6 @@ class SHEL_Fitter():
             Scaled semi-major axis of the orbit (a/R*).
         b: float
             Impact parameter of the orbit.
-        p: float
-            Planet-to-star radius ratio (Rp/Rs).
         ecc: str, float
             Eccentricity of planet orbit, defaults to "Fixed" at 0.
 
@@ -84,10 +121,10 @@ class SHEL_Fitter():
                  'uniform','fixed','fixed','loguniform', 'fixed', 'normal',
                  'loguniform']
 
-        hyperps = [[3.735433, 0.1],
-                   [2400000.5 + 54558.68096, 0.1],
-                   [8.968, 0.62],
-                   [0.4, 0.04],
+        hyperps = [[period, period_err],
+                   [t0, t0_err],
+                   [a, a_err],
+                   [b, b_err],
                    [0, 0.3],
                    [0., 1.],
                    [0., 1.],
@@ -103,16 +140,9 @@ class SHEL_Fitter():
             priors[param] = {}
             priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
 
-        # Get all instruments used for RV observations of this target, grouped by
-        # reference so we can treat the same instrument separately for different refs.
-        stmt = ("select reference_id, name from radial_velocities "
-                "a join instruments b on a.instrument = b.id where "
-                f"a.target_id = {self.target_id} group by reference_id")
-
-        rv_insts = self.cur.execute(stmt).fetchall()
-
-        # Concat ref_id with instrument name for
-        rv_inst_names = [f"{x[1]}-{x[0]}" for x in rv_insts]
+        
+        # Concat ref_id with instrument name for rv data keys
+        rv_inst_names = self._get_rv_inst_names()
 
         params = ["K_p1",]
         dists = ["uniform",]
@@ -138,4 +168,9 @@ class SHEL_Fitter():
                 priors[param] = {}
                 priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
 
+        # Light curve data
+        times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
 
+        # Get RV data
+        if not TESS_only:
+            times_rv, data_rv, errors_rv = self.get_rv_data()
