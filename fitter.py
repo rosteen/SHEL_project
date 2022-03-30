@@ -171,6 +171,19 @@ class SHEL_Fitter():
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
 
+        out_folder = f"juliet_fits/{target} "
+        kwargs = {"priors": priors, "t_lc": times, "y_lc": fluxes,
+                  "yerr_lc": fluxes_error, "out_folder": out_folder}
+
         # Get RV data
         if not TESS_only:
             times_rv, data_rv, errors_rv = self.get_rv_data()
+            kwargs["t_rv"] = times_rv
+            kwargs["y_rv"] = data_rv
+            kwargs["errors_rv"] = errors_rv
+
+        # Load the dataset
+        dataset = juliet.load(**kwargs)
+
+        # And now let's fit it!
+        results = dataset.fit(n_live_points = 450)
