@@ -188,4 +188,4 @@ class SHEL_Fitter():
 
         # And now let's fit it! We default to Dynesty since we generally have >20 parameters
         self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
-                                        sampler="dynesty")
+                                        sampler="dynamic_dynesty")
