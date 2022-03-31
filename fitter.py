@@ -7,6 +7,7 @@ class SHEL_Fitter():
     def __init__(self, target_name, debug=False):
         self.target = target_name
         self.debug = debug
+        self.priors = {}
 
         # Connect to database
         self.conn = sql.connect("shel_database.sqlite")
@@ -102,7 +103,6 @@ class SHEL_Fitter():
         oot: bool
             Flag to fit only out-of-transit TESS data, to get systematics quickly.
         """
-        priors = {}
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
@@ -139,8 +139,8 @@ class SHEL_Fitter():
 
         # Populate the priors dictionary:
         for param, dist, hyperp in zip(params, dists, hyperps):
-            priors[param] = {}
-            priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
+            self.priors[param] = {}
+            self.priors[param]['distribution'], self.priors[param]['hyperparameters'] = dist, hyperp
 
         
         # Concat ref_id with instrument name for rv data keys
@@ -166,14 +166,14 @@ class SHEL_Fitter():
 
         # Populate the priors dictionary:
         for param, dist, hyperp in zip(params, dists, hyperps):
-            priors[param] = {}
-            priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
+            self.priors[param] = {}
+            self.priors[param]['distribution'], self.priors[param]['hyperparameters'] = dist, hyperp
 
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
 
         out_folder = f"juliet_fits/{self.target}"
-        kwargs = {"priors": priors, "t_lc": times, "y_lc": fluxes,
+        kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
                   "yerr_lc": fluxes_error, "out_folder": out_folder}
 
         # Get RV data
@@ -183,12 +183,9 @@ class SHEL_Fitter():
             kwargs["y_rv"] = data_rv
             kwargs["yerr_rv"] = errors_rv
 
-        if self.debug:
-            print(f"Kwargs: {kwargs}")
-            print(f"Priors: {priors}")
-
         # Load the dataset
-        dataset = juliet.load(**kwargs)
+        self.dataset = juliet.load(**kwargs)
 
-        # And now let's fit it!
-        results = dataset.fit(n_live_points = 450)
+        # And now let's fit it! We default to Dynesty since we generally have >20 parameters
+        self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
+                                        sampler="dynesty")
