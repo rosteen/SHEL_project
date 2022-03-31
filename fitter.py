@@ -42,6 +42,8 @@ class SHEL_Fitter():
 
         res = self.cur.execute(stmt).fetchall()
         res = np.array(res)
+        if self.debug:
+            print(res[0,:])
         t = res[:, 3]
         f = res[:, 4]
         f_err = res[:, 5]
@@ -149,29 +151,28 @@ class SHEL_Fitter():
         hyperps = [[-100,100],]
 
         for instrument in rv_inst_names:
-            name = instrument[0]
-            inst_params = [f'mu_{name}',
-                           f'sigma_w_{name}']
+            inst_params = [f'mu_{instrument}',
+                           f'sigma_w_{instrument}']
 
             # Distributions:
             inst_dists = ['uniform', 'loguniform']
 
             # Hyperparameters
-            inst_hyperps = [[-100,100], [1e-3, 100]]
+            inst_hyperps = [[-120,120], [1e-3, 100]]
 
             params += inst_params
             dists += inst_dists
             hyperps += inst_hyperps
 
-            # Populate the priors dictionary:
-            for param, dist, hyperp in zip(params, dists, hyperps):
-                priors[param] = {}
-                priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
+        # Populate the priors dictionary:
+        for param, dist, hyperp in zip(params, dists, hyperps):
+            priors[param] = {}
+            priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
 
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
 
-        out_folder = f"juliet_fits/{target} "
+        out_folder = f"juliet_fits/{self.target}"
         kwargs = {"priors": priors, "t_lc": times, "y_lc": fluxes,
                   "yerr_lc": fluxes_error, "out_folder": out_folder}
 
@@ -180,7 +181,11 @@ class SHEL_Fitter():
             times_rv, data_rv, errors_rv = self.get_rv_data()
             kwargs["t_rv"] = times_rv
             kwargs["y_rv"] = data_rv
-            kwargs["errors_rv"] = errors_rv
+            kwargs["yerr_rv"] = errors_rv
+
+        if self.debug:
+            print(f"Kwargs: {kwargs}")
+            print(f"Priors: {priors}")
 
         # Load the dataset
         dataset = juliet.load(**kwargs)
