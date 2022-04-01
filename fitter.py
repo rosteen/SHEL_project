@@ -8,6 +8,7 @@ class SHEL_Fitter():
         self.target = target_name
         self.debug = debug
         self.priors = {}
+        self.tess_systematics = None
 
         # Connect to database
         self.conn = sql.connect("shel_database.sqlite")
@@ -79,8 +80,65 @@ class SHEL_Fitter():
 
         return times_rv, data_rv, errors_rv
 
+    def fit_tess_systematics(period, center, duration=None):
+        """
+        Fit the out of transit TESS data to get the TESS systematics, so we
+        can fix them in the planetary parameter fitting.
+
+        Parameters
+        ----------
+        period: float
+            Planet period in days
+        duration: float
+            Tranit duration in hours
+        center:
+            Center of transit, in BJD-UTC
+        """
+        # Set our phase boundary to be considered in/out of transit
+        if duration is None:
+            print("No transit duration provided, defaulting to using +/-0.05 phase oot")
+            self.oot_phase_limit = 0.05
+        else:
+            # We'll include +/- one transit duration as in-transit
+            self.oot_phase_limit = period*24/td
+
+        # Get the TESS data
+        t, f, ferr = self.get_light_curve_data(TESS_only=True)
+
+        # Get phases and sort data
+        phases = juliet.get_phases(t, period, center)
+        idx_oot = np.where(np.abs(phases)>self.oot_phase_limit)[0]
+
+        times, fluxes, fluxes_error = {},{},{}
+
+        sort_times = np.argsort(t[idx_oot])
+
+        times['TESS'] = t[idx_oot][sort_times]
+        fluxes['TESS'] = f[idx_oot][sort_times]
+        fluxes_error['TESS'] = ferr[idx_oot][sort_times]
+
+        # Set the priors:
+        params = ['mdilution_TESS', 'mflux_TESS', 'sigma_w_TESS', 'GP_sigma_TESS',
+                   'GP_rho_TESS']
+        dists = ['fixed', 'normal', 'loguniform', 'loguniform', 'loguniform']
+        hyperps = [1., [0.,0.1], [1e-6, 1e6], [1e-6, 1e6], [1e-3,1e3]]
+
+        priors = {}
+        for param, dist, hyperp in zip(params, dists, hyperps):
+            priors[param] = {}
+            priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
+
+        # Perform the juliet fit. Load dataset first (note the GP regressor will be the times):
+        detrend_dataset = juliet.load(priors=priors, t_lc = times, y_lc = fluxes, \
+                      yerr_lc = fluxes_error, GP_regressors_lc = times, \
+                      out_folder = 'juliet_fits/detrend_HAT-P-11')
+        # Fit:
+        results = detrend_dataset.fit()
+
+
     def initialize_fit(self, period, t0, a, b, period_err=0.1, t0_err=0.1, a_err=1, 
-                       b_err=0.1, ecc="Fixed", oot=False, debug=False, TESS_only=False):
+                       b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
+                       td=None):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet.
@@ -90,19 +148,38 @@ class SHEL_Fitter():
         target: str
             String target name as in database
         period: float
-            Period of planet, in days
+            Period of planet in days
         t0: float
             Time of transit center in BJD-TDB
         a: float
             Scaled semi-major axis of the orbit (a/R*).
         b: float
             Impact parameter of the orbit.
+        td: float
+            Transit duration in hours, optional.
         ecc: str, float
             Eccentricity of planet orbit, defaults to "Fixed" at 0.
+        fit_oot: bool
+            Flag to fit TESS out of transit data separately to set systematics
+        TESS_only: bool
+            Flag to only fit the TESS data
+
 
         oot: bool
             Flag to fit only out-of-transit TESS data, to get systematics quickly.
         """
+
+        # Calculate TESS systematics first, if desired
+        if fit_oot 
+            if td is None:
+                print("No transit duration provided, defaulting to using +/-0.05 phase oot")
+                self.oot_phase_limit = 0.05
+            else:
+                # We'll include +/- one transit duration as in-transit
+                self.oot_phase_limit = period*24/td
+
+            self.fit_tess_systematics()
+
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
