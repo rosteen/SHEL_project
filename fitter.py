@@ -79,8 +79,8 @@ class SHEL_Fitter():
 
         return times_rv, data_rv, errors_rv
 
-    def fit(self, period, t0, a, b, period_err=0.1, t0_err=0.1, a_err=1, b_err=0.1,
-            ecc="Fixed", oot=False, debug=False, TESS_only=False):
+    def initialize_fit(self, period, t0, a, b, period_err=0.1, t0_err=0.1, a_err=1, 
+                       b_err=0.1, ecc="Fixed", oot=False, debug=False, TESS_only=False):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet.
@@ -186,6 +186,7 @@ class SHEL_Fitter():
         # Load the dataset
         self.dataset = juliet.load(**kwargs)
 
+    def run_fit():
         # And now let's fit it! We default to Dynesty since we generally have >20 parameters
         self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
                                         sampler="dynamic_dynesty")
