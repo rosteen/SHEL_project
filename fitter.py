@@ -288,7 +288,7 @@ class SHEL_Fitter():
         # Load the dataset
         self.dataset = juliet.load(**kwargs)
 
-    def run_fit():
+    def run_fit(self):
         # And now let's fit it! We default to Dynesty since we generally have >20 parameters
         self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
                                         sampler="dynamic_dynesty")
