@@ -50,6 +50,7 @@ class SHEL_Fitter():
         f = res[:, 4]
         f_err = res[:, 5]
 
+        # Needs to be generalized to include other instruments
         times['TESS'], fluxes['TESS'], fluxes_error['TESS'] = t, f, f_err
         return times, fluxes, fluxes_error
 
@@ -100,7 +101,7 @@ class SHEL_Fitter():
             self.oot_phase_limit = 0.05
         else:
             # We'll include +/- one transit duration as in-transit
-            self.oot_phase_limit = period*24/duration
+            self.oot_phase_limit = duration/(period*24)
 
         # Get the TESS data
         t, f, ferr = self.get_light_curve_data(TESS_only=True)
@@ -259,13 +260,23 @@ class SHEL_Fitter():
 
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
+
         if not fit_oot:
             if duration is None:
                 print("No transit duration provided, defaulting to using +/-0.05 phase oot")
                 self.oot_phase_limit = 0.05
             else:
                 # We'll include +/- one transit duration as in-transit
-                self.oot_phase_limit = period*24/duration
+                self.oot_phase_limit = duration/(period*24)
+
+            # Get phases and sort data
+            phases = juliet.get_phases(t, period, center)
+            idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
+            sort_times = np.argsort(t[idx_oot])
+
+            times['TESS'] = times['TESS'][idx_oot][sort_times]
+            fluxes['TESS'] = f['TESS'][idx_oot][sort_times]
+            fluxes_error['TESS'] = ferr['TESS'][idx_oot][sort_times]
 
         out_folder = f"juliet_fits/{self.target}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
