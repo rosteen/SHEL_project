@@ -268,7 +268,7 @@ class SHEL_Fitter():
             # Get phases and sort data
             phases = juliet.get_phases(times['TESS'], period, t0)
             idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
-            sort_times = np.argsort(t[idx_oot])
+            sort_times = np.argsort(times['TESS'][idx_oot])
 
             times['TESS'] = times['TESS'][idx_oot][sort_times]
             fluxes['TESS'] = f['TESS'][idx_oot][sort_times]
