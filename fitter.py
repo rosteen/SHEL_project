@@ -271,8 +271,8 @@ class SHEL_Fitter():
             sort_times = np.argsort(times['TESS'][idx_oot])
 
             times['TESS'] = times['TESS'][idx_oot][sort_times]
-            fluxes['TESS'] = f['TESS'][idx_oot][sort_times]
-            fluxes_error['TESS'] = ferr['TESS'][idx_oot][sort_times]
+            fluxes['TESS'] = fluxes['TESS'][idx_oot][sort_times]
+            fluxes_error['TESS'] = fluxes_error['TESS'][idx_oot][sort_times]
 
         out_folder = f"juliet_fits/{self.target}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
