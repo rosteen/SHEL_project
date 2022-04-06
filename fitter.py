@@ -173,11 +173,7 @@ class SHEL_Fitter():
         fit_oot: bool
             Flag to fit TESS out of transit data separately to set systematics
         TESS_only: bool
-            Flag to only fit the TESS data
-
-
-        oot: bool
-            Flag to fit only out-of-transit TESS data, to get systematics quickly.
+            Flag to drop non-TESS photometry
         """
 
         # Name of the parameters to be fit. We always at least want TESS photometry
@@ -270,7 +266,7 @@ class SHEL_Fitter():
                 self.oot_phase_limit = duration/(period*24)
 
             # Get phases and sort data
-            phases = juliet.get_phases(t, period, center)
+            phases = juliet.get_phases(times['TESS'], period, t0)
             idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
             sort_times = np.argsort(t[idx_oot])
 
