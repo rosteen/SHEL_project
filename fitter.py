@@ -134,7 +134,7 @@ class SHEL_Fitter():
         # Perform the juliet fit. Load dataset first (note the GP regressor will be the times):
         detrend_dataset = juliet.load(priors=priors, t_lc = times, y_lc = fluxes, \
                       yerr_lc = fluxes_error, GP_regressors_lc = times, \
-                      out_folder = f'juliet_fits/detrend_{self.target}')
+                      out_folder = f'juliet_fits/{self.target}/detrend_TESS')
         # Fit:
         results = detrend_dataset.fit()
         ts = {}
@@ -142,6 +142,7 @@ class SHEL_Fitter():
         ts['sigma_w_TESS'] = np.median(results.posteriors['posterior_samples']['sigma_w_TESS'])
         ts['GP_sigma_TESS'] = np.median(results.posteriors['posterior_samples']['GP_sigma_TESS'])
         ts['GP_rho_TESS'] = np.median(results.posteriors['posterior_samples']['GP_rho_TESS'])
+        self.tess_systematics_results = results
         self.tess_systematics = ts
 
     def initialize_fit(self, period, t0, a, b, period_err=0.1, t0_err=0.1, a_err=1, 
