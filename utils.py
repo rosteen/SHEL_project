@@ -57,12 +57,21 @@ def create_shel_db():
                             FOREIGN KEY (reference_id) REFERENCES data_refs (id),
                             FOREIGN KEY (instrument) REFERENCES instruments (id));"""
 
+    create_stellar_table = """CREATE TABLE IF NOT EXISTS stellar_parameters (
+                              target_id integer PRIMARY KEY,
+                              imass real,imass_err real, age real, age_err real,
+                              mass real, mass_err real, Teff real, Teff_err real,
+                              log_g real, log_g_err real, Rs real, Rs_err real,
+                              L real, L_err real, rho real, rho_err real,
+                              Av real, Av_err real);"""
+
     cur.execute(create_targets_table)
     cur.execute(create_int_table)
     cur.execute(create_hubble_table)
     cur.execute(create_ref_table)
     cur.execute(create_rv_table)
     cur.execute(create_lc_table)
+    cur.execute(create_stellar_table)
 
     conn.commit()
     conn.close()
