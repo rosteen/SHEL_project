@@ -45,7 +45,7 @@ class SHEL_Fitter():
         lc_insts = self.cur.execute(stmt).fetchall()
 
         # Concat ref_id with instrument name for
-        lc_inst_names = [f"{x[1]}-{x[0]}" for x in rv_insts]
+        lc_inst_names = [f"{x[1]}-{x[0]}" for x in lc_insts]
         return lc_inst_names
 
     def get_light_curve_data(self, TESS_only=False):
@@ -313,13 +313,14 @@ class SHEL_Fitter():
                 self.oot_phase_limit = duration/(period*24)
 
             # Get phases and sort data
-            phases = juliet.get_phases(times['TESS'], period, t0)
-            idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
-            sort_times = np.argsort(times['TESS'][idx_oot])
+            for inst in times:
+                phases = juliet.get_phases(times[inst], period, t0)
+                idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
+                sort_times = np.argsort(times[inst][idx_oot])
 
-            times['TESS'] = times['TESS'][idx_oot][sort_times]
-            fluxes['TESS'] = fluxes['TESS'][idx_oot][sort_times]
-            fluxes_error['TESS'] = fluxes_error['TESS'][idx_oot][sort_times]
+                times[inst] = times[inst][idx_oot][sort_times]
+                fluxes[inst] = fluxes[inst][idx_oot][sort_times]
+                fluxes_error[inst] = fluxes_error[inst][idx_oot][sort_times]
 
         out_folder = f"juliet_fits/{self.target}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
