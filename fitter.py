@@ -266,7 +266,7 @@ class SHEL_Fitter():
             rho, rho_err = self.cur.execute(stmt).fetchone()
             params += ['rho',]
             dists += ['TruncatedNormal',]
-            hyperps += [rho, rho_err, 0, 20000]
+            hyperps += [[rho, rho_err, 0, 20000],]
 
 
         # Populate the priors dictionary:
