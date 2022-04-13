@@ -61,7 +61,7 @@ class SHEL_Fitter():
             lc_inst_names = self._get_lc_inst_names()
 
         for lc_inst_name in lc_inst_names:
-            if len(lc_inst_name.split("-")) == 1:
+            if len(lc_inst_name.split("-")) == 1 or lc_inst_name.split("-")[1] is None:
                 instrument = lc_inst_name
                 stmt = ("select bjd, flux, flux_err from light_curves a join "
                         "instruments b on a.instrument = b.id where "
