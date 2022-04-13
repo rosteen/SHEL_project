@@ -87,7 +87,7 @@ class SHEL_Fitter():
             fluxes[lc_inst_name] = flux 
             fluxes_error[lc_inst_name] = flux_error
 
-        return times_rv, fluxes, fluxes_error
+        return times, fluxes, fluxes_error
 
     def get_rv_data(self, rv_inst_names=None):
         times_rv, data_rv, errors_rv = {}, {}, {}
@@ -251,8 +251,8 @@ class SHEL_Fitter():
             hyperps += [[a, a_err],]
         else:
             # Retrieve Rho parameter from database
-            stmt = "select rho, rho_err from stellar_parameters where "
-                   f"target_id = {self.target_id}"
+            stmt = ("select rho, rho_err from stellar_parameters where "
+                    f"target_id = {self.target_id}")
             rho, rho_err = self.cur.execute(stmt).fetchone()
             params += ['rho',]
             dists += ['TruncatedNormal',]
