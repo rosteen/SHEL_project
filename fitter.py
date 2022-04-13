@@ -27,7 +27,7 @@ class SHEL_Fitter():
         # reference so we can treat the same instrument separately for different refs.
         stmt = ("select reference_id, name from radial_velocities "
                 "a join instruments b on a.instrument = b.id where "
-                f"a.target_id = {self.target_id} group by reference_id")
+                f"a.target_id = {self.target_id} group by reference_id, name")
 
         rv_insts = self.cur.execute(stmt).fetchall()
 
@@ -40,7 +40,7 @@ class SHEL_Fitter():
         # reference so we can treat the same instrument separately for different refs.
         stmt = ("select reference_id, name from light_curves "
                 "a join instruments b on a.instrument = b.id where "
-                f"a.target_id = {self.target_id} group by reference_id")
+                f"a.target_id = {self.target_id} group by reference_id, name")
 
         lc_insts = self.cur.execute(stmt).fetchall()
 
