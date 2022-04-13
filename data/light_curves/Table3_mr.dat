@@ -1,24 +1,24 @@
 # From https://academic.oup.com/mnras/article/459/1/789/2608827
-Title: Ground-based near-UV observations of 15 transiting exoplanets: Constraints on their atmospheres and no evidence for asymmetrical transits
-Authors: Turner et al. 2016 (jt6an@virginia.edu)
-Table: Table 3 (Photometry of all our light curves)
-================================================================================
-Byte-by-byte Description of file: datafile.txt
---------------------------------------------------------------------------------
-   Bytes Format Units Label    Explanations
---------------------------------------------------------------------------------
-   1-  9 A9    		      	Planet Name         
-  11- 19 A9     		Filter          
-  21- 35 F15.7  BJD(TDB)      	Time     
-  37- 47 F11.9  Flux     	Normalized Flux 
-  49- 59 F11.9  Flux      	Error       
-  61- 67 F7.3   Pixels      	X-pos of Star on CCD   
-  69- 76 F8.3   Pixels      	Y-pos of Star on CCD  
-  78- 85 F8.6   Airmass      	Airmass(median value)
---------------------------------------------------------------------------------
-Note (1): These observations were conducted using the 1.5 meter Kuiper Telescope. 
- 	  These observations were reduced using ExoDRPL (Pearson et al. 2014).
---------------------------------------------------------------------------------
+#Title: Ground-based near-UV observations of 15 transiting exoplanets: Constraints on their atmospheres and no evidence for asymmetrical transits
+#Authors: Turner et al. 2016 (jt6an@virginia.edu)
+#Table: Table 3 (Photometry of all our light curves)
+#================================================================================
+#Byte-by-byte Description of file: datafile.txt
+#--------------------------------------------------------------------------------
+#   Bytes Format Units Label    Explanations
+#--------------------------------------------------------------------------------
+#   1-  9 A9    		      	Planet Name         
+#  11- 19 A9     		Filter          
+#  21- 35 F15.7  BJD(TDB)      	Time     
+#  37- 47 F11.9  Flux     	Normalized Flux 
+#  49- 59 F11.9  Flux      	Error       
+#  61- 67 F7.3   Pixels      	X-pos of Star on CCD   
+#  69- 76 F8.3   Pixels      	Y-pos of Star on CCD  
+#  78- 85 F8.6   Airmass      	Airmass(median value)
+#--------------------------------------------------------------------------------
+#Note (1): These observations were conducted using the 1.5 meter Kuiper Telescope. 
+# 	  These observations were reduced using ExoDRPL (Pearson et al. 2014).
+#--------------------------------------------------------------------------------
 CoRoT-1b  Bessell-U 2456268.8704370 0.995716100 0.004767200 549.708  768.763 1.233045 
 CoRoT-1b  Bessell-U 2456268.8712520 0.996197800 0.004767200 549.505  768.637 1.232504 
 CoRoT-1b  Bessell-U 2456268.8720660 0.995027000 0.004740600 549.488  768.543 1.231996 
