@@ -45,7 +45,7 @@ class SHEL_Fitter():
         lc_insts = self.cur.execute(stmt).fetchall()
 
         # Concat ref_id with instrument name for
-        lc_inst_names = [f"{x[1]}-{x[0]}" for x in lc_insts]
+        lc_inst_names = [f"{x[1]}-{x[0]}".replace("-None", "") for x in lc_insts]
         return lc_inst_names
 
     def get_light_curve_data(self, TESS_only=False):
