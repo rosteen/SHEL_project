@@ -241,10 +241,20 @@ class SHEL_Fitter():
                    0.0,
                    90.,
                    [100., 10000.],
-                   1.0,
-                   [0.,0.1],
-                   [0.1, 1000.]]
+                   1.0,]
 
+        # Add the appropriate distributions and values for TESS systematics
+        if self.tess_systematics is None:
+            dists += ['normal', 'loguniform', 'loguniform', 'loguniform']
+            hyperps += [[0.,0.1], [0.1, 1000.], [1e-6, 1e6], [1e-3, 1e3]]
+        else:
+            dists += ['fixed', 'fixed', 'fixed', 'fixed']
+            hyperps += [self.tess_systematics['mflux_TESS'], 
+                        self.tess_systematics['sigma_w_TESS'],
+                        self.tess_systematics['GP_rho_TESS'],
+                        self.tess_systematics['GP_sigma_TESS']]
+
+        # Set either a or rho
         if a is not None:
             params += ['a_p1',]
             dists += ['normal']
@@ -258,16 +268,6 @@ class SHEL_Fitter():
             dists += ['TruncatedNormal',]
             hyperps += [rho, rho_err, 0, 20000]
 
-        # Add the appropriate distributions and values for TESS systematics
-        if self.tess_systematics is None:
-            dists += ['normal', 'loguniform', 'loguniform', 'loguniform']
-            hyperps += [[0.,0.1], [0.1, 1000.], [1e-6, 1e6], [1e-3, 1e3]]
-        else:
-            dists += ['fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [self.tess_systematics['mflux_TESS'], 
-                        self.tess_systematics['sigma_w_TESS'],
-                        self.tess_systematics['GP_rho_TESS'],
-                        self.tess_systematics['GP_sigma_TESS']]
 
         # Populate the priors dictionary:
         for param, dist, hyperp in zip(params, dists, hyperps):
