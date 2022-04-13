@@ -278,9 +278,9 @@ class SHEL_Fitter():
         # Concat ref_id with instrument name for rv data keys
         rv_inst_names = self._get_rv_inst_names()
 
-        params = ["K_p1",]
-        dists = ["uniform",]
-        hyperps = [[-100,100],]
+        params += ["K_p1",]
+        dists += ["uniform",]
+        hyperps += [[-100,100],]
 
         for instrument in rv_inst_names:
             inst_params = [f'mu_{instrument}',
