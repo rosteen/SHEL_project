@@ -309,3 +309,9 @@ def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
 
     cur.close()
     conn.close()
+
+def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
+                   target=None, instrument=None, inst_list=None, inst_col=None,
+                   delimiter="\t", time_type="BJD-TDB", time_offset=0,
+                   filter_target=None, debug=False):
+    pass
