@@ -32,7 +32,7 @@ class SHEL_Fitter():
         rv_insts = self.cur.execute(stmt).fetchall()
 
         # Concat ref_id with instrument name for
-        rv_inst_names = [f"{x[1]}-{x[0]}" for x in rv_insts]
+        rv_inst_names = [f"{x[1]}-{x[0]}".replace("-None", "") for x in rv_insts]
         return rv_inst_names
 
     def _get_lc_inst_names(self):
@@ -61,7 +61,7 @@ class SHEL_Fitter():
             lc_inst_names = self._get_lc_inst_names()
 
         for lc_inst_name in lc_inst_names:
-            if len(lc_inst_name.split("-")) == 1 or lc_inst_name.split("-")[1] is None:
+            if len(lc_inst_name.split("-")) == 1:
                 instrument = lc_inst_name
                 stmt = ("select bjd, flux, flux_err from light_curves a join "
                         "instruments b on a.instrument = b.id where "
