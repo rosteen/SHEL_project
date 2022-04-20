@@ -1,5 +1,6 @@
 import juliet
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import numpy as np
 import sqlite3 as sql
 
@@ -309,9 +310,10 @@ class SHEL_Fitter():
         for inst in times.keys():
             if inst == "TESS":
                 continue
-            params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 1000.]]
-            dists = ['fixed', 'normal', 'loguniform']
+            params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
+                      f"q1_{inst}", f"q2_{inst}"]
+            hyperps = [1, [0.,0.1], [0.1, 1000.], [0, 1.0], [0, 1.0]]
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
@@ -354,3 +356,29 @@ class SHEL_Fitter():
         # And now let's fit it! We default to Dynesty since we generally have >20 parameters
         self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
                                         sampler="dynamic_dynesty")
+
+    def plot_results(self, type, instrument=None):
+        """
+        Plot some or all (either RV or LC) of the fitted result and input data.
+
+        Parameters
+        ----------
+        type: str
+            'lc' or 'rv'
+        instrument_or_type: str
+            The string identifier of a single instrument, including reference ID
+            if relevant, e.g. 'TESS' or 'FLWO-13', if you want to plot only data
+            and fit for a single instrument.
+        """
+        # Intialize plots, one subplot for data and fit, one for residuals
+        fig = plt.figure(figsize=(14,4))
+        gs = gridspec.GridSpec(1, 2, width_ratios=[2,2])
+
+        # Get the fitted period and center of transit for phasing
+        P = np.median(results.posteriors['posterior_samples']['P_p1'])
+        t0 = np.median(results.posteriors['posterior_samples']['t0_p1'])
+
+        if type == "lc":
+            pass
+        elif type == "rv":
+            pass
