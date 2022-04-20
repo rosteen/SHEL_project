@@ -278,9 +278,9 @@ class SHEL_Fitter():
         # Concat ref_id with instrument name for rv data keys
         rv_inst_names = self._get_rv_inst_names()
 
-        params += ["K_p1",]
-        dists += ["uniform",]
-        hyperps += [[-100,100],]
+        params = ["K_p1",]
+        dists = ["uniform",]
+        hyperps = [[-100,100],]
 
         for instrument in rv_inst_names:
             inst_params = [f'mu_{instrument}',
@@ -299,10 +299,24 @@ class SHEL_Fitter():
         # Populate the priors dictionary:
         for param, dist, hyperp in zip(params, dists, hyperps):
             self.priors[param] = {}
-            self.priors[param]['distribution'], self.priors[param]['hyperparameters'] = dist, hyperp
+            self.priors[param]['distribution'] = dist
+            self.priors[param]['hyperparameters'] = hyperp
 
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
+
+        # Intialize priors for the non-TESS light curve instruments
+        for inst in times.keys():
+            if inst == "TESS":
+                continue
+            params = [f"mflux_{inst}", f"sigma_w_{inst}"]
+            hyperps = [[0.,0.1], [0.1, 1000.]]
+            dists = ['normal', 'loguniform']
+            for param, dist, hyperp in zip(params, dists, hyperps):
+                self.priors[param] = {}
+                self.priors[param]['distribution'] = dist
+                self.priors[param]['hyperparameters'] = hyperp
+
 
         if not fit_oot:
             if duration is None:
