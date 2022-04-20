@@ -309,9 +309,9 @@ class SHEL_Fitter():
         for inst in times.keys():
             if inst == "TESS":
                 continue
-            params = [f"mflux_{inst}", f"sigma_w_{inst}"]
-            hyperps = [[0.,0.1], [0.1, 1000.]]
-            dists = ['normal', 'loguniform']
+            params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}"]
+            hyperps = [1, [0.,0.1], [0.1, 1000.]]
+            dists = ['fixed', 'normal', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
