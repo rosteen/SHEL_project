@@ -265,7 +265,7 @@ class SHEL_Fitter():
                     f"target_id = {self.target_id}")
             rho, rho_err = self.cur.execute(stmt).fetchone()
             params += ['rho',]
-            dists += ['TruncatedNormal',]
+            dists += ['truncatednormal',]
             hyperps += [[rho, rho_err, 0, 20000],]
 
 
