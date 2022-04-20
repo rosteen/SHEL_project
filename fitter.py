@@ -312,7 +312,7 @@ class SHEL_Fitter():
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
                       f"q1_{inst}", f"q2_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 1000.], [0, 1.0], [0, 1.0]]
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0]]
             dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
