@@ -1,0 +1,160 @@
+Title: Investigating the physical properties of transiting hot Jupiters with the 1.5-m Kuiper Telescope
+Authors: Jake D. Turner, et al. 
+Table: Table 9. Rp/Rstar and effective central wavelength 
+================================================================================
+Byte-by-byte Description of file: datafile.txt
+--------------------------------------------------------------------------------
+   Bytes Format Units Label  Explanations
+--------------------------------------------------------------------------------
+   1- 10 A10           Planet
+  12- 29 A18           Filter
+  31- 47 A17    nm     Wavelength
+  49- 59 A11           Rp/Rstar
+  61- 69 A9            Rp/Rstar Error
+  71- 94 A24           Source
+--------------------------------------------------------------------------------
+Note (1):   Table of Rp/Rstar vs wavelength.  
+Note (2):   These values are plotted in Figure 6 & 7 of the paper.
+--------------------------------------------------------------------------------
+CoRoT-12b	 	Harris R	         	658	             	0.1645	    	0.004	   	Our Paper               
+CoRoT-12b	 	Clear 	           	400-900	         	0.1321	    	0.0011	  	Gillon et al. 2010      
+HAT-P-5b	  	 Bessell U 	      	365	             	0.1225	    	0.0051	  	Our Paper               
+HAT-P-5b	  	 Gunn g 	         	495	             	0.113	     	0.0025	  	Southworth et al. 2012  
+HAT-P-5b	  	 Gunn r 	         	658	             	0.1159	    	0.0026	  	Southworth et al. 2012  
+HAT-P-5b	  	 Gunn r 	         	658	             	0.1165	    	0.0022	  	Southworth et al. 2012  
+HAT-P-5b	  	 Johnson I 	      	733	             	0.1134	    	0.0017	  	Southworth et al. 2012  
+HAT-P-5b	  	 Stomgren u 	     	350	             	0.1279	    	0.0024	  	Southworth et al. 2012  
+HAT-P-5b	  	Sloan z 	         	905	             	0.1094	    	0.002	   	Bakos et al. 2007       
+HAT-P-5b	  	Cousins r 	       	647	             	0.1111	    	0.0025	  	Bakos et al. 2007       
+HAT-P-12b	 	Harris-B	         	445	             	0.1386	    	0.0014	  	Our Paper               
+HAT-P-12b	 	J	                	1220	            	0.1404	    	0.0026	  	Sada et al. 2012        
+HAT-P-12b	 	Cousins-R	        	647	             	0.137	     	0.0019	  	Lee et al. 2012         
+HAT-P-12b	 	Sloan g	          	475	             	0.1394	    	0.0015	  	Hartman et al. 2009     
+HAT-P-12b	 	Sloan z	          	905	             	0.1403	    	0.0011	  	Hartman et al. 2009     
+HAT-P-12b	 	Sloan u	          	358	             	0.13728	   	0.00244	 	Mallonn et al. 2015     
+HAT-P-12b	 	Sloan g	          	475	             	0.13633	   	0.00074	 	Mallonn et al. 2015     
+HAT-P-12b	 	Johnson V	        	547	             	0.13857	   	0.00131	 	Mallonn et al. 2015     
+HAT-P-12b	 	Sloan r	          	620	             	0.13741	   	0.00071	 	Mallonn et al. 2015     
+HAT-P-12b	 	Harris R	         	620	             	0.13793	   	0.00098	 	Mallonn et al. 2015     
+HAT-P-12b	 	Sloan i	          	669	             	0.13703	   	0.00103	 	Mallonn et al. 2015     
+HAT-P-12b	 	Sloan z	          	966	             	0.14035	   	0.00087	 	Mallonn et al. 2015     
+HAT-P-12b	 	WFC3	             	380	             	0.14425	   	0.0017	  	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	425	             	0.14101	   	0.00091	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	455	             	0.14236	   	0.00061	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	482.5	           	0.14159	   	0.00083	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	507.5	           	0.14107	   	0.00098	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	530	             	0.14182	   	0.00065	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	557.5	           	0.14115	   	0.00074	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	568.4	           	0.14035	   	0.00091	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	589.3	           	0.14182	   	0.00203	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	605.9	           	0.13937	   	0.00105	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	640	             	0.14068	   	0.00096	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	685	             	0.13883	   	0.00069	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	736.7	           	0.14085	   	0.00131	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	768.4	           	0.14443	   	0.00269	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	806.7	           	0.13811	   	0.00114	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	875	             	0.14056	   	0.0013	  	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	965	             	0.13696	   	0.00122	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	1132	            	0.13559	   	0.0017	  	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	1178.4	          	0.13756	   	0.00157	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	1224.8	          	0.13905	   	0.00146	 	Sing et al. 2016        
+HAT-P-12b	 	WFC3	             	1271.2	          	0.13574	   	0.00149	 	Sing et al. 2016        
+HAT-P-33b	 	Harris R	         	658	             	0.1152	    	0.0017	  	Our Paper               
+HAT-P-33b	 	Clear	            	400-900	         	0.1058	    	0.0011	  	Sing et al. 2016        
+HAT-P-33b	 	R	                	658	             	0.10097	   	0.00056	 	Wang et al. 2017        
+HAT-P-37b	 	Harris B	         	445	             	0.1253	    	0.0021	  	Our Paper               
+HAT-P-37b	 	Harris R	         	658	             	0.1361	    	0.0028	  	Our Paper               
+HAT-P-37b	 	Sloan i	          	763	             	0.13736	   	0.00053	 	Hartman et al. 2011     
+HAT-P-37b	 	Gunn r	           	658	             	0.1394	    	0.002	   	Bakos et al. 2012       
+WASP-2b	   	 Harris B 	       	445	             	0.1383	    	0.0049	  	Our Paper               
+WASP-2b	   	 Sloan z 	        	905	             	0.1309	    	0.0015	  	Maciejewski et al. 2016 
+WASP-2b	   	 Cousins R 	      	647	             	0.1326	    	0.0007	  	Charbonneau et al. 2007 
+WASP-2b	   	 V 	              	551	             	0.122	     	0.014	   	Southworth et al. 2010b 
+WASP-2b	   	 J 	              	1250	            	0.1135	    	0.0056	  	Zhang et al. 2011       
+WASP-2b	   	 I 	              	733	             	0.1315	    	0.0003	  	Sada et al. 2012        
+WASP-2b	   	 Sloan r 	        	620	             	0.1362	    	0.0009	  	Becker et al. 2013      
+WASP-24b	  	 Harris R 	       	658	             	0.1136	    	0.0014	  	Our Paper               
+WASP-24b	  	 R 	              	658	             	0.1029	    	0.0013	  	Southworth et al. 2014  
+WASP-24b	  	 I 	              	806	             	0.1012	    	0.0013	  	Southworth et al. 2014  
+WASP-24b	  	 Stromgren u 	    	350	             	0.099	     	0.0061	  	Smith et al. 2012b      
+WASP-24b	  	 Stromgren y 	    	547	             	0.1016	    	0.0032	  	Smith et al. 2012b      
+WASP-24b	  	 J 	              	1250	            	0.0998	    	0.004	   	Sada et al. 2012        
+WASP-24b	  	 Sloan i 	        	763	             	0.1011	    	0.0014	  	Street et al. 2010      
+WASP-60b	  	 Harris B 	       	445	             	0.0852	    	0.0036	  	Our Paper               
+WASP-60b	  	Clear 	           	 400-900 	       	0.0775	    	0.0022	  	Hebrard et al. 2013     
+WASP-80b	  	 Bessell U 	      	365	             	0.1615	    	0.0033	  	Our Paper               
+WASP-80b	  	 Bessell I 	      	806	             	0.17135	   	0.00099	 	Mancini et al. 2014     
+WASP-80b	  	 Sloan g 	        	475	             	0.17033	   	0.00217	 	Mancini et al. 2014     
+WASP-80b	  	 Sloan r 	        	622	             	0.17041	   	0.00175	 	Mancini et al. 2014     
+WASP-80b	  	 Sloan i 	        	763	             	0.17183	   	0.00161	 	Mancini et al. 2014     
+WASP-80b	  	 Sloan z 	        	905	             	0.17274	   	0.00226	 	Mancini et al. 2014     
+WASP-80b	  	 J 	              	1220	            	0.16813	   	0.00424	 	Mancini et al. 2014     
+WASP-80b	  	 H 	              	1630	            	0.17525	   	0.00472	 	Mancini et al. 2014     
+WASP-80b	  	 K 	              	2190	            	0.16383	   	0.00809	 	Mancini et al. 2014     
+WASP-80b	  	 Gunn r 	         	651.5	           	0.16726	   	0.0027	  	Triaud et al. 2013      
+WASP-80b	  	 Gunn z 	         	900	             	0.17079	   	0.00201	 	Triaud et al. 2013      
+WASP-80b	  	 Gunn z 	         	900	             	0.16285	   	0.0023	  	Triaud et al. 2013      
+WASP-80b	  	 Gunn r 	         	620	             	0.17169	   	0.00063	 	Triaud et al. 2013      
+WASP-80b	  	 Sloan z 	        	900	             	0.17127	   	0.00069	 	Triaud et al. 2013      
+WASP-80b	  	 Spitzer 3.6 um 	 	3600	            	0.17137	   	0.00039	 	Triaud et al. 2013      
+WASP-80b	  	 Spitzer 4.5 um 	 	4500	            	0.1723	    	0.0004	  	Triaud et al. 2013      
+WASP-80b	  	 Sloan g 	        	475	             	0.1743	    	0.0047	  	Fukui et al. 2014       
+WASP-80b	  	 Sloan g 	        	475	             	0.1787	    	0.0064	  	Fukui et al. 2014       
+WASP-80b	  	 Cousins Rc 	     	643	             	0.1736	    	0.0017	  	Fukui et al. 2014       
+WASP-80b	  	 Cousins Rc 	     	643	             	0.1711	    	0.004	   	Fukui et al. 2014       
+WASP-80b	  	 Cousins Ic 	     	814	             	0.1741	    	0.0015	  	Fukui et al. 2014       
+WASP-80b	  	 Cousins Ic 	     	814	             	0.1778	    	0.0039	  	Fukui et al. 2014       
+WASP-80b	  	J 	               	1220	            	0.1697	    	0.0015	  	Fukui et al. 2014       
+WASP-80b	  	J 	               	1220	            	0.1704	    	0.00092	 	Fukui et al. 2014       
+WASP-80b	  	J 	               	1220	            	0.169	     	0.0014	  	Fukui et al. 2014       
+WASP-80b	  	J 	               	1220	            	0.1686	    	0.0016	  	Fukui et al. 2014       
+WASP-80b	  	J 	               	1220	            	0.17234	   	0.00089	 	Fukui et al. 2014       
+WASP-80b	  	H 	               	1630	            	0.1688	    	0.0014	  	Fukui et al. 2014       
+WASP-80b	  	H 	               	1630	            	0.1709	    	0.0012	  	Fukui et al. 2014       
+WASP-80b	  	H 	               	1630	            	0.1702	    	0.0017	  	Fukui et al. 2014       
+WASP-80b	  	Ks 	              	2190	            	0.1708	    	0.0016	  	Fukui et al. 2014       
+WASP-80b	  	Ks 	              	2190	            	0.1672	    	0.0022	  	Fukui et al. 2014       
+WASP-80b	  	Ks 	              	2190	            	0.1679	    	0.0023	  	Fukui et al. 2014       
+WASP-80b	  	FORS2 	           	 748 -- 758	     	0.17563	   	0.001	   	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 758 --768 	     	0.1768	    	0.00099	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 768 -- 778 	    	0.17747	   	0.00063	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 778 -- 788 	    	0.17556	   	0.00057	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 788 -- 798 	    	0.17558	   	0.0006	  	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 798 -- 808 	    	0.17557	   	0.00054	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 808 -- 818 	    	0.17479	   	0.00048	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 818 -- 828 	    	0.17524	   	0.00068	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 828 -- 838 	    	0.17365	   	0.00063	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 838 -- 848 	    	0.17474	   	0.00056	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 848 -- 858 	    	0.17348	   	0.00055	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 858 -- 868 	    	0.17319	   	0.00062	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 868 -- 878 	    	0.17057	   	0.0007	  	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 878 -- 888 	    	0.17141	   	0.00061	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 888 -- 898 	    	0.17338	   	0.00066	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 898 -- 908 	    	0.17102	   	0.00062	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 908 -- 918 	    	0.17207	   	0.00055	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 918 -- 928 	    	0.17144	   	0.00069	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 928 -- 938 	    	0.17107	   	0.0007	  	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 938 -- 948 	    	0.17178	   	0.00071	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 948 -- 958 	    	0.1725	    	0.00083	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 958 -- 968 	    	0.16855	   	0.00096	 	Sedaghati et al. 2017   
+WASP-80b	  	FORS2	            	 968 -- 978 	    	0.17086	   	0.00074	 	Sedaghati et al. 2017   
+WASP-103b	 	 Bessell U 	      	365	             	0.1181	    	0.0016	  	Our Paper               
+WASP-103b	 	 GROND g 	        	477	             	0.1183	    	0.0022	  	Southworth et al. 2015  
+WASP-103b	 	 GROND r 	        	623.1	           	0.115	     	0.0011	  	Southworth et al. 2015  
+WASP-103b	 	 DFOSC R 	        	658.9	           	0.1129	    	0.0009	  	Southworth et al. 2015  
+WASP-103b	 	 GROND i 	        	762.5	           	0.1091	    	0.0017	  	Southworth et al. 2015  
+WASP-103b	 	 DFOSC I 	        	820	             	0.1118	    	0.0013	  	Southworth et al. 2015  
+WASP-103b	 	 GROND z 	        	913.4	           	0.1106	    	0.0016	  	Southworth et al. 2015  
+WASP-103b	 	 Cousins R 	      	647	             	0.1117	    	0.0055	  	Southworth et al. 2015  
+WASP-103b	 	 GROND g 	        	477	             	0.1196	    	0.0021	  	Southworth et al. 2016  
+WASP-103b	 	 GROND r 	        	623.1	           	0.1177	    	0.001	   	Southworth et al. 2016  
+WASP-103b	 	 DFOSC R 	        	658.9	           	0.116	     	0.001	   	Southworth et al. 2016  
+WASP-103b	 	 GROND i 	        	762.5	           	0.1126	    	0.0015	  	Southworth et al. 2016  
+WASP-103b	 	 DFOSC I 	        	820	             	0.1157	    	0.0012	  	Southworth et al. 2016  
+WASP-103b	 	 GROND z 	        	913.4	           	0.1153	    	0.0016	  	Southworth et al. 2016  
+XO-3b	     	 Harris B 	       	445	             	0.0968	    	0.0023	  	Our Paper               
+XO-3b	     	 Sloan z 	        	905	             	0.09268	   	0.00029	 	Winn et al. 2008        
+XO-3b	     	 V 	              	551	             	0.0895	    	0.0012	  	Winn et al. 2008        
+XO-3b	     	 R 	              	658	             	0.09112	   	0.00084	 	Winn et al. 2008        
+XO-3b	     	 I 	              	806	             	0.09459	   	0.00067	 	Winn et al. 2008        
+XO-3b	     	 clear 	          	510	             	0.0918	    	0.0011	  	Winn et al. 2008        
