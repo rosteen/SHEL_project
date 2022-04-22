@@ -1,0 +1,98 @@
+J/A+A/636/A98      WASP-18A, WASP-19, WASP-77A photometry (Cortes-Zuleta+, 2020)
+================================================================================
+TraMoS V. Updated ephemeris and multi-epoch monitoring of the hot Jupiters
+WASP-18Ab, WASP-19b, and WASP-77Ab .
+    Cortes-Zuleta P., Rojo P., Wang S., Hinse T.C., Hoyer S., Sanhueza B.,
+    Correa-Amaro P., Albornoz J.
+    <Astron. Astrophys. 636, A98 (2020)>
+    =2020A&A...636A..98C        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Exoplanets ; Photometry
+Keywords: planets and satellites: dynamical evolution and stability -
+          planets and satellites: individual: WASP-77Ab -
+          planets and satellites: individual: WASP-18b -
+          planets and satellites: individual: WASP-19b -
+          planets and satellites: general
+
+Abstract:
+    We present 22 new transit observations of the exoplanets WASP-18Ab,
+    WASP-19b, and WASP-77Ab, from the Transit Monitoring in the South
+    (TraMoS) project. We simultaneously model our newly collected transit
+    light curves with archival photometry and radial velocity data to
+    obtain refined physical and orbital parameters. We include TESS light
+    curves of the three exoplanets to perform an extended analysis of the
+    variations in their transit mid-time (TTV) and to refine their
+    planetary orbital ephemeris. We did not find significant TTVRMS
+    variations larger than 47, 65, and 86 seconds for WASP-18Ab, WASP-19b,
+    and WASP-77Ab, respectively. Dynamical simulations were carried out to
+    constrain the masses of a possible perturber. The observed mean square
+    (RMS) could be produced by a perturber body with an upper limit mass
+    of 9, 2.5, 11 and 4M_{Earth}_ in 1:2, 1:3, 2:1, and 3:1 resonances in
+    the WASP-18Ab system. In the case of WASP-19b, companions with masses
+    up to 0.26, 0.65, 1, and 2.8M_{Earth}_, in 1:2, 2:1, 3:1, and 5:3
+    resonances respectively, produce the RMS. For the WASP-77Ab system,
+    this RMS could be produced by a planet with mass in the range of
+    1.5-9M_{Earth}_ in 1:2, 1:3, 2:1, 2:3, 3:1, 3:5, or 5:3 resonances.
+    Comparing our results with RV variations, we discard massive
+    companions with 350M_{Earth}_ in 17:5 resonance for WASP-18Ab,
+    95M_{Earth}_ in 4:1 resonance for WASP-19b, and 105M_{Earth}_ in 5:2
+    resonance for WASP-77Ab. Finally, using a Lomb-Scargle period search
+    we find no evidence of a periodic trend on our TTV data for the three
+    exoplanets.
+
+Description:
+    This file contains the full information from Table 2 of the article.
+    It includes all the photometry of WASP-18A, WASP-19, and WASP-77A from
+    the TraMoS project considered in the article. The technical details of
+    these observations are listed in Table 1 of the article.
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName      Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe            80        .   This file
+stars.dat         38        3   List of studied stars
+table2.dat        39     8075   Photometry light curves from the TraMoS project
+                                 of WASP-18A, WASP-19, and WASP-77A
+--------------------------------------------------------------------------------
+
+See also:
+    J/ApJ/707/167    : Transiting planetary system WASP-18 (Southworth+, 2009)
+    J/MNRAS/436/2    : Transits of WASP-19b (Mancini+, 2013)
+    J/MNRAS/428/3671 : Transiting planet WASP-19b (Tregloan-Reed+, 2013)
+
+Byte-by-byte Description of file: stars.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Target    Name of the star
+  11- 12  I2    h       RAh       Simbad right ascension (J2000)
+  14- 15  I2    min     RAm       Simbad right ascension (J2000)
+  17- 21  F5.2  s       RAs       Simbad right ascension (J2000)
+      23  A1    ---     DE-       Simbad declination sign (J2000)
+  24- 25  I2    deg     DEd       Simbad declination (J2000)
+  27- 28  I2    arcmin  DEm       Simbad declination (J2000)
+  30- 33  F4.1  arcsec  DEs       Simbad declination (J2000)
+  35- 38  I4    ---     Nobs      Number of observations in table2.dat
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Target    Name of the star
+  10- 23  F14.6 d       BJD       Barycentric Julian date in the TDB standard
+  25- 31  F7.5  ---     Flux      Relative flux
+  33- 39  F7.5  ---   e_Flux      Error of the relative flux
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Pia Cortes-Zuleta, pia.cortes(at)lam.fr
+
+References:
+    Hoyer et al., Paper I        2012ApJ...748...22H
+    Hoyer et al., Paper III      2013MNRAS.434...46H
+    Hoyer et al., Paper IV       2016MNRAS.455.1334H
+
+================================================================================
+(End)   Pia Cortes-Zuleta [LAM, France], Patricia Vannier [CDS]      16-Apr-2020
