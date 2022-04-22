@@ -350,6 +350,11 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     if debug:
         print(f"Refnum: {ref_id}")
 
+    # Get instrument ID. Instrument info must be pre-loaded
+    if instrument is not None:
+        instrument_id = cur.execute("select id from instruments where "
+                                    f"name='{instrument}'").fetchone()[0]
+
     with open(f"data/light_curves/{filename}", "r") as f:
         freader = csv.reader(f, delimiter=delimiter)
         for row in freader:
@@ -372,9 +377,16 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                                             f"name='{instrument}'").fetchone()[0]
             # Get target ID if stored in a column
             if target_col is not None:
-                if data[target_col] != target:
+                temp_target = data[target_col]
+                if temp_target[-1] == "b":
+                    temp_target = temp_target[:-1]
+                if temp_target[-1] == "A":
+                    temp_target = temp_target[:-1]
+                temp_target = temp_target.upper()
+
+                if temp_target != target:
                     bad_target = False
-                    target = data[target_col]
+                    target = temp_target
                     if filter_target is not None:
                         # Skip anything but the one we're reprocessing
                         if target != filter_target:
