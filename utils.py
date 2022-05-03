@@ -225,12 +225,12 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
 
             try:
-                rv = float(data[rv_col])
+                rv = float(data[rv_col].strip())
             except ValueError:
                 # Generally this is due to an asterix flagging this RV
                 continue
 
-            rv_err = float(data[err_col])
+            rv_err = float(data[err_col].strip())
 
             if unit=='km/s':
                 rv *= 1000
@@ -397,6 +397,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                     res = cur.execute(stmt).fetchone()
                     if res is None:
                         print(f"Skipping {target}")
+                        print(stmt)
                         bad_target = True
                         continue
                     target_id, ra, dec = res
@@ -432,7 +433,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
 
             flux = data[lc_col]
             flux_err = data[err_col]
-            
+
             stmt = ("insert into light_curves (target_id, reference_id, instrument, bjd, flux, flux_err) "
                     f"values ({target_id}, {ref_id}, {instrument_id}, {bjd}, {flux}, {flux_err})")
             if debug:
