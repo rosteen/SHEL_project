@@ -1,0 +1,97 @@
+J/A+A/501/785       Discovery and characterization of WASP-6b    (Gillon+, 2009)
+================================================================================
+Discovery and characterization of WASP-6b, an inflated sub-Jupiter mass planet
+transiting a solar-type star.
+    Gillon M., Anderson D.R., Triaud A.H.M.J., Hellier C., Maxted P.F.L.,
+    Pollaco D., Queloz D., Smalley B., West R.G., Wilson D.M., Bentley S.J.,
+    Collier Cameron A., Enoch B., Hebb L., Horne K., Irwin J., Joshi Y.C.,
+    Lister T.A., Mayor M., Pepe F., Parley N., Segransan D., Udry S.,
+    Wheatley P.J.
+   <Astron. Astrophys. 501, 785 (2009)>
+   =2009A&A...501..785G
+================================================================================
+ADC_Keywords: Binaries, eclipsing ; Planets ; Radial velocities ; Photometry
+Keywords: binaries: eclipsing - stars: individual: WASP-6 - planetary systems -
+          techniques: photometric - techniques: radial velocities -
+          techniques: spectroscopic
+
+Abstract:
+    We report the discovery of WASP-6b, an inflated sub-Jupiter mass
+    planet transiting every 3.3610060^+0.0000022^_-0.0000035_days a mildly
+    metal-poor solar-type star of magnitude V=11.9. A combined analysis of
+    the WASP photometry, high-precision followup transit photometry and
+    radial velocities yield a planetary mass M_p_=0.503^+0.019^_-0.038_
+    and radius R_p_=1.224^+0.051^_0.052_, resulting in a density
+    {rho}_p_=0.27{+/-}0.05{rho}_J_. The mass and radius for the host star
+    are M_*_=0.88^+0.05^-0.08_M_{sun}_ and
+    R_*_=0.870^0.025^_-0.036_R_{sun}_. The non-zero orbital eccentricity
+    e=0.054^+0.018^_-0.015_ that we measure suggests that the planet
+    underwent a massive tidal heating ~1Gyr ago that could have
+    contributed to its inflated radius. High-precision radial velocities
+    obtained during a transit allow us to measure a sky-projected angle
+    between the stellar spin and orbital axis {beta}=11^+14^_-18_{deg}. In
+    addition to similar published measurements, this result favors a
+    dominant migration mechanism based on tidal interactions with a
+    protoplanetary disk.
+
+Description:
+    The host star WASP-6 was observed by WASP-South during the 2006 and
+    2007 observing seasons. Spectroscopic measurements were obtained using
+    the CORALIE spectrograph mounted on the Euler Swiss telescope (La
+    Silla, Chile) to confirm the planetary nature of the eclipsing body
+    and measure its mass. WASP-6 was observed from 2007 September 16 to
+    2007 October 26 and from 2008 September 11 to 2008 September 25. 44
+    additional spectroscopic measurements were obtained with the HARPS
+    spectrograph based on the 3.6-m ESO telescope (La Silla, Chile).
+
+Objects:
+    ------------------------------------------
+        RA   (2000)   DE      Designation(s)
+    ------------------------------------------
+     23 12 37.74 -22 40 26.2  WASP-6 = WASP 6
+    ------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName  Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe        80        .   This file
+rise1.dat     40     4167   WASP-6 deredenned and normalized differential
+                             photometry obtained by LT_RISE on 2008 July 25
+rise2.dat     40     2857   WASP-6 deredenned and normalized differential
+                             photometry obtained by LT_RISE on 2008 August 11
+swasp.dat     40     9630   WASP-6 deredenned and normalized differential
+                             photometry obtained by the SuperWASP survey
+fts.dat       40      230   WASP-6 deredenned and normalized differential
+                             photometry obtained by FTS_HawkCam2 on
+                             2007 October 13
+coralie.dat   43       35   WASP-6 radial velocities obtained by the
+                             spectrograph CORALIE
+harps.dat     43       44   WASP-6 radial velocities obtained by the
+                             spectrograph HARPS
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: rise1.dat rise2.dat swasp.dat fts.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 15  F15.7 d       BJD       Barycentric Julian date
+  18- 25  F8.6  ---     Flux      Flux (relative)
+  33- 40  F8.6  ---   e_Flux      ?=9 rms uncertainty on Flux
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: coralie.dat harps.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 14  F14.6 d       BJD       Barycentric Julian date
+  17- 24  F8.5  km/s    RV        Radial velocity
+  27- 33  F7.5  km/s  e_RV        rms uncertainty on  RV
+  36- 43  F8.5  km/s    Bisec     Velocity from bisector technique
+                                  (Queloz et al. 2001A&A...379..279Q)
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Michael Gillon, Michael.Gillon (at)obs.unige.ch
+================================================================================
+(End)                                        Patricia Vannier [CDS]  11-May-2009
