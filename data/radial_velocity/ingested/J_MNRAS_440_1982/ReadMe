@@ -1,0 +1,96 @@
+J/MNRAS/440/1982    WASP 95-101 transits                     (Hellier+, 2014)
+================================================================================
+Transiting hot Jupiters from WASP-South, Euler and TRAPPIST:
+WASP-95b to WASP-101b.
+    Hellier C., Anderson D.R., Cameron A.C., Delrez L., Gillon M., Jehin E.,
+    Lendl M., Maxted P.F.L., Pepe F., Pollacco D., Queloz D., Segransan D.,
+    Smalley B., Smith A.M.S., Southworth J., Triaud A.H.M.J., Udry S.,
+    West R.G.
+   <Mon. Not. R. Astron. Soc., 440, 1982-1992 (2014)>
+   =2014MNRAS.440.1982H    (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Radial velocities
+Keywords: planetary systems
+
+Abstract:
+    We report the discovery of the transiting exoplanets WASP-95b,
+    WASP-96b, WASP-97b, WASP-98b, WASP-99b, WASP-100b and WASP-101b. All
+    are hot Jupiters with orbital periods in the range 2.1-5.7d, masses
+    of 0.5-2.8M_Jup_ and radii of 1.1-1.4R_Jup_. The orbits of
+    all the planets are compatible with zero eccentricity. WASP-99b
+    produces the shallowest transit yet found by WASP-South, at 0.4 per
+    cent.
+
+    The host stars are of spectral type F2-G8. Five have metallicities of
+    [Fe/H] from -0.03 to +0.23, while WASP-98 has a metallicity of -0.60,
+    exceptionally low for a star with a transiting exoplanet. Five of the
+    host stars are brighter than V=10.8, which significantly extends the
+    number of bright transiting systems available for follow-up studies.
+    WASP-95 shows a possible rotational modulation at a period of 20.7d.
+    We discuss the completeness of WASP survey techniques by comparing to
+    the HATnet project.
+
+Description:
+    The observational and analysis techniques used here are the same as in
+    recent WASP discovery papers (e.g. Hellier et al.,
+    2012MNRAS.426..739H, Cat. J/MNRAS/426/739).
+
+    In outline, WASP-South surveys the visible sky each clear night using
+    an array of 200 mm f/1.8 lenses and a cadence of ~10-min. Transit
+    searching of accumulated light curves leads to candidates that are
+    passed to TRAPPIST (a robotic 0.6-m photometric telescope, which can
+    resolve blends and check that the candidate transits are planet-like),
+    and to the 1.2-m Euler/CORALIE spectrograph [for radial-velocity (RV)
+    observations]. About 1 in 12 candidates turns out to be a planet.
+    Higher quality transit light curves are then obtained with TRAPPIST
+    and with EulerCAM (Lendl et al., 2012A&A...544A..72L, Cat.
+    J/A+A/544/A72).
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName      Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe            80        .   This file
+stars.dat         81        7   List of studied stars
+tablea.dat        44      119   Euler/CORALIE radial velocities
+--------------------------------------------------------------------------------
+
+See also:
+ J/MNRAS/426/739 : Velocities for seven transiting hot Jupiters (Hellier+, 2012)
+ J/A+A/544/A72   : WASP-42 and WASP-49 photometry and velocities (Lendl+, 2012)
+
+Byte-by-byte Description of file: stars.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Name      Star name
+  11- 12  I2    h       RAh       Right ascension (J2000)
+  14- 15  I2    min     RAm       Right ascension (J2000)
+  17- 21  F5.2  s       RAs       Right ascension (J2000)
+      23  A1    ---     DE-       Declination sign (J2000)
+  24- 25  I2    deg     DEd       Declination (J2000)
+  27- 28  I2    arcmin  DEm       Declination (J2000)
+  30- 33  F4.1  arcsec  DEs       Declination (J2000)
+  35- 60  A26   ---     1SWASP    1SWASP name (1SWASP JHHMMSS.ss+DDMMSS.s)
+  62- 78  A17   ---     Date      Observation date
+  80- 81  I2    ---     N         Number of radial velocity measurements
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: tablea.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     Name      Star name
+  10- 20  F11.5 d       BJD       Barycentric Julian date, UTC (BJD-2400000)
+  22- 29  F8.4  km/s    RV        Radial velocity
+  31- 36  F6.4  km/s  e_RV        rms uncertainty on RV
+  38- 44  F7.4  km/s    Bis       Bissector span (1)
+--------------------------------------------------------------------------------
+Note (1): Bisector errors are twice RV errors.
+--------------------------------------------------------------------------------
+
+History:
+    From electronic version of the journal
+
+================================================================================
+(End)                                      Patricia Vannier [CDS]    31-Jul-2015

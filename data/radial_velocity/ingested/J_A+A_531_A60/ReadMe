@@ -1,0 +1,104 @@
+J/A+A/531/A60       WASP-31b photometry and radial velocities  (Anderson+, 2011)
+================================================================================
+WASP-31b: a low-density planet transiting a metal-poor, late-F-type dwarf star.
+    Anderson D.R., Collier Cameron A., Hellier C., Lendl M., Lister T.A.,
+    Maxted P.F.L., Queloz D., Smalley B., Smith A.M.S., Triaud A.H.M.J.,
+    West R.G., Brown D.J.A., Gillon M., Pepe F., Pollacco D., Segransan D.,
+    Street R.A., Udry S.
+   <Astron. Astrophys. 531, A60 (2011)>
+   =2011A&A...531A..60A
+================================================================================
+ADC_Keywords: Binaries, eclipsing ; Planets ; Radial velocities ; Photometry
+Keywords: binaries: eclipsing - planetary systems - stars: individual: WASP-31
+
+Abstract:
+    We report the discovery of the low-density, transiting giant planet
+    WASP-31b. The planet is 0.48 Jupiter masses and 1.55 Jupiter radii. It
+    is in a 3.4-day orbit around a metal-poor, late-F-type, V=11.7 dwarf
+    star, which is a member of a common proper motion pair. In terms of
+    its low density, WASP-31b is second only to WASP-17b, which is a more
+    highly irradiated planet of similar mass.
+
+Description:
+    The host star WASP-31 was observed by WASP-South during 2006 to 2011.
+    The WASP photometry was corrected for blending with a star 4.1mag
+    fainter, located 35arcsec away. Spectroscopic measurements were
+    obtained using the CORALIE spectrograph mounted on the Euler-Swiss
+    1.2-m telescope (La Silla, Chile) and the HARPS spectrograph mounted
+    on the ESO 3.6-m telescope (La Silla, Chile) to confirm the planetary
+    nature of the eclipsing body and to measure its mass. A total of 47
+    measurements were obtained by CORALIE, 1 of which fell during transit,
+    and 10 measurements were obtained by HARPS. The data are plotted in
+    Figures 1, 2 and 3.
+
+Objects:
+    -----------------------------------------------------
+       RA   (2000)   DE      Designation(s)
+    -----------------------------------------------------
+    11 17 45.4   -19 03 17   WASP 31 = TYC 6087-1053-1
+    -----------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+phot.dat       43    25007  *WASP-31 deredenned and normalised differential
+                              survey photometry from WASP-South and follow-up
+                              photometry from FTN/fs03 and Euler
+rv.dat         57       57   WASP-31 radial velocities measured by the
+                              CORALIE and HARPS spectrographs
+--------------------------------------------------------------------------------
+Note on phot.dat: The FTN transit (2m Faulkes Telescope North) was obtained
+     through a Pan-STARRS-z filter on 2010 Feb 26. The Euler transit (1.2m)
+     was obtained through a  Gunn-r filter on 2010 Apr 15.
+--------------------------------------------------------------------------------
+
+See also:
+ J/MNRAS/408/1680 : Transiting planetary system WASP-2 (Southworth+, 2010)
+ J/MNRAS/399/287  : Transiting planetary system WASP-4 (Southworth+, 2009)
+ J/A+A/530/A5     : WASP-4b Ks-band thermal emission detection (Caceres+, 2011)
+ J/AJ/137/3826    : Two transits of the giant planet WASP-4b (Winn+, 2009)
+ J/MNRAS/396/1023 : Transiting planetary system WASP-5 (Southworth+, 2009)
+ J/A+A/501/785    : Discovery and characterization of WASP-6b (Gillon+, 2009)
+ J/A+A/527/A8     : Transiting planetary system WASP-7 (Southworth+, 2011)
+ J/A+A/517/L1     : Radial velocities of WASP-8b planet (Queloz+, 2010)
+ J/ApJ/692/L100   : Relative photometry of WASP-10 (Johnson+, 2009)
+ J/A+A/528/A65    : WASP-12b transits (Maciejewski+, 2011)
+ J/A+A/502/391    : WASP-13b photometry and radial velocities (Skillen+, 2009)
+ J/ApJ/707/167    : Transiting planetary system WASP-18 (Southworth+, 2009)
+ J/A+A/513/L3     : WASP-19b H-band thermal emission (Anderson+, 2010)
+ J/A+A/519/A98    : Transit of exoplanet WASP-21b (Bouchy+, 2010)
+ J/A+A/520/A56    : WASP-26b RV and photometric data (Smalley+, 2010)
+ J/A+A/526/L10    : Transits of WASP-33 (Herrero+, 2011)
+ J/A+A/526/A130   : WASP-34b photometry and radial velocities (Smalley+, 2011)
+ J/A+A/525/A54    : Transits of WASP-38b (Barros+, 2011)
+
+Byte-by-byte Description of file: phot.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 13  F13.5 d       JD        Julian date
+  15- 22  F8.6  ---     RFlux     Flux (relative)
+  24- 32  F9.6  ---   e_RFlux     Uncertainty on RFlux
+  34- 43  A10   ---     Inst      Instrument used (FTN, Euler or WASP-South)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: rv.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 14  F14.6 d       JD        Julian Date
+  16- 23  F8.5  km/s    RV        Radial velocity
+  25- 31  F7.5  km/s  e_RV        Radial velocity error
+  33- 40  F8.5  km/s    FWHM      Full width at half maximum of the
+                                   cross-correlation function (CCF)
+  42- 49  F8.5  km/s    Span      Bissector span velocity of the
+                                   cross-correlation function (CCF)
+  51- 57  A7    ---     Inst      Spectrograph used (CORALIE or HARPS)
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    David Anderson, dra(at)astro.keele.ac.uk
+================================================================================
+(End)                                        Patricia Vannier [CDS]  27-May-2011
