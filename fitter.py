@@ -51,7 +51,7 @@ class SHEL_Fitter():
 
     def get_light_curve_data(self, TESS_only=False):
         """
-        Get the light curve data for the target, optionally returning 
+        Get the light curve data for the target, optionally returning
         only the TESS data.
         """
         times, fluxes, fluxes_error = {},{},{}
@@ -73,10 +73,10 @@ class SHEL_Fitter():
                         "instruments b on a.instrument = b.id where "
                         f"a.target_id = {self.target_id} and b.name = '{instrument}' "
                         f"and reference_id = {ref_id}")
-            
+
             if self.debug:
                 print(stmt)
-            
+
             res = self.cur.execute(stmt).fetchall()
             res = np.array(res)
 
@@ -84,8 +84,8 @@ class SHEL_Fitter():
             flux = res[:,1]
             flux_error = res[:,2]
 
-            times[lc_inst_name] = t 
-            fluxes[lc_inst_name] = flux 
+            times[lc_inst_name] = t
+            fluxes[lc_inst_name] = flux
             fluxes_error[lc_inst_name] = flux_error
 
         return times, fluxes, fluxes_error
@@ -111,8 +111,8 @@ class SHEL_Fitter():
             rv = res[:,1]
             rv_err = res[:,2]
 
-            times_rv[rv_inst_name] = t 
-            data_rv[rv_inst_name] = rv 
+            times_rv[rv_inst_name] = t
+            data_rv[rv_inst_name] = rv
             errors_rv[rv_inst_name] = rv_err
 
         return times_rv, data_rv, errors_rv
@@ -169,9 +169,9 @@ class SHEL_Fitter():
             priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
 
         # Perform the juliet fit. Load dataset first (note the GP regressor will be the times):
-        detrend_dataset = juliet.load(priors=priors, t_lc = times, y_lc = fluxes, \
-                      yerr_lc = fluxes_error, GP_regressors_lc = times, \
-                      out_folder = f'juliet_fits/{self.target}/detrend_TESS')
+        detrend_dataset = juliet.load(priors=priors, t_lc = times, y_lc = fluxes,
+                                      yerr_lc = fluxes_error, GP_regressors_lc = times,
+                                      out_folder = f'juliet_fits/{self.target}/detrend_TESS')
         # Fit:
         results = detrend_dataset.fit()
         ts = {}
@@ -182,7 +182,7 @@ class SHEL_Fitter():
         self.tess_systematics_results = results
         self.tess_systematics = ts
 
-    def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1, 
+    def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
                        duration=None):
         """
@@ -231,7 +231,7 @@ class SHEL_Fitter():
 
         # Distribution for each of the parameters:
         dists = ['normal','normal', 'normal','uniform','uniform',
-                 'uniform','fixed','fixed','loguniform', 'fixed']
+                 'uniform','uniform','fixed','loguniform', 'fixed']
 
         hyperps = [[period, period_err],
                    [t0, t0_err],
@@ -239,7 +239,7 @@ class SHEL_Fitter():
                    [0, 0.3],
                    [0., 1.],
                    [0., 1.],
-                   0.0,
+                   [0., 0.5],
                    90.,
                    [100., 10000.],
                    1.0,]
@@ -250,7 +250,7 @@ class SHEL_Fitter():
             hyperps += [[0.,0.1], [0.1, 1000.], [1e-6, 1e6], [1e-3, 1e3]]
         else:
             dists += ['fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [self.tess_systematics['mflux_TESS'], 
+            hyperps += [self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
                         self.tess_systematics['GP_rho_TESS'],
                         self.tess_systematics['GP_sigma_TESS']]
@@ -275,7 +275,7 @@ class SHEL_Fitter():
             self.priors[param] = {}
             self.priors[param]['distribution'], self.priors[param]['hyperparameters'] = dist, hyperp
 
-        
+
         # Concat ref_id with instrument name for rv data keys
         rv_inst_names = self._get_rv_inst_names()
 
@@ -311,9 +311,12 @@ class SHEL_Fitter():
             if inst == "TESS":
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform']
+                      f"q1_{inst}", f"q2_{inst}", f"GP_sigma_{inst}",
+                      f"GP_rho_{inst}"]
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0],
+                       [1e-6, 1e6], [1e-3,1e3]]
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform',
+                     'loguniform', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
