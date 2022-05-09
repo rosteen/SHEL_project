@@ -1,0 +1,70 @@
+# From https://www.aanda.org/articles/aa/full_html/2013/01/aa20363-12/aa20363-12.html
+# Note that I removed the "" notes for consistent column numbers
+# Original file also had data for WASP-58, 59, 60
+#
+# Time is BJD-2400000, RV is km/s
+#
+55485.3531  -0.821 0.011 -0.039 SOPHIE_HE1    WASP-52
+55486.4051  -0.953 0.014 -0.049 SOPHIE_HE1    WASP-52
+55488.3582  -0.883 0.013 -0.028 SOPHIE_HE1    WASP-52
+55489.3710  -0.934 0.016 -0.025 SOPHIE_HE1    WASP-52
+55519.3509  -1.127 0.012 -0.035 SOPHIE_HE2    WASP-52
+55523.2950  -1.079 0.011 -0.017 SOPHIE_HE2    WASP-52
+55524.3205  -1.104 0.015  0.009 SOPHIE_HE2    WASP-52
+55525.3292  -1.001 0.011 -0.047 SOPHIE_HE2    WASP-52
+55527.3109  -0.963 0.012  0.007 SOPHIE_HE2                       WASP-52
+55529.3862  -1.010 0.010 -0.021 SOPHIE_HE2                       WASP-52
+55540.3215  -1.145 0.018 -0.016 SOPHIE_HE2                       WASP-52
+55559.2497  -1.052 0.010 -0.021 SOPHIE_HE2                       WASP-52
+55563.2598  -1.100 0.010 -0.017 SOPHIE_HE2                       WASP-52
+55564.2396  -0.969 0.011 -0.004 SOPHIE_HE2                       WASP-52
+55579.2475  -1.075 0.012 -0.035 SOPHIE_HE2    WASP-52
+55581.2370  -0.994 0.012 -0.011 SOPHIE_HE2    WASP-52
+55583.2417  -0.935 0.015  0.011 SOPHIE_HE2    WASP-52
+55585.2437  -0.966 0.011 -0.044 SOPHIE_HE2    WASP-52
+55586.2770  -1.068 0.010 -0.015 SOPHIE_HE2    WASP-52
+55588.2466  -0.983 0.010  0.011 SOPHIE_HE2    WASP-52
+55745.5740  -0.935 0.014 -0.030 SOPHIE_HR                        WASP-52
+55753.6075  -0.982 0.018 -0.021 SOPHIE_HR                        WASP-52
+55760.6012  -0.984 0.031 -0.067 SOPHIE_HR     WASP-52
+55763.5721  -0.850 0.020 -0.018 SOPHIE_HR     WASP-52
+55764.5729  -0.979 0.023 -0.006 SOPHIE_HR     WASP-52
+55766.5778  -0.916 0.019 -0.086 SOPHIE_HR                        WASP-52
+55768.5387  -0.886 0.015  0.021 SOPHIE_HR                        WASP-52
+55771.5908  -0.982 0.012  0.010 SOPHIE_HR                        WASP-52
+55773.5791  -0.914 0.010 -0.027 SOPHIE_HR                        WASP-52
+55413.7375  -0.863 0.015  0.028 CORALIE                          WASP-52
+55485.6031  -0.880 0.022 -0.008 CORALIE                          WASP-52
+55538.5713  -0.996 0.020  0.013 CORALIE                          WASP-52
+55541.5460  -0.829 0.018  0.091 CORALIE                          WASP-52
+55725.8837  -0.965 0.011 -0.002 CORALIE                          WASP-52
+55726.9038  -0.796 0.011  0.022 CORALIE                          WASP-52
+55756.8692  -0.837 0.019  0.006 CORALIE                          WASP-52
+55769.8876  -0.934 0.014  0.018 CORALIE                          WASP-52
+55777.8219  -0.846 0.013  0.052 CORALIE                          WASP-52
+55782.7876  -0.804 0.013  0.098 CORALIE                          WASP-52
+55784.8728  -0.868 0.013  0.019 CORALIE                          WASP-52
+55795.7326  -0.962 0.013  0.008 CORALIE                          WASP-52
+55804.6863  -0.962 0.015  0.028 CORALIE                          WASP-52
+55829.7201  -0.851 0.010  0.018 CORALIE                          WASP-52
+55832.6556  -0.966 0.012  0.026 CORALIE                          WASP-52
+55858.5814  -0.933 0.023  0.095 CORALIE                          WASP-52
+#55795.3677  -0.902 0.020    --- SOPHIE_HE-RM                     WASP-52
+#55795.3802  -0.913 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.3900  -0.894 0.017    --- SOPHIE_HE-RM                     WASP-52
+#55795.3991  -0.878 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4081  -0.917 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4163  -0.856 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4236  -0.904 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4313  -0.902 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4417  -0.948 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4506  -0.975 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4604  -0.882 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4694  -0.904 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4790  -0.911 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4878  -0.911 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.4969  -0.906 0.018    --- SOPHIE_HE-RM                     WASP-52
+#55795.5065  -0.903 0.019    --- SOPHIE_HE-RM                     WASP-52
+#55795.5164  -0.901 0.019    --- SOPHIE_HE-RM                     WASP-52
+#55795.5264  -0.912 0.019    --- SOPHIE_HE-RM                     WASP-52
+#55795.5364  -0.914 0.019    --- SOPHIE_HE-RM                     WASP-52

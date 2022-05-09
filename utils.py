@@ -112,9 +112,9 @@ def helio_to_bary(coords, hjd, obs_name):
 
 
 def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
-                   target=None, instrument=None, inst_list=None, inst_col=None,
-                   delimiter="\t", time_type="BJD-TDB", time_offset=0, unit='m/s',
-                   filter_target=None, debug=False):
+                   target=None, target_prefix = None, instrument=None, inst_list=None,
+                   inst_col=None, delimiter="\t", time_type="BJD-TDB", time_offset=0,
+                   unit='m/s', filter_target=None, debug=False):
     """
     Ingest a CSV file with RV data into the database. User must provide column numbers
     for time, RV, and RV error. Non-data rows are assumed to be commented out with #.
@@ -174,13 +174,19 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
             # Get instrument ID if there is an instrument name column
             if inst_col is not None:
                 instrument = data[inst_col]
-                instrument_id = cur.execute("select id from instruments where "
-                                            f"name='{instrument}'").fetchone()[0]
+                try:
+                    instrument_id = cur.execute("select id from instruments where "
+                                                f"name='{instrument}'").fetchone()[0]
+                except:
+                    print(instrument)
+                    raise
             # Get target ID if stored in a column
             if target_col is not None:
                 if data[target_col] != target:
                     bad_target = False
                     target = data[target_col]
+                    if target_prefix is not None:
+                        target = target_prefix + target
                     if filter_target is not None:
                         # Skip anything but the one we're reprocessing
                         if target != filter_target:
@@ -225,12 +231,12 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
 
             try:
-                rv = float(data[rv_col])
+                rv = float(data[rv_col].strip())
             except ValueError:
                 # Generally this is due to an asterix flagging this RV
                 continue
 
-            rv_err = float(data[err_col])
+            rv_err = float(data[err_col].strip())
 
             if unit=='km/s':
                 rv *= 1000
@@ -397,6 +403,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                     res = cur.execute(stmt).fetchone()
                     if res is None:
                         print(f"Skipping {target}")
+                        print(stmt)
                         bad_target = True
                         continue
                     target_id, ra, dec = res
@@ -432,7 +439,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
 
             flux = data[lc_col]
             flux_err = data[err_col]
-            
+
             stmt = ("insert into light_curves (target_id, reference_id, instrument, bjd, flux, flux_err) "
                     f"values ({target_id}, {ref_id}, {instrument_id}, {bjd}, {flux}, {flux_err})")
             if debug:
