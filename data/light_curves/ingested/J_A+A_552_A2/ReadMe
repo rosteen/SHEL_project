@@ -1,0 +1,124 @@
+J/A+A/552/A2        WASP-19b light curves                    (Lendl+, 2013)
+================================================================================
+A photometric study of the hot exoplanet WASP-19b.
+    Lendl M., Gillon M., Queloz D., Alonso R., Fumel A., Jehin E., Naef D.
+   <Astron. Astrophys. 552, A2 (2013)>
+   =2013A&A...552A...2L
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Photometry
+Keywords: planetary systems - techniques: photometric -
+          planets and satellites: atmospheres
+
+Abstract:
+    The sample of hot Jupiters that have been studied in great detail is
+    still growing. In particular, when the planet transits its host star,
+    it is possible to measure the planetary radius and the planet mass
+    (with radial velocity data). For the study of planetary atmospheres,
+    it is essential to obtain transit and occultation measurements at
+    multiple wavelengths.
+
+    We aim to characterize the transiting hot Jupiter WASP-19b by deriving
+    accurate and precise planetary parameters from a dedicated observing
+    campaign of transits and occultations.
+
+    We have obtained a total of 14 transit lightcurves in the r'-Gunn,
+    I-Cousins, z'-Gunn, and I+z' filters and 10 occultation lightcurves in
+    z'-Gunn using EulerCam on the Euler-Swiss telescope and TRAPPIST. We
+    also obtained one lightcurve through the narrow-band NB1190 filter of
+    HAWK-I on the VLT measuring an occultation at 1.19 micron. We
+    performed a global MCMC analysis of all new data, together with some
+    archive data in order to refine the planetary parameters and to
+    measure the occultation depths in z'-band and at 1.19 micron.
+
+    We measure a planetary radius of R_p_=1.376+/-0.046R_J_, a planetary
+    mass of M_p_=1.165+/-0.068M_J_, and find a very low eccentricity of
+    e=0.0077(-0.0032/+0.0068), compatible with a circular orbit. We have
+    detected the z'-band occultation at 3 sigma significance and measure
+    it to be delta_F_occ,z'=352+/-116ppm, more than a factor of 2 smaller
+    than previously published. The occultation at 1.19 micron is only
+    marginally constrained at delta_F_occ,NB1190=1711(-726/+745)ppm.
+
+    We show that the detection of occultations in the visible range is
+    within reach, even for 1m class telescopes if a considerable number of
+    individual events are observed. Our results suggest an
+    oxygen-dominated atmosphere of WASP-19b, making the planet an
+    interesting test case for oxygen-rich planets without temperature
+    inversion.
+
+Description:
+    We present photometric time-series obtained with EulerCam, TRAPPIST,
+    and HAWK-I during transits and occultations of WASP-19b.
+
+Objects:
+    ------------------------------------------------------------
+       RA   (2000)   DE       Designation(s)
+    ------------------------------------------------------------
+    15 59 50.95  -28 03 42.2  WASP-19 = 2MASS 15595095-2803422
+    ------------------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+euleric.dat    64      115   EulerCam photometry (I Cousins filter)
+eulerr.dat     64      296   EulerCam photometry (r' Gunn filter)
+eulerz.dat     64      898   EulerCam photometry (z' Gunn filter)
+hawki.dat      64      108   HAWK-I photometry (NB1190 filter)
+trapiz.dat     64     2273   TRAPPIST photometry (I+z' filter)
+trapz.dat      64      814   TRAPPIST photometry (z' filter)
+--------------------------------------------------------------------------------
+
+See also:
+ J/MNRAS/408/1680 : Transiting planetary system WASP-2 (Southworth+, 2010)
+ J/ApJ/715/421    : Relative photometry of WASP-3 (Tripathi+, 2010)
+ J/MNRAS/399/287  : Transiting planetary system WASP-4 (Southworth+, 2009)
+ J/AJ/137/3826    : Two transits of the giant planet WASP-4b (Winn+, 2009)
+ J/A+A/530/A5     : WASP-4b thermal emission Ks-band detection (Caceres+, 2011)
+ J/A+A/539/A159   : WASP-4b transit griz light curves (Nikolov+, 2012)
+ J/MNRAS/396/1023 : Transiting planetary system WASP-5 (Southworth+, 2009)
+ J/A+A/501/785    : Discovery and characterization of WASP-6b (Gillon+, 2009)
+ J/A+A/527/A8     : Transiting planetary system WASP-7 (Southworth+, 2011)
+ J/A+A/517/L1     : Radial velocities of WASP-8b planet (Queloz+, 2010)
+ J/ApJ/692/L100   : Relative photometry of WASP-10 (Johnson+, 2009)
+ J/A+A/535/A7     : Transit light curves of WASP-10 b (Maciejewski+, 2011)
+ J/ApJ/720/872    : A spectropolarimetric analysis of WASP-12 (Fossati+, 2010)
+ J/A+A/528/A65    : WASP-12b transits (Maciejewski+, 2011)
+ J/AJ/141/179     : Transits of TrES-4b, HAT-P-3b and WASP-12b (Chan+, 2011)
+ J/A+A/502/391    : WASP-13b photometry and radial velocities (Skillen+, 2009)
+ J/ApJ/709/159    : Relative Ic photometry of WASP-17 (Anderson+, 2010)
+ J/ApJ/707/167    : Transiting planetary system WASP-18 (Southworth+, 2009)
+ J/A+A/513/L3     : WASP-19b H-band thermal emission (Anderson+, 2010)
+ J/A+A/519/A98    : Transit of exoplanet WASP-21b (Bouchy+, 2010)
+ J/A+A/534/A16    : WASP-22 & WASP-26 photometry & velocities (Anderson+, 2011)
+ J/A+A/531/A24    : WASP-23 photometric and radial velocity data (Triaud+, 2011)
+ J/A+A/520/A56    : WASP-26b RV and photometric data (Smalley+, 2010)
+ J/ApJ/726/L19    : Gunn r photometry of WASP-30 (Anderson+, 2011)
+ J/A+A/531/A60    : WASP-31b photometry and radial velocities (Anderson+, 2011)
+ J/A+A/526/L10    : Transits of WASP-33 (Herrero+, 2011)
+ J/A+A/526/A130   : WASP-34b photometry and radial velocities (Smalley+, 2011)
+ J/A+A/525/A54    : Transits of WASP-38b (Barros+, 2011)
+ J/A+A/531/A40    : Transits of WASP-39b (Faedi+, 2011)
+ J/A+A/542/A4     : WASP-43b thirty eclipses (Gillon+, 2012)
+ J/A+A/544/A72    : WASP-42 and WASP-49 photometry and velocities (Lendl+, 2012)
+ J/A+A/533/A88    : WASP-50b photometry and radial velocities (Gillon+, 2011)
+ J/A+A/547/A61    : WASP78 and WASP79 RV and photometric data (Smalley+, 2012)
+
+Byte-by-byte Description of file: *.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 11  F11.6 d       HJD       Heliocentric Julian Date (HJD-2450000)
+  15- 22  F8.6  ---     Flux      Normalized Flux
+  26- 33  F8.6  ---   e_Flux      Normalized Flux error
+  36- 41  F6.2  pix     xshi      Pixel shift in x-direction
+  44- 49  F6.2  pix     yshi      Pixel shift in y-direction
+  52- 55  F4.2  ---     AM        Airmass
+  58- 64  F7.2  ---     Sky       Sky level (Flux)
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Monika Lendl, monika.lendl(at)unige.ch
+
+================================================================================
+(End)                                     Patricia Vannier [CDS]     21-Feb-2013
