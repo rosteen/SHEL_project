@@ -111,6 +111,8 @@ class SHEL_Fitter():
             rv = res[:,1]
             rv_err = res[:,2]
 
+            rv = rv - np.mean(rv)
+
             times_rv[rv_inst_name] = t
             data_rv[rv_inst_name] = rv
             errors_rv[rv_inst_name] = rv_err
