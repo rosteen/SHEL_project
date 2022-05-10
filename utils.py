@@ -8,6 +8,7 @@ from astropy import units as u
 from astropy.time import Time
 from astropy.io import fits
 from barycorrpy import utc_tdb
+from juliet.utils import mag_to_flux
 
 def create_shel_db():
     conn = sql.connect("shel_database.sqlite")
@@ -327,7 +328,7 @@ def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
 def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                    target=None, instrument=None, inst_list=None, inst_col=None,
                    delimiter="\t", time_type="BJD-TDB", time_offset=0,
-                   filter_target=None, debug=False):
+                   data_type="flux", filter_target=None, debug=False):
     """
     Ingest non-TESS light curve data. Most of this code is shared with the RV
     file ingestion code and should be consolidated.
@@ -355,6 +356,13 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
         ref_id = ref_id[0]
     if debug:
         print(f"Refnum: {ref_id}")
+
+    # Get target_id as well as RA and Dec in case we need them for time conversion
+    if target is not None:
+        res = cur.execute(f'select id, ra, dec from targets where name = "{target}"').fetchone()
+        target_id, ra, dec = res
+        if debug:
+            print(target_id, ra, dec)
 
     # Get instrument ID. Instrument info must be pre-loaded
     if instrument is not None:
@@ -438,7 +446,17 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
 
             flux = data[lc_col]
-            flux_err = data[err_col]
+            if err_col is None:
+                flux_err = -1
+            else:
+                flux_err = data[err_col]
+
+            # Convert mag to flux if needed
+            if data_type.lower() == "mag":
+                # Have to work around the fact that this function assumes arrays
+                flux, flux_err = mag_to_flux([float(flux)], [float(flux_err)])
+                flux = flux[0]
+                flux_err = flux_err[0]
 
             stmt = ("insert into light_curves (target_id, reference_id, instrument, bjd, flux, flux_err) "
                     f"values ({target_id}, {ref_id}, {instrument_id}, {bjd}, {flux}, {flux_err})")

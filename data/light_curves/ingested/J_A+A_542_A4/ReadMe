@@ -1,0 +1,147 @@
+J/A+A/542/A4        WASP-43b thirty eclipses                 (Gillon+, 2012)
+================================================================================
+The TRAPPIST survey of southern transiting planets.
+I. Thirty eclipses of the ultra-short period planet WASP-43b.
+    Gillon M., Triaud A.H.M.J., Fortney J.J., Demory B.-O., Jehin E., Lendl M.,
+    Magain P., Kabath P., Queloz D., Alonso R., Anderson D.R.,
+    Collier Cameron A., Fumel A., Hebb L., Hellier C., Lanotte A.,
+    Maxted P.F.L., Mowlavi N., Smalley B.
+   <Astron. Astrophys. 542, A4 (2012)>
+   =2012A&A...542A...4G
+================================================================================
+ADC_Keywords: Binaries, eclipsing ; Planets ; Photometry
+Keywords: planetary systems - stars: individual: WASP-43 -
+          techniques: photometric - techniques: radial velocities
+
+Abstract:
+    We present twenty-three transit light curves and seven occultation
+    light curves for the ultra-short period planet WASP-43 b, in addition
+    to eight new measurements of the radial velocity of the star. Thanks
+    to this extensive data set, we improve significantly the parameters of
+    the system.
+
+Description:
+    We present photometric time-series obtained by the TRAPPIST, Euler and
+    VLT telescopes.
+
+Objects:
+    --------------------------------------------------------------
+       RA   (2000)   DE       Designation(s)
+    --------------------------------------------------------------
+    10 19 38.01 -09 48 22.6   WASP-43 = 2MASS J10193800-0948225
+    --------------------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .  This file
+euler.dat       67      332  Euler transit photometry (gunn r' filter)
+trappist.dat   108     7767  TRAPPIST transit photometry
+                              (special I+z and Sloan z' filters)
+vlt1190.dat    104      115  VLT/HAWK-I occultation photometry (NB1190 filter)
+vlt2090.dat     70      183  VLT/HAWK-I occultation photometry (NB2090 filter)
+--------------------------------------------------------------------------------
+
+See also:
+ J/MNRAS/408/1680  : Transiting planetary system WASP-2 (Southworth+, 2010)
+ J/MNRAS/399/287   : Transiting planetary system WASP-4 (Southworth+, 2009)
+ J/AJ/137/3826     : Two transits of the giant planet WASP-4b (Winn+, 2009)
+ J/A+A/530/A5      : WASP-4b Ks-band thermal emission detection (Caceres+, 2011)
+ J/A+A/539/A159    : WASP-4b transit griz light curves (Nikolov+, 2012)
+ J/MNRAS/396/1023  : Transiting planetary system WASP-5 (Southworth+, 2009)
+ J/A+A/501/785     : Discovery and characterization of WASP-6b (Gillon+, 2009)
+ J/A+A/527/A8      : Transiting planetary system WASP-7 (Southworth+, 2011)
+ J/A+A/517/L1      : Radial velocities of WASP-8b planet (Queloz+, 2010)
+ J/ApJ/692/L100    : Relative photometry of WASP-10 (Johnson+, 2009)
+ J/A+A/535/A7      : Transit light curves of WASP-10 b (Maciejewski+, 2011)
+ J/A+A/528/A65     : WASP-12b transits (Maciejewski+, 2011)
+ J/A+A/502/391     : WASP-13b photometry and radial velocities (Skillen+, 2009)
+ J/ApJ/707/167     : Transiting planetary system WASP-18 (Southworth+, 2009)
+ J/A+A/513/L3      : WASP-19b H-band thermal emission (Anderson+, 2010)
+ J/A+A/519/A98     : Transit of exoplanet WASP-21b (Bouchy+, 2010)
+ J/A+A/534/A16     : WASP-22 & WASP-26 photometry & velocities (Anderson+, 2011)
+ J/A+A/531/A24     : WASP-23 photometric and radial velocity data (Triaud+ 2011)
+ J/A+A/520/A56     : WASP-26b RV and photometric data (Smalley+, 2010)
+ J/A+A/531/A60     : WASP-31b photometry and radial velocities (Anderson+, 2011)
+ J/A+A/526/L10     : Transits of WASP-33 (Herrero+, 2011)
+ J/A+A/526/A130    : WASP-34b photometry and radial velocities (Smalley+, 2011)
+ J/A+A/525/A54     : Transits of WASP-38b (Barros+, 2011)
+ J/A+A/531/A40     : Transits of WASP-39b (Faedi+, 2011)
+ J/A+A/533/A88     : WASP-50b photometry and radial velocities (Gillon+, 2011)
+ J/A+A/524/A25     : Radial Velocities on 6 exoplanet host stars (Triaud+, 2010)
+
+Byte-by-byte Description of file: euler.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  A3    ---     Band      [r' ] Band
+   5- 20  F16.8 d       BJD       Barycentric Julian date (UTC)
+                                   (days 2455559, 2455590, 2455599)
+  22- 29  F8.6  ---     Flux      Normalized flux
+  31- 38  E8.4  ---   e_Flux      Normalized flux error
+  40- 44  F5.2  pix     dX        Relative position drift in X direction
+  46- 51  F6.2  pix     dY        Relative position drift in Y direction
+  53- 56  F4.2  ---     Airmass   Airmass
+  58- 62  F5.2  pix     FWHM      PSF FWHM
+  64- 67  F4.2  ---     Bckg      Background (ADU)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: trappist.dat
+--------------------------------------------------------------------------------
+   Bytes  Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  A3    ---      Band      [I+Z z'] Band
+   5- 23  F19.11 d       HJD       Heliocentric Julian date (UTC) (1)
+  25- 41  F17.15 ---     Flux      Normalized flux
+  43- 62  E20.16 ---   e_Flux      Normalized flux error
+  64- 69  F6.2   pix     dX        Relative position drift in X direction
+  71- 76  F6.2   pix     dY        Relative position drift in Y direction
+  78- 90  F13.11 ---     Airmass   Airmass
+  92- 98  F7.4   pix     FWHM      PSF FWHM
+ 100-108  F9.3   ---     Bckg      Background (ADU)
+--------------------------------------------------------------------------------
+Note (1): For days  2455537, 2455546, 2455550, 2455559, 2455561, 2455607,
+           2455629, 2455631, 2455642, 2455643, 2455649, 2455652, 2455654,
+           2455665, 2455669, 2455682, 2455691, 2455693, 2455700, 2455726.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: vlt1190.dat
+--------------------------------------------------------------------------------
+   Bytes Format  Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  A3    ---      Band      [I1 ] Band
+   5- 25  F21.13 d       BJD       Barycentric Julian date (UTC) (day 2455570)
+  27- 45  F19.17 ---     Flux      Normalized flux
+  47- 68  E22.18 ---   e_Flux      Normalized flux error
+  70- 76  F7.4   pix     dX        Relative position drift in X direction
+  78- 84  F7.4   pix     dY        Relative position drift in Y direction
+  86- 90  F5.3   ---     Airmass   Airmass
+  92- 97  F6.3   pix     FWHM      PSF FWHM
+  99-104  F6.2   ---     Bckg      Background (ADU)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: vlt2090.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  3  A3    ---     Band      [I2 ] Band
+   5- 19  F15.7 d       BJD       Barycentric Julian date (UTC) (day 2455539)
+  21- 29  F9.7  ---     Flux      Normalized flux
+  31- 39  E9.7  ---   e_Flux      Normalized flux error
+  41- 47  F7.4  pix     dX        Relative position drift in X direction
+  49- 55  F7.4  pix     dY        Relative position drift in Y direction
+  57- 61  F5.3  ---     Airmass   Airmass
+  63- 67  F5.3  pix     FWHM      PSF FWHM
+  69- 70  F2.0  ---     Bckg      [1.] Background (ADU)
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+     Michael Gillon, michael.gillon(at)ulg.ac.be
+
+History:
+  * 24-May-2012: on-line data
+  * 07-Oct-2014: trappist.dat file completed (from author)
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  11-May-2012
