@@ -1,0 +1,123 @@
+J/A+A/547/A61     WASP78 and WASP79 RV and photometric data     (Smalley+, 2012)
+================================================================================
+WASP-78b and WASP-79b: Two highly-bloated hot Jupiter-mass exoplanets orbiting
+F-type stars in Eridanus.
+    Smalley B., Anderson D.R., Collier-Cameron A., Doyle A.P., Fumel A.,
+    Gillon M., Hellier C., Jehin E., Lendl M., Maxted P.F.L., Pepe F.,
+    Pollacco D., Queloz D., Segransan D., Smith A.M.S., Southworth J.,
+    Triaud A.H.M.J., Udry S., West R.G.
+   <Astron. Astrophys. 547, A61 (2012)>
+   =2012A&A...547A..61S
+================================================================================
+ADC_Keywords: Stars, G-type ; Planets ; Radial velocities ; Photometry, CCD
+Keywords: planets and satellites: general - stars: individual: WASP-78 -
+          stars: individual: WASP-79 - techniques: photometric -
+          techniques: spectroscopic - techniques: radial velocities
+
+Abstract:
+    We report the discovery of WASP-78b and WASP-79b, two highly-bloated
+    Jupiter-mass exoplanets orbiting F-type host stars. WASP-78b orbits
+    its V=12.0 host star (TYC 5889-271-1) every 2.175 days and WASP-79b
+    orbits its V=10.1 host star (CD-30 1812) every 3.662 days. Planetary
+    parameters have been determined using a simultaneous fit to WASP and
+    TRAPPIST transit photometry and CORALIE radial-velocity measurements.
+    For WASP-78b a planetary mass of 0.89+/-0.08M_Jup_ and a radius of
+    1.70+/-0.11R_Jup_ is found. The planetary equilibrium temperature of
+    T_P_=2350+/-80K for WASP-78b makes it one of the hottest of the
+    currently known exoplanets. WASP-79b its found to have a planetary
+    mass of 0.90+/-0.08M_Jup_, but with a somewhat uncertain radius due
+    to lack of sufficient TRAPPIST photometry. The planetary radius is at
+    least 1.70+/-0.11R_Jup_, but could be as large as 2.09+/-0.14R_Jup_,
+    which would make WASP-79b the largest known exoplanet.
+
+Description:
+    File rv.dat contains the Radial velocity and line bisector span
+    measurements of WASP-78 and WASP-79 obtained using the CORALIE
+    spectrograph.
+
+    Files phot.dat contains the transit photometry of WASP-78 obtained
+    using the Trappist Telescope through a blue-blocking filter on 2011
+    November 8, 2011 December 15 and 2012 January 8, respectively, and the
+    z' band transit photometry of WASP-79 obtained using the Trappist
+    Telescope on 2011 September 26.
+
+Objects:
+    ---------------------------------------------------
+       RA   (2000)   DE      Designation(s)
+    ---------------------------------------------------
+    04 15 01.5   -22 06 59   WASP-78 = TYC 5889-271-1
+    04 25 29.0   -30 36 02   WASP-79 = CD-30 1812
+    ---------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName  Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe        80        .   This file
+rv.dat        49       39   WASP78 and WASP79 radial velocity and line
+                             bisector spans
+phot.dat      37     2808   WASP78 (2011/11/08, 2011/12/15 and 2012/01/08)
+                             and WASP79 (2011/09/26) Trappist photometry
+--------------------------------------------------------------------------------
+
+See also:
+ J/MNRAS/408/1680 : Transiting planetary system WASP-2 (Southworth+, 2010)
+ J/ApJ/715/421    : Relative photometry of WASP-3 (Tripathi+, 2010)
+ J/MNRAS/399/287  : Transiting planetary system WASP-4 (Southworth+, 2009)
+ J/A+A/530/A5     : WASP-4b Ks-band thermal emission detection (Caceres+, 2011)
+ J/A+A/539/A159   : WASP-4b transit griz light curves (Nikolov+, 2012)
+ J/AJ/137/3826    : Two transits of the giant planet WASP-4b (Winn+, 2009)
+ J/MNRAS/396/1023 : Transiting planetary system WASP-5 (Southworth+, 2009)
+ J/A+A/501/785    : Discovery and characterization of WASP-6b (Gillon+, 2009)
+ J/A+A/527/A8     : Transiting planetary system WASP-7 (Southworth+, 2011)
+ J/A+A/517/L1     : Radial velocities of WASP-8b planet (Queloz+, 2010)
+ J/A+A/535/A7     : Transit light curves of WASP-10 b (Maciejewski+, 2011)
+ J/ApJ/692/L100   : Relative photometry of WASP-10 (Johnson+, 2009)
+ J/A+A/528/A65    : WASP-12b transits (Maciejewski+, 2011)
+ J/ApJ/720/872    : A spectropolarimetric analysis of WASP-12 (Fossati+, 2010)
+ J/A+A/502/391    : WASP-13b photometry and radial velocities (Skillen+, 2009)
+ J/ApJ/709/159    : Relative Ic photometry of WASP-17 (Anderson+, 2010)
+ J/ApJ/707/167    : Transiting planetary system WASP-18 (Southworth+, 2009)
+ J/A+A/513/L3     : WASP-19b H-band thermal emission (Anderson+, 2010)
+ J/A+A/519/A98    : Transit of exoplanet WASP-21b (Bouchy+, 2010)
+ J/A+A/534/A16    : WASP-22 & WASP-26 photometry & velocities (Anderson+, 2011)
+ J/A+A/531/A24    : WASP-23 photometric and radial velocity data (Triaud+, 2011)
+ J/A+A/520/A56    : WASP-26b RV and photometric data (Smalley+, 2010)
+ J/ApJ/726/L19    : Gunn r photometry of WASP-30 (Anderson+, 2011)
+ J/A+A/531/A60    : WASP-31b photometry and radial velocities (Anderson+, 2011)
+ J/A+A/526/L10    : Transits of WASP-33 (Herrero+, 2011)
+ J/A+A/526/A130   : WASP-34b photometry and radial velocities (Smalley+, 2011)
+ J/A+A/525/A54    : Transits of WASP-38b (Barros+, 2011)
+ J/A+A/531/A40    : Transits of WASP-39b (Faedi+, 2011)
+ J/A+A/544/A72    : WASP-42 and WASP-49 photometry and velocities (Lendl+, 2012)
+ J/A+A/542/A4     : WASP-43b thirty eclipses (Gillon+, 2012)
+ J/A+A/533/A88    : WASP-50b photometry and radial velocities (Gillon+, 2011)
+
+Byte-by-byte Description of file: rv.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 14  F14.6 d       HJD       Heliocentric Julian date of observation
+  16- 23  F8.5  km/s    HRV       Heliocentric radial velocity
+  25- 32  F8.5  km/s  e_HRV       Error on heliocentric radial velocity
+  34- 41  F8.5  km/s    Vspan     Line bisector span
+  43- 47  A5    ---     ---       [WASP-]
+  48- 49  I2    ---     WASP      [78/79] WASP star number (78 or 79)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: phot.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 13  F13.5 d       HJD       Heliocentric Julian date of observation
+  15- 21  F7.4  mag     mag       Relative magnitude
+  23- 29  F7.4  mag   e_mag       Error on Relative magnitude
+  31- 35  A5    ---     ---       [WASP-]
+  36- 37  I2    ---     WASP      [78/79] WASP star number (78 or 79)
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Barry Smalley, b.smalley(at)keele.ac.uk
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  03-Oct-2012

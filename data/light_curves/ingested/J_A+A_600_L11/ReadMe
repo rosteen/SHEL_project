@@ -1,0 +1,124 @@
+J/A+A/600/L11       GTC transit light curves of WASP-52b          (Chen+, 2017)
+================================================================================
+The GTC exoplanet transit spectroscopy survey.
+VI. Detection of sodium in WASP-52b's cloudy atmosphere.
+    Chen G., Palle E., Nortmann L., Murgas F., Parviainen H., Nowak G.
+    <Astron. Astrophys. 600, L11 (2017)>
+    =2017A&A...600L..11C        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Spectroscopy
+Keywords: planetary systems - planets and satellites: individual: WASP-52b -
+          planets and satellites: atmospheres - techniques: spectroscopic
+
+Abstract:
+    We report the first detection of sodium absorption in the atmosphere
+    of the hot Jupiter WASP-52b. We observed one transit of WASP-52b with
+    the low-resolution Optical System for Imaging and
+    low-Intermediate-Resolution Integrated Spectroscopy (OSIRIS) at the
+    10.4m Gran Telescopio Canarias (GTC). The resulting transmission
+    spectrum, covering the wavelength range from 522nm to 903nm, is flat
+    and featureless, except for the significant narrow absorption
+    signature at the sodium doublet, which can be explained by an
+    atmosphere in solar composition with clouds at 1 mbar. A cloud-free
+    atmosphere is stringently ruled out. By assessing the absorption
+    depths of sodium in various bin widths, we find that temperature
+    increases towards lower atmospheric pressure levels, with a positive
+    temperature gradient of 0.88+/-0.65K/km , possibly indicative of
+    upper atmospheric heating and a temperature inversion.
+
+Description:
+    We provide here the transit light curves of the hot Jupiter WASP-52b
+    obtained on the night of 2015/08/28 using the OSIRIS instrument at the
+    10.4-m GTC telescope. The data was obtained by using OSIRIS through a
+    40-arcsec broad slit with the R1000R grism. The white-color light
+    curve covers the wavelength range of 515-905nm, with 755-765nm being
+    excluded. The spectroscopic light curves contain 22 channels of
+    16.5nm, 3 channels of 1.6nm, and 1 channel of 1.8nm. We provide
+    several auxiliary parameters of the observations, some of which we
+    have used to correct the data from correlated noise, including the
+    position drift of the stars on the CCD detector in spatial and
+    dispersion direction, the relative change in the FWHM of absorption
+    line (dispersion FWHM), seeing (spatial FWHM), air mass, and rotator
+    angle.
+
+Objects:
+    --------------------------------------------------------------
+       RA   (2000)   DE       Designation(s)
+    --------------------------------------------------------------
+    23 13 58.76  +08 45 40.6  WASP-52 = 2MASS J23135873+0845405
+    --------------------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName    Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .   This file
+list.dat       111       27   List of spectroscopic light curves
+wlc.dat         93      308   WASP-52 GTC transit white light curve (2015/08/28)
+lc/*             .       26   Individual spectroscopic light curves
+--------------------------------------------------------------------------------
+
+See also:
+ J/A+A/563/A41 : WASP-43 OSIRIS transmission spectroscopy (Murgas+, 2014)
+ J/A+A/589/A62 : GTC transit light curves of CoRoT-29b (Palle+, 2016)
+ J/A+A/594/A65 : GTC transit light curves of HAT-P-32b (Nortmann+, 2016)
+
+Byte-by-byte Description of file: list.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  A8    ---     FileName  Name of the file with light curve data
+  10- 11  I2    ---     ch        ? Channel number (from table A1)
+  13- 16  I4    0.1nm   lambdac   ? Center wavelength (from table A1)
+  18- 20  I3    0.1nm   Width     ? Width of wavelength interval (from table A1)
+  22- 27  F6.4  ---     Rp/R*     ? Planet-to-star radius ratio (from table A1)
+  29- 34  F6.4  ---   e_Rp/R*     ? rms uncertainty on Rp/R* (from table A1)
+  36-111  A76   ---     Title     Title of the file
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: wlc.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 15  F15.7 d       BJD-TDB   Barycentric Julian Date (TDB standard)
+  17- 24  F8.6  ---     Flux      Relative flux
+  26- 33  F8.6  ---   e_Flux      Uncertainty of relative flux
+  35- 43  F9.6  pix     posX      Drift of star on CCD in spatial direction
+  45- 53  F9.6  pix     posY      Drift of star on CCD in dispersion direction
+  55- 63  F9.6  pix     FWHMx     Relative change of full width at half maximum
+                                   of the stellar absorption line profile
+  65- 72  F8.6  pix     FWHMY     Full width at half maximum of the stellar
+                                   spatial profile
+  74- 81  F8.6  ---     AirMass   Airmass during observation
+  83- 93  F11.6 deg     RotAng    Rotator angle during observation
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: lc/*
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  5  F5.1  nm      Lambda1   Wavelength of the left border of the channel
+   7- 11  F5.1  nm      Lambda2   Wavelength of the right border of the channel
+  13- 27  F15.7 d       BJD-TDB   Barycentric Julian Date (TDB standard)
+  29- 36  F8.6  ---     Flux      Relative flux
+  38- 45  F8.6  ---   e_Flux      Uncertainty of relative flux
+  47- 55  F9.6  pix     posX      Drift of star on CCD  in spatial direction
+  57- 65  F9.6  pix     posY      Drift of star on CCD  in dispersion direction
+  67- 75  F9.6  pix     FWHMX     Relative change of full width at half maximum
+                                   of the stellar absorption l ine profile
+  77- 84  F8.6  pix     FWHMY     Full width at half maximum of the stellar
+                                   spatial profile
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+   Guo Chen, gchen(at)iac.es
+
+References:
+   Murgas et al.,     Paper I,    2014A&A...563A..41M, Cat. J/A+A/563/A41
+   Parviainen et al., Paper II    2016A&A...585A.114P
+   Palle et al.,      Paper III   2016A&A...589A..62P, Cat. J/A+A/589/A62
+   Nortmann et al.,   Paper IV    2016A&A...594A..65N, Cat. J/A+A/594/A65
+   Chen et al.,       Paper V     2017A&A...600A.138C
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  04-Apr-2017
