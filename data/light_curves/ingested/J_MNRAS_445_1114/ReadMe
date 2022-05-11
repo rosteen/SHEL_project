@@ -1,0 +1,125 @@
+# from https://academic.oup.com/mnras/article/445/2/1114/1391778
+J/MNRAS/445/1114    WASP-69b, WASP-70Ab and WASP-84b         (Anderson+, 2014)
+================================================================================
+Three newly discovered sub-Jupiter-mass planets: WASP-69b and WASP-84b transit
+active K dwarfs and WASP-70Ab transits the evolved primary of a G4+K3 binary.
+    Anderson D.R., Collier Cameron A., Delrez L., Doyle A.P., Faedi F.,
+    Fumel A., Gillon M., Gomez Maqueo Chew Y., Hellier C., Jehin E., Lendl M.,
+    Maxted P.F.L., Pepe F., Pollacco D., Queloz D., Segransan D., Skillen I.,
+    Smalley B., Smith A.M.S., Southworth J., Triaud A.H.M.J., Turner O.D.,
+    Udry S., West R.G.
+   <Mon. Not. R. Astron. Soc., 445, 1114-1129 (2014)>
+   =2014MNRAS.445.1114A
+================================================================================
+ADC_Keywords: Binaries, eclipsing ; Stars, double and multiple ; Planets ;
+              Photometry ; Radial velocities
+Keywords: techniques: photometric - techniques: radial velocities -
+          planets and satellites: detection -
+          planets and satellites: individual: WASP-69b -
+          planets and satellites: individual: WASP-70Ab -
+          planets and satellites: individual: WASP-84b
+
+Abstract:
+    We report the discovery of the transiting exoplanets WASP-69b,
+    WASP-70Ab and WASP-84b, each of which orbits a bright star (V~10).
+    WASP-69b is a bloated Saturn-mass planet (0.26M_Jup_, 1.06R_Jup_) in a
+    3.868-d period around an active, ~1-Gyr, mid-K dwarf. ROSAT detected
+    X-rays 60+/-27" from WASP-69. If the star is the source then the
+    planet could be undergoing mass-loss at a rate of ~10^12^g/s. This is
+    one to two orders of magnitude higher than the evaporation rate
+    estimated for HD 209458b and HD 189733b, both of which have exhibited
+    anomalously large Lyman {alpha} absorption during transit. WASP-70Ab
+    is a sub-Jupiter-mass planet (0.59M_Jup_, 1.16R_Jup_) in a 3.713-d
+    orbit around the primary of a spatially resolved, 9-10-Gyr, G4+K3
+    binary, with a separation of 3.3 arcsec ( >=800AU). WASP-84b is a
+    sub-Jupiter-mass planet (0.69M_Jup_, 0.94R_Jup_) in an 8.523-d orbit
+    around an active, ~1-Gyr, early-K dwarf. Of the transiting planets
+    discovered from the ground to date, WASP-84b has the third-longest
+    period. For the active stars WASP-69 and WASP-84, we pre-whitened the
+    radial velocities using a low-order harmonic series. We found that
+    this reduced the residual scatter more than did the oft-used method of
+    pre-whitening with a fit between residual radial velocity and bisector
+    span. The system parameters were essentially unaffected by
+    pre-whitening.
+
+Description:
+    Three tables of data on the three planet host stars are provided:
+    table2.dat is the WASP survey photometry; table3.dat is the radial
+    velocities from CORALIE and HARPS; and table4.dat is the high-SNR
+    photometry taken with EulerCam, TRAPPIST and RISE.
+
+Objects:
+    -----------------------------------------------------
+       RA   (2000)   DE        Designation(s)
+    -----------------------------------------------------
+    21 00 06.19  -05 05 40.1   WASP-69 = BD-05 5432
+    21 01 54.48  -13 25 59.8   WASP-70 = HD 358155
+    08 44 25.71  +01 51 36.0   WASP-84 = TYC 211-706-1
+    -----------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+table2.dat     60   106235   WASP survey photometry
+table3.dat     57       68   CORALIE and HARPS radial velocities
+table4.dat     60    10328   EulerCam, TRAPPIST and RISE transit photometry
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  2  I2    ---     Set       [1/19] Index of dataset
+   4-  8  A5    ---     ---       [WASP-]
+   9- 10  I2    ---     WASP      [69/84] WASP star number (69, 70 or 84)
+  12- 22  A11   ---     Field     Field name
+  24- 27  I4    yr      Season    [2008/2011] Season
+  29- 31  I3    ---     Camera    [141/226] Camera number
+  33- 43  F11.6 d       HJD       Heliocentric Julian Date (UTC) at mid-exposure
+                                  (HJD-2450000)
+  45- 51  F7.4  mag     mag       WASP (broad, 400-700nm) magnitude
+  53- 60  F8.4  mag   e_mag       [0.001/107] Magnitude error
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+       1  I1    ---     Set       [1/4] Index of dataset
+   3-  7  A5    ---     ---       [WASP-]
+   8-  9  I2    ---     WASP      [69/84] WASP star number (69, 70 or 84)
+      10  A1    ---     ---       [A] for WASP-70
+  12- 18  A7    ---     Spect     Spectrograph: CORALIE or HARPS
+  20- 30  F11.6 d       BJD       Barycentric Julian Date (UTC) at mid-exposure
+                                  (BJD-2450000)
+  32- 40  F9.5  km/s    RV        Radial velocity
+  42- 48  F7.5  km/s  e_RV        Error on radial velocity
+  50- 57  F8.5  km/s    BSpan     Bisector Span
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table4.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+       1  I1    ---     Set       Index of dataset
+   3-  7  A5    ---     ---       [WASP-]
+   8-  9  I2    ---     WASP      [69/84] WASP star number (69, 70 or 84)
+      10  A1    ---     ---       [A] for WASP-70
+  12- 19  A8    ---     Imager    Imager name: RISE, TRAPPIST or EulerCam
+  21- 23  A3    ---     Filt      Filter (1)
+  30- 40  F11.6 d       BJD       Barycentric Julian Date (UTC) at mid-exposure
+                                  (BJD-2450000)
+  42- 50  F9.7  ---     NFlux     Normalised flux
+  52- 60  F9.7  ---   e_NFlux     Normalised flux error
+--------------------------------------------------------------------------------
+Note (1): Filters are r (Gunn) and z' (Sloan) for WPAS-69,
+     r (Gunn) and Iz' for WASP-70A, and z' (Sloan) and VR for WASP-84
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    David R. Anderson, d.r.anderson(at)keele.ac.uk
+
+================================================================================
+(End)                                      Patricia Vannier [CDS]    09-Apr-2015

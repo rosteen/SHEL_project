@@ -1,0 +1,149 @@
+J/A+A/641/A158      GTC transit light curves of WASP-69b         (Murgas+, 2020)
+================================================================================
+The GTC exoplanet transit spectroscopy survey.
+XI. Possible detection of Rayleigh scattering in the atmosphere of the
+Saturn-mass planet WASP-69b.
+    Murgas F., Chen G., Nortmann L., Palle E., Nowak G.
+    <Astron. Astrophys. 641, A158 (2020)>
+    =2020A&A...641A.158M        (SIMBAD/NED BibCode)
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Spectroscopy
+Keywords: planets and satellites: atmospheres
+
+Abstract:
+    One of the major atmospheric features in exoplanet atmospheres,
+    detectable both from ground- and space-based facilities, is Rayleigh
+    scattering. In hydrogen-dominated planetary atmospheres Rayleigh
+    scattering causes the measured planetary radius to increase towards
+    blue wavelengths in the optical range. We obtained a spectrophotometic
+    time series of one transit of the Saturn-mass planet WASP-69b using
+    the OSIRIS instrument at the Gran Telescopio Canarias. From the data
+    we construct 19 spectroscopic transit light curves representing 20nm
+    wide wavelength bins spanning from 515nm-905nm. We derive the
+    transit depth for each curve individually by fitting an analytical
+    model together with a Gaussian Processes to account for systematic
+    noise in the light curves. We find that the transit depth increases
+    towards bluer wavelengths, indicative of a larger effective planet
+    radius. Our results are consistent with space-based measurements
+    obtained in the near infrared using the Hubble Space telescope, which
+    show a compatible slope of the transmission spectrum. We discuss the
+    origin of the detected slope and argue between two possible scenarios:
+    a Rayleigh scattering detection originating in the planet's atmosphere
+    or a stellar activity induced signal from the host star.
+
+Description:
+    We present here the transit light curves of the Saturn-mass exoplanet
+    WASP-69b obtained on October 5, 2016 using the 10.4-m GTC telescope.
+    The spectra were obtained using OSIRIS instrument in its long-slit
+    spectroscopy mode (40 arcsec slit, R1000R grism, wavelength coverage
+    515-905nm). We provide auxiliary parameters of the observations that
+    were use to detrend the original light curves. These parameters are:
+    airmass, position of the stars in spatial and dispersion direction,
+    the relative FWHM of the spectral profile in spatial and dispersion
+    direction, and telescope rotator angle. We also provide the
+    planet-to-star radius ratio measured from the spectrophotometric light
+    curves (tables A.1 and A.2 from the paper).
+
+Objects:
+    --------------------------------------------------------------
+       RA   (2000)   DE        Designation(s)
+    --------------------------------------------------------------
+    21 00 05.20  -05 05 40.04  WASP-69 = 2MASS J21000618-0505398
+    --------------------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName    Lrecl  Records  Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .  This file
+list.dat        26       20  List of light curve files
+gtcwlcn1.dat    95      590  WASP-69b GTC transit white light curve (2016/10/05)
+lc/*             .       19  Individual spectroscopic light curves (2016/10/05)
+tablea1.dat     37       19  Results for the planet-to-star radius ratio for
+                              each of the 19 spectroscopic channels
+tablea2.dat     37       11  Results for the planet-to-star radius ratio for
+                              each of the 11 spectroscopic channels around the
+                              NaI doublet
+--------------------------------------------------------------------------------
+
+See also:
+  J/A+A/563/A41  : WASP-43 OSIRIS transmission spectroscopy (Murgas+, 2014)
+  J/A+A/589/A62  : GTC transit light curves of CoRoT-29b (Palle+, 2016)
+  J/A+A/594/A65  : GTC transit light curves of HAT-P-32b (Nortmann+, 2016)
+  J/A+A/600/L11  : GTC transit light curves of WASP-52b (Chen+, 2017)
+  J/A+A/605/A114 : GTC transit light curves of WASP-48b (Murgas+, 2017)
+  J/A+A/616/A145 : GTC transit light curves of WASP-127b (Chen+, 2018)
+  J/A+A/622/A172 : GTC transit light curves of HAT-P-11b (Murgas+, 2019)
+
+Byte-by-byte Description of file: list.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 11  A11   ---     Range     Wavelength interval in nm
+  13- 26  A14   ---     FileName  Name of the table with photometry
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: gtcwlcn1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 16  F16.8 d       BJD       Barycentric Julian Date (TDB standard)
+  18- 25  F8.6  ---     Flux      Relative flux
+  27- 34  F8.6  ---   e_Flux      Uncertainty of relative flux
+  36- 44  F9.6  pix     posX      Drift of star on CCD in spatial direction
+  46- 54  F9.6  pix     posY      Drift of star on CCD in dispersion direction
+  56- 64  F9.6  pix     fwhmX     Relative change of full width at half maximum
+                                   of the stellar absorption line profile
+  66- 75  F10.6 pix     fwhmY     Full width at half maximum of the stellar
+                                   spatial profile
+  77- 84  F8.6  ---     Airm      Airmass during observation
+  86- 95  F10.6 deg     RotAng    Telescope rotator angle during observations
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: lc/*
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  5  F5.1  nm      lambda1   Wavelength of the left border of the channel
+   7- 11  F5.1  nm      lambda2   Wavelength of the right border of the channel
+  13- 28  F16.8 d       BJD       Barycentric Julian Date (TDB standard)
+  30- 37  F8.6  ---     Flux      Relative flux
+  39- 46  F8.6  ---   e_Flux      Uncertainty of relative flux
+  48- 56  F9.6  pix     posX      Drift of star on CCD in spatial direction
+  58- 66  F9.6  pix     posY      Drift of star on CCD in dispersion direction
+  68- 76  F9.6  pix     fwhmX     Relative change of full width at half maximum
+                                   of the stellar absorption line profile
+  78- 87  F10.6 pix     fwhmY     Full width at half maximum of the stellar
+                                   spatial profile
+  89- 96  F8.6  ---     Airm      Airmass during observation
+  98-107  F10.6 deg     RotAng    Telescope rotator angle during observations
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: tablea1.dat tablea2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  5  F5.1  nm      lambda1   Wavelength of the center of the channel
+   7- 10  F4.1  nm      lambda2   Total width of the channel
+  12- 19  F8.6  ---     Rp/Rs     Measured planet-to-star radius ratio Rp/Rs
+  21- 28  F8.6  ---   E_Rp/Rs     Upper 1-sigma uncertainty in Rp/Rs
+  30- 37  F8.6  ---   e_Rp/Rs     Lower 1-sigma uncertainty in Rp/Rs
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Felipe Murgas, fmurgas(at)iac.es
+
+References:
+  Murgas et al.,     Paper I     2014A&A...563A..41M, Cat. J/A+A/563/A41
+  Parviainen et al., Paper II    2016A&A...585A.114P
+  Palle et al.,      Paper III   2016A&A...589A..62P, Cat. J/A+A/589/A62
+  Nortmann et al.,   Paper IV    2016A&A...594A..65N, Cat. J/A+A/594/A65
+  Chen et al.,       Paper V     2017A&A...600A.138C
+  Chen et al.,       Paper VI    2017A&A...600L..11C, Cat. J/A+A/600/L11
+  Murgas et al.,     Paper VII   2017A&A...605A.114M, Cat. J/A+A/605/A114
+  Parviainen et al., Paper VIII  2018A&A...609A..33P
+  Chen et al.,       Paper IX    2018A&A...616A.145C, Cat. J/A+A/616/A145
+  Murgas et al.,     Paper X.    2019A&A...622A.172M, Cat. J/A+A/622/A172
+
+================================================================================
+(End)   Felipe Murgas [IAC], Patricia Vannier [CDS]                  08-Jul-2020

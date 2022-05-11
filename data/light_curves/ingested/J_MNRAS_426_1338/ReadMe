@@ -1,0 +1,89 @@
+J/MNRAS/426/1338    Transiting planetary system WASP-17      (Southworth+, 2012)
+================================================================================
+High-precision photometry by telescope defocusing.
+IV. Confirmation of the huge radius of WASP-17b.
+    Southworth J., Hinse T.C., Dominik M., Fang X.-S., Harpsoe K.,
+    Jorgensen U.G., Kerins E., Liebig C., Mancini L., Skottfelt J.,
+    Anderson D.R., Smalley B., Tregloan-Reed J., Wertz O., Alsubai K.A.,
+    Bozza V., Calchi Novati S., Dreizler S., Gu S.-H., Hundertmark M.,
+    Jessen-Hansen J., Kains N., Kjeldsen H., Lund M.N., Lundkvist M.,
+    Mathiasen M., Penny M.T., Rahvar S., Ricci D., Scarpetta G., Snodgrass C.,
+    Surdej J.
+   <Mon. Not. R. Astron. Soc., 426, 1338-1348 (2012)>
+   =2012MNRAS.426.1338S
+================================================================================
+ADC_Keywords: Stars, double and multiple ; Planets ; Photometry
+Keywords: stars: planetary systems - methods: data analysis -
+          methods: observational - techniques: photometric
+
+Abstract:
+    We present photometric observations of four transits in the WASP-17
+    planetary system, obtained using telescope defocusing techniques and
+    with scatters reaching 0.5mmag per point. Our revised orbital period
+    is 4.0+/-0.6s longer than previous measurements, a difference of
+    6.6{sigma}, and does not support the published detections of orbital
+    eccentricity in this system. We model the light curves using the
+    JKTEBOP code and calculate the physical properties of the system by
+    recourse to five sets of theoretical stellar model predictions. The
+    resulting planetary radius, Rb=1.932+/-0.052+/-0.010R_Jup_
+    (statistical and systematic errors, respectively), provides
+    confirmation that WASP-17b is the largest planet currently known. All
+    14 planets with radii measured to be greater than 1.6R_Jup_are found
+    around comparatively hot (T_eff_>5900K) and massive
+    (M_A_>1.15M_{sun}_) stars. Chromospheric activity indicators are
+    available for eight of these stars, and all imply a low activity
+    level. The planets have small or zero orbital eccentricities, so tidal
+    effects struggle to explain their large radii.
+
+Description:
+    A light curve of four transits of the extrasolar planetary system
+    WASP-17 is presented. The data were obtained using the Danish 1.5m
+    telescope and DFOSC camera at ESO La Silla in 2012, with substantial
+    telescope defocussing in order to improve the photometric precision of
+    the observations. A Cousins R filter and exposure times of 120s were
+    used.
+
+Objects:
+    -----------------------------------------------------
+       RA   (2000)   DE       Designation(s)
+    -----------------------------------------------------
+    15 59 50.95 -28 03 42.3   WASP-17 = TYC 6787-1927-1
+    -----------------------------------------------------
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+wasp17.dat     33      494   Defocussed photometry of WASP-17
+--------------------------------------------------------------------------------
+
+See also:
+    J/MNRAS/396/1023 : Transiting planetary system WASP-5 (Southworth+, 2009)
+    J/MNRAS/399/287  : Transiting planetary system WASP-4 (Southworth+, 2009)
+    J/ApJ/707/167    : Transiting planetary system WASP-18 (Southworth+, 2009)
+    J/MNRAS/408/1680 : Transiting planetary system WASP-2 (Southworth+, 2010)
+    J/A+A/527/A8     : Transiting planetary system WASP-7 (Southworth+, 2011)
+    J/MNRAS/420/2580 : Four transits of HAT-P-13 (Southworth+, 2012)
+    J/MNRAS/422/3099 : Transit of HAT-P-5 (Southworth+, 2012)
+
+Byte-by-byte Description of file: wasp17.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 13  F13.5 d       BJD       Barycentric JD for the midpoint of
+                                   observation (TDB)
+  15- 23  F9.6  mag     dRmag     Differential R-band magnitude of WASP-17
+  25- 33  F9.6  mag   e_dRmag     Measurement error of the R-band magnitude
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    John Southworth, astro.js(at)keele.ac.uk
+
+References:
+    Southworth et al., Paper I    2009MNRAS.396.1023S, Cat. J/MNRAS/396/1023
+    Southworth et al., Paper II   2009MNRAS.399..287S, Cat. J/MNRAS/399/287
+    Southworth et al., Paper III  2010MNRAS.408.1680S, Cat. J/MNRAS/408/1680
+
+================================================================================
+(End)   John Southworth [Keele Univ., UK], Patricia Vannier [CDS]    12-Aug-2013

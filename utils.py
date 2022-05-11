@@ -384,11 +384,6 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                 else:
                     data = row
 
-            # Get instrument ID if there is an instrument name column
-            if inst_col is not None:
-                instrument = data[inst_col]
-                instrument_id = cur.execute("select id from instruments where "
-                                            f"name='{instrument}'").fetchone()[0]
             # Get target ID if stored in a column
             if target_col is not None:
                 temp_target = data[target_col]
@@ -419,6 +414,12 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                         print(target_id, ra, dec)
                 if bad_target:
                     continue
+
+            # Get instrument ID if there is an instrument name column
+            if inst_col is not None:
+                instrument = data[inst_col]
+                instrument_id = cur.execute("select id from instruments where "
+                                            f"name='{instrument}'").fetchone()[0]
 
             # Convert time to BJD-UTC if needed
             t = float(data[t_col]) + time_offset
