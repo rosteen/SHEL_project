@@ -111,6 +111,7 @@ class SHEL_Fitter():
             rv = res[:,1]
             rv_err = res[:,2]
 
+            # Simple first order correction for systematics in the RVs
             rv = rv - np.mean(rv)
 
             times_rv[rv_inst_name] = t
