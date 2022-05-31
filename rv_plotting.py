@@ -97,7 +97,7 @@ def plot_rvs(target, max_time_diff = 50):
     bax.set_xlabel('Time - '+str(tstart)+' (days)', fontsize = 17, labelpad = 25)
     bax.set_ylabel('Radial-velocity (m/s)', fontsize = 17)
     bax.legend(fontsize=17)
-    plt.savefig(f'juliet_fits/{target}/rvs.pdf')
+    plt.savefig(f'juliet_fits/{target}/{target}_rvs.pdf')
 
     # Now we plot the RV datapoints on a phased light curve
     fig = plt.figure(figsize=(17,5))
@@ -135,4 +135,4 @@ def plot_rvs(target, max_time_diff = 50):
     bax.set_ylabel('Radial-velocity (m/s)', fontsize = 17)
     bax.legend(fontsize=17)
     #plt.tight_layout()
-    plt.savefig(f'juliet_fits/{target}/rvs_phased.pdf')
+    plt.savefig(f'juliet_fits/{target}/{target}_rvs_phased.pdf')
