@@ -360,7 +360,7 @@ class SHEL_Fitter():
                 for inst in times_rv:
                     phases = juliet.get_phases(times_rv[inst], period, t0)
                     idx_oot = np.where(np.abs(phases)<=oot_rv_phase_limit)[0]
-                    sort_times = np.argsort(times[inst][idx_oot])
+                    sort_times = np.argsort(times_rv[inst][idx_oot])
                     times_rv[inst] = times_rv[inst][idx_oot][sort_times]
                     data_rv[inst] = data_rv[inst][idx_oot][sort_times]
                     errors_rv[inst] = errors_rv[inst][idx_oot][sort_times]
