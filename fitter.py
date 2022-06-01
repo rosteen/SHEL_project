@@ -90,7 +90,7 @@ class SHEL_Fitter():
 
         return times, fluxes, fluxes_error
 
-    def get_rv_data(self, rv_inst_names=None):
+    def get_rv_data(self, rv_inst_names=None, exclude_sources=None):
         times_rv, data_rv, errors_rv = {}, {}, {}
 
         if rv_inst_names is None:
@@ -98,6 +98,9 @@ class SHEL_Fitter():
 
         for rv_inst_name in rv_inst_names:
             instrument, ref_id = rv_inst_name.split("-")
+            if exclude_sources is not None:
+                if int(ref_id) in exclude_sources:
+                    continue
             stmt = ("select bjd, rv, rv_err from radial_velocities a join "
                     "instruments b on a.instrument = b.id where "
                     f"a.target_id = {self.target_id} and b.name = '{instrument}' "
@@ -187,7 +190,7 @@ class SHEL_Fitter():
 
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
-                       duration=None):
+                       duration=None, exclude_rv_sources=None):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet. If self.tess_systematics is populated, the fit will use those
@@ -350,7 +353,18 @@ class SHEL_Fitter():
 
         # Get RV data
         if not TESS_only:
-            times_rv, data_rv, errors_rv = self.get_rv_data()
+            times_rv, data_rv, errors_rv = self.get_rv_data(exclude_sources = exclude_rv_sources)
+            # Exclude in-transit RVs to avoid RM effect
+            if duration is not None:
+                oot_rv_phase_limit = 0.5*duration/(period*24)
+                for inst in times_rv:
+                    phases = juliet.get_phases(times_rv[inst], period, t0)
+                    idx_oot = np.where(np.abs(phases)<=oot_rv_phase_limit)[0]
+                    sort_times = np.argsort(times[inst][idx_oot])
+                    times_rv[inst] = times_rv[inst][idx_oot][sort_times]
+                    data_rv[inst] = data_rv[inst][idx_oot][sort_times]
+                    errors_rv[inst] = errors_rv[inst][idx_oot][sort_times]
+
             kwargs["t_rv"] = times_rv
             kwargs["y_rv"] = data_rv
             kwargs["yerr_rv"] = errors_rv
