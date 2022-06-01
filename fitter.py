@@ -354,6 +354,17 @@ class SHEL_Fitter():
         # Get RV data
         if not TESS_only:
             times_rv, data_rv, errors_rv = self.get_rv_data(exclude_sources = exclude_rv_sources)
+            # Exclude in-transit RVs to avoid RM effect
+            if duration is not None:
+                oot_rv_phase_limit = 0.5*duration/(period*24)
+                for inst in times_rv:
+                    phases = juliet.get_phases(times_rv[inst], period, t0)
+                    idx_oot = np.where(np.abs(phases)<=oot_rv_phase_limit)[0]
+                    sort_times = np.argsort(times[inst][idx_oot])
+                    times_rv[inst] = times_rv[inst][idx_oot][sort_times]
+                    data_rv[inst] = data_rv[inst][idx_oot][sort_times]
+                    errors_rv[inst] = errors_rv[inst][idx_oot][sort_times]
+
             kwargs["t_rv"] = times_rv
             kwargs["y_rv"] = data_rv
             kwargs["yerr_rv"] = errors_rv
