@@ -1,0 +1,33 @@
+# From https://iopscience.iop.org/article/10.1088/0004-637X/706/1/785
+#Table 1 
+#Relative Radial Velocity, Bisector, and Activity Index Measurements of HAT-P-12
+#
+#
+#BJD (2,454,000+)	RV^a (m s^-1)	sigma_RV^b (m s^-1)	BS (m s^-1)	sigma_BS (m s^-1)	S^c	sigma_S	
+187.03115	46.75	3.29	2.38	4.99	0.0063	0.00006	
+187.98977	-8.83	2.74	-6.80	4.45	0.0062	0.00005	
+#188.00121^d	 ... 	 ... 	1.64	4.97	0.0064	0.00005	
+188.10261	-11.93	2.63	-0.01	4.82	0.0062	0.00005	
+188.15398	-20.76	3.39	2.13	5.21	0.0059	0.00009	
+188.99152	-30.42	2.43	-1.37	4.82	0.0061	0.00005	
+189.07296	-32.64	2.61	-5.94	4.52	0.0062	0.00006	
+189.12279	-19.16	2.86	3.48	5.09	0.0066	0.00007	
+216.94159	-8.61	2.68	-15.51	4.19	0.0061	0.00008	
+247.86057	32.36	3.50	9.26	5.66	0.0060	0.00011	
+250.86401	20.94	3.35	9.31	5.95	0.0057	0.00013	
+251.91230	8.95	3.09	16.91	6.31	0.0062	0.00011	
+548.03028	-24.24	2.61	-3.24	4.77	0.0061	0.00006	
+548.92425	-24.73	3.15	-4.65	4.66	0.0059	0.00005	
+602.77839	-21.39	2.29	-6.79	4.64	0.0056	0.00004	
+603.02042	-30.57	2.49	-5.78	4.54	0.0054	0.00006	
+603.76466	-7.05	2.28	0.76	5.08	0.0057	0.00004	
+604.06935	-0.63	2.84	3.57	5.40	0.0057	0.00021	
+633.94384	32.62	3.05	9.37	6.30	0.0054	0.00018	
+636.86807	39.55	2.84	13.46	6.64	0.0060	0.00008	
+639.83599	29.74	2.92	-6.83	4.50	0.0056	0.00008	
+674.76312	-2.42	2.52	-15.39	4.13	0.0061	0.00006	
+#Notes.
+#a The fitted zero-point that is on an arbitrary scale has not been subtracted from the velocities.
+#b The values for sigma_RV are the formal uncertainties from the spectrum reduction pipeline and do not include our estimate of the stellar jitter.
+#c This is a relative S index that is sensitive to variations in S, it has not been calibrated to the scale of Vaughan et al. (1978).
+#d This is the iodine-free template exposure for which we do not measure the RV but do measure the BS and S index.
