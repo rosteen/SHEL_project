@@ -372,17 +372,17 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     with open(f"data/light_curves/{filename}", "r") as f:
         freader = csv.reader(f, delimiter=delimiter)
         for row in freader:
-            if row[0][0] == "#":
-                if inst_list is not None and row[0][1:] in inst_list:
-                    instrument = row[0][1:]
+            if delimiter == " ":
+                data = [x for x in row if x != ""]
+            else:
+                data = row
+
+            if data[0][0] == "#":
+                if inst_list is not None and data[0][1:] in inst_list:
+                    instrument = data[0][1:]
                     instrument_id = cur.execute("select id from instruments where "
                                                 f"name='{instrument}'").fetchone()[0]
                 continue
-            else:
-                if delimiter == " ":
-                    data = [x for x in row if x != ""]
-                else:
-                    data = row
 
             # Get target ID if stored in a column
             if target_col is not None:
