@@ -1,0 +1,44 @@
+# From https://iopscience.iop.org/article/10.1088/0004-637X/726/1/52#apj374090t4
+#Table 4 
+#Relative Radial Velocities, Bisector Spans, and Activity Index Measurements of HAT-P-18
+#
+#
+#BJD^a RV^b sigma_RV^c BS sigma_BS S^d sigma_S 
+#(2,454,000+) (m s^-1) (m s^-1) (m s^-1) (m s^-1)   
+397.73420  ...  -11.23 3.79 -28.29 13.90 0.8595 0.0099 
+#548.08129  ...   ...   ...  14.12 20.54 0.9267 0.0051 
+548.09633  ...  25.83 2.26 -2.20 26.16 0.9344 0.0057 
+549.07743  ...  22.80 2.27 3.36 14.43 0.9748 0.0048 
+602.83762  ...  9.95 2.25 67.02 28.63 1.0102 0.0048 
+602.99835  ...  15.96 2.29 12.79 12.66 1.0183 0.0045 
+603.83449  ...  20.24 2.72 141.82 43.52 1.0057 0.0061 
+604.08627  ...  10.30 2.51 -27.50 9.88 1.0266 0.0049 
+633.97708  ...  -21.65 2.45 9.96 12.03 1.0472 0.0146 
+635.98889  ...  20.26 2.69 52.95 10.05 0.9688 0.0058 
+639.02280  ...  -25.53 2.29 -8.96 6.28 0.9811 0.0058 
+641.97905  ...  31.77 2.88 -20.46 13.72 1.0007 0.0075 
+#724.84068^e  ...  6.49 3.39 -198.81 36.35 0.9206 0.0158 
+726.79620  ...  -27.63 2.46 -72.66 14.74 0.9544 0.0091 
+727.79088  ...  -26.34 2.31 -47.93 16.52 0.9805 0.0078 
+777.69605  ...  -16.44 2.46 26.52 7.61 0.9408 0.0076 
+#778.69476^e  ...  35.06 3.21 45.44 11.89 0.8932 0.0127 
+#779.70147^e  ...  56.60 4.98 60.37 20.83 0.8978 0.0212 
+#779.74051^e  ...  61.15 5.71 134.75 51.14 0.8017 0.0458 
+865.15876  ...  -25.60 4.88 -31.22 22.33 1.0424 0.0166 
+955.02444  ...  14.38 2.41 -19.22 14.02 1.0448 0.0056 
+955.96262  ...  30.73 2.64 -17.35 10.67 1.0609 0.0050 
+964.09646  ...  -33.57 2.32 18.65 11.88 0.9697 0.0047 
+987.98665  ...  20.65 2.88 76.71 20.29 1.0195 0.0057 
+988.90490  ...  29.18 2.82 91.83 24.70 1.0630 0.0058 
+#1109.76458^e  ...  -49.58 3.25 -135.43 28.38 0.7973 0.0308 
+1016.99998  ...  30.57 2.20 -25.04 8.82 1.0197 0.0076 
+1041.96078  ...  -13.06 3.12 -12.39 11.79 1.0428 0.0162 
+1252.06235  ...  -3.90 2.92 -45.97 12.38 1.0616 0.0065 
+#1252.07745  ...   ...   ...  -34.63 6.47 1.0437 0.0055 
+1261.11905  ...  -19.39 2.39 -28.25 12.16 1.0019 0.0053 
+#Notes. Note that for the iodine-free template exposures we do not measure the RV, but do measure the BS and S index. Such template exposures can be distinguished by the missing RV value.
+#a Barycentric Julian dates throughout the paper are calculated from Coordinated Universal Time (UTC).
+#b The zero point of these velocities is arbitrary. An overall offset gamma_rel fitted to these velocities in Section 3.3 has not been subtracted.
+#c Internal errors excluding the component of the velocity jitter considered in Section 3.3.
+#d Relative chromospheric activity index, not calibrated to the scale of Vaughan et al. (1978).
+#e Outlier RV measurements excluded from the analysis.
