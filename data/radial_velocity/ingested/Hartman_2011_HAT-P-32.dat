@@ -1,0 +1,41 @@
+# From https://iopscience.iop.org/article/10.1088/0004-637X/742/1/59
+#Table 3 
+#Relative Radial Velocities, Bisector Spans, and Activity Index Measurements of HAT-P-32
+#
+#BJD^a	RV^b	sigma_RV^c	BS	sigma_BS	S^d	Phase	
+#(2,454,000+)	(m s^-1)	(m s^-1)	(m s^-1)	(m s^-1)			
+336.95660	-12.33	13.77	-4.23	22.35	0.240	0.168	
+337.12852	-51.77	12.83	-35.38	13.61	0.238	0.248	
+#337.93027	 ... 	 ... 	8.77	12.61	0.233	0.621	
+337.93908	91.89	13.58	22.03	15.06	0.232	0.625	
+339.12681	-32.01	12.59	-5.23	17.10	0.239	0.177	
+339.92225	60.33	13.50	31.99	9.65	0.239	0.547	
+344.05490	-56.05	12.94	-7.56	12.17	0.232	0.469	
+#345.14032^e	-7.96	12.44	56.66	19.42	0.235	0.974	
+397.81437	-75.23	14.22	-36.38	9.63	0.236	0.474	
+398.09647	35.38	14.70	-41.76	8.10	0.234	0.605	
+427.84636	55.80	14.45	-55.48	12.13	0.235	0.442	
+428.85791	312.16	15.38	-57.89	15.15	0.240	0.912	
+429.92102	-3.17	14.43	-29.84	8.73	0.233	0.407	
+455.90267	-11.30	14.42	-35.44	17.49	0.231	0.491	
+458.93801	144.46	16.08	-9.85	11.93	0.232	0.903	
+460.86208	103.67	18.28	-9.84	11.05	0.230	0.798	
+548.72493	88.38	16.21	-19.13	14.89	0.240	0.664	
+635.11482	73.67	16.94	155.85	24.14	0.236	0.845	
+636.11275	-187.30	17.27	100.10	16.18	0.235	0.310	
+724.02617	-170.37	15.27	7.97	13.53	0.237	0.199	
+725.07143	37.66	16.62	89.82	14.96	0.241	0.686	
+727.11674	40.79	16.16	90.24	15.73	0.241	0.637	
+777.92375	-153.16	15.28	-28.12	10.06	0.232	0.268	
+810.82619	150.64	17.27	-20.45	12.98	0.230	0.571	
+838.93902	46.30	19.26	-33.20	13.87	0.225	0.647	
+1192.92153	-143.71	19.01	-28.23	13.83	0.236	0.289	
+1250.81416	-211.65	17.65	-30.15	10.29	0.238	0.216	
+1376.10348	-80.92	17.65	6.54	11.60	0.241	0.490	
+#1544.91306^e	-186.72	18.93	-81.83	21.62	0.224	0.006	
+#Notes. For the iodine-free template exposures we do not measure the RV but do measure the BS and index S. Such template exposures can be distinguished by the missing RV value.
+#a Barycentric Julian dates throughout the paper are calculated from Coordinated Universal Time (UTC).
+#b The zero point of these velocities is arbitrary. An overall offset gamma_rel fitted to these velocities in Section 3.4 has not been subtracted.
+#c Internal errors excluding the component of astrophysical jitter considered in Section 3.4.
+#d Chromospheric activity index calibrated to the scale of Vaughan et al. (1978) following Isaacson & Fischer (2010).
+#e Observation during transit which was excluded from the analysis.
