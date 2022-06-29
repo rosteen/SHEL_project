@@ -261,20 +261,21 @@ class SHEL_Fitter():
                         self.tess_systematics['GP_rho_TESS'],
                         self.tess_systematics['GP_sigma_TESS']]
 
-        # Set either a or rho
-        if a is not None:
-            params += ['a_p1',]
-            dists += ['normal']
-            hyperps += [[a, a_err],]
-        else:
-            # Retrieve Rho parameter from database
-            stmt = ("select rho, rho_err from stellar_parameters where "
-                    f"target_id = {self.target_id}")
-            rho, rho_err = self.cur.execute(stmt).fetchone()
+        # Set either a or rho, preference to rho if defined
+        stmt = ("select rho, rho_err from stellar_parameters where "
+                f"target_id = {self.target_id}")
+        res = self.cur.execute(stmt).fetchone()
+        if res is not None:
+            rho, rho_err = res
             params += ['rho',]
             dists += ['truncatednormal',]
             hyperps += [[rho, rho_err, 0, 20000],]
-
+        else:
+            if a is None:
+                raise ValueError("Rho is not populated in DB, must provide a")
+            params += ['a_p1',]
+            dists += ['normal']
+            hyperps += [[a, a_err],]
 
         # Populate the priors dictionary:
         for param, dist, hyperp in zip(params, dists, hyperps):
