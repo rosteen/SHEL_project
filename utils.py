@@ -492,6 +492,9 @@ def load_results(target, n_planets=1):
     results = dataset.fit(use_dynesty=True, dynamic=True)
     parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
 
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
+
     for i in range(1, n_planets+1):
         for param in parameters:
             param_id = f"{param}_p{i}"
@@ -499,3 +502,6 @@ def load_results(target, n_planets=1):
             result_err = 0
             prior = 0
             prior_err = 0
+
+    cur.close()
+    conn.close()

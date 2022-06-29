@@ -19,7 +19,7 @@ def plot_rvs(target, max_time_diff = 50):
         Name of target, e.g. 'WASP-31'
     max_time_diff: int, optional
         Maximimum time difference between datapoints before splitting the axis
-        with brokenaxes in the unphased plot 
+        with brokenaxes in the unphased plot
     """
     dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
     results = dataset.fit(use_dynesty=True, dynamic=True)
@@ -29,6 +29,7 @@ def plot_rvs(target, max_time_diff = 50):
 
     rv_colors = ['orangered', 'blue', 'magenta', 'purple', 'green', 'goldenrod', 'red', 'olive', 'coral']
     rv_instruments = list(dataset.times_rv.keys())
+    print(rv_instruments)
 
     # Get all RV times
     all_times = np.array([])
@@ -63,9 +64,9 @@ def plot_rvs(target, max_time_diff = 50):
         if sorted_times[i+1] - sorted_times[i] > max_time_diff:
             x_vals.append(int(sorted_times[i] + 5))
             x_vals.append(int(sorted_times[i+1] - 5))
-            
+
     # Append final upper value
-    x_vals.append(int(sorted_times[-1] + 5))        
+    x_vals.append(int(sorted_times[-1] + 5))
 
     x_lims = []
     for i in range(int(len(x_vals)/2)):
@@ -83,7 +84,7 @@ def plot_rvs(target, max_time_diff = 50):
         t, rv, rverr = (dataset.times_rv[instrument],
                         dataset.data_rv[instrument],
                         dataset.errors_rv[instrument])
-                
+
         bax.errorbar(t-tstart, rv - np.median(results.posteriors['posterior_samples']['mu_'+instrument]),
                      rverr, fmt='o', ms=8, mec=datapoint_color,
                      ecolor=datapoint_color, mfc='white', zorder=3, label = instrument)
@@ -113,21 +114,21 @@ def plot_rvs(target, max_time_diff = 50):
                         dataset.data_rv[instrument],
                         dataset.errors_rv[instrument])
         phases = juliet.utils.get_phases(t, P, t0)
-                
+
         bax.errorbar(phases, rv - np.median(results.posteriors['posterior_samples']['mu_'+instrument]),
                      rverr, fmt='o', ms=8, mec=datapoint_color,
                      ecolor=datapoint_color, mfc='white', zorder=3, label = instrument)
-        
+
     model_phases = juliet.utils.get_phases(tmodel, P, t0)
     phase_sort = np.argsort(model_phases)
     model_phases = model_phases[phase_sort]
 
     bax.plot(model_phases, model[phase_sort], color = 'cornflowerblue', zorder=2)
-    bax.fill_between(model_phases, error68_down[phase_sort], error68_up[phase_sort], 
+    bax.fill_between(model_phases, error68_down[phase_sort], error68_up[phase_sort],
                      color = 'cornflowerblue', alpha = 0.4, zorder=1)
-    bax.fill_between(model_phases, error95_down[phase_sort], error95_up[phase_sort], 
+    bax.fill_between(model_phases, error95_down[phase_sort], error95_up[phase_sort],
                      color = 'cornflowerblue', alpha = 0.2, zorder=1)
-    bax.fill_between(model_phases, error99_down[phase_sort], error99_up[phase_sort], 
+    bax.fill_between(model_phases, error99_down[phase_sort], error99_up[phase_sort],
                      color = 'cornflowerblue', alpha = 0.1, zorder=1)
     bax.tick_params('x', labelsize=10)
     bax.tick_params('y', labelsize=10)
@@ -136,3 +137,10 @@ def plot_rvs(target, max_time_diff = 50):
     bax.legend(fontsize=17, loc = 'upper right')
     #plt.tight_layout()
     plt.savefig(f'juliet_fits/{target}/{target}_rvs_phased.pdf')
+
+def plot_priors_posteriors(parameter):
+    """
+    Retrieve the priors and posteriors for all targets for the parameter
+    we're interested in and create a scatter plot.
+    """
+    pass
