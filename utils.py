@@ -378,8 +378,8 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                 data = row
 
             if data[0][0] == "#":
-                if inst_list is not None and data[0][1:] in inst_list:
-                    instrument = data[0][1:]
+                if inst_list is not None and " ".join(data[1:]) in inst_list:
+                    instrument = " ".join(data[1:])
                     instrument_id = cur.execute("select id from instruments where "
                                                 f"name='{instrument}'").fetchone()[0]
                 continue
