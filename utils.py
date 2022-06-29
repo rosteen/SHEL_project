@@ -8,6 +8,7 @@ from astropy import units as u
 from astropy.time import Time
 from astropy.io import fits
 from barycorrpy import utc_tdb
+import juliet
 from juliet.utils import mag_to_flux
 
 def create_shel_db():
@@ -66,6 +67,17 @@ def create_shel_db():
                               L real, L_err real, rho real, rho_err real,
                               Av real, Av_err real);"""
 
+    create_results_table = """CREATE TABLE IF NOT EXISTS results (
+                            id integer PRIMARY KEY,
+                            target_id int NOT NULL,
+                            parameter text,
+                            prior real,
+                            prior_err real,
+                            posterior real,
+                            posterior_err real,
+                            FOREIGN KEY (target_id) REFERENCES targets (id)
+                            );"""
+
     cur.execute(create_targets_table)
     cur.execute(create_int_table)
     cur.execute(create_hubble_table)
@@ -73,6 +85,7 @@ def create_shel_db():
     cur.execute(create_rv_table)
     cur.execute(create_lc_table)
     cur.execute(create_stellar_table)
+    cur.execute(create_results_table)
 
     conn.commit()
     conn.close()
@@ -328,7 +341,8 @@ def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
 def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                    target=None, instrument=None, inst_list=None, inst_col=None,
                    delimiter="\t", time_type="BJD-TDB", time_offset=0,
-                   data_type="flux", filter_target=None, debug=False):
+                   data_type="flux", filter_target=None, constant_error=None,
+                   debug=False):
     """
     Ingest non-TESS light curve data. Most of this code is shared with the RV
     file ingestion code and should be consolidated.
@@ -448,7 +462,10 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
 
             flux = data[lc_col]
             if err_col is None:
-                flux_err = -1
+                if constant_error is not None:
+                    flux_err = constant_error
+                else:
+                    flux_err = -1
             else:
                 flux_err = data[err_col]
 
@@ -469,3 +486,16 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     conn.commit()
     cur.close()
     conn.close()
+
+def load_results(target, n_planets=1):
+    dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
+    results = dataset.fit(use_dynesty=True, dynamic=True)
+    parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
+
+    for i in range(1, n_planets+1):
+        for param in parameters:
+            param_id = f"{param}_p{i}"
+            result = np.median(results.posteriors['posterior_samples'][param_id])
+            result_err = 0
+            prior = 0
+            prior_err = 0
