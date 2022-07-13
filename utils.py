@@ -74,7 +74,8 @@ def create_shel_db():
                             prior real,
                             prior_err real,
                             posterior real,
-                            posterior_err real,
+                            posterior_err_upper real,
+                            posterior_err_lower real,
                             FOREIGN KEY (target_id) REFERENCES targets (id)
                             );"""
 
@@ -495,13 +496,22 @@ def load_results(target, n_planets=1):
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
 
+    target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
+
     for i in range(1, n_planets+1):
         for param in parameters:
             param_id = f"{param}_p{i}"
-            result = np.median(results.posteriors['posterior_samples'][param_id])
-            result_err = 0
-            prior = 0
-            prior_err = 0
+            result = results.posteriors['posterior_samples'][param_id]
+            param_med, param_upper, param_lower = juliet.utils.get_quantiles(result)
+            err_upper = param_upper - param_med
+            err_lower = param_med - param_lower
+
+            stmt = ("insert into results (target_id, parameter, posterior, posterior_err_upper,"
+                    f"posterior_err_lower) values ({target_id}, '{param_id}', {param_med}, "
+                    f"{err_upper}, {err_lower})")
+            cur.execute(stmt)
+
+    conn.commit()
 
     cur.close()
     conn.close()
