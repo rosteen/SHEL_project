@@ -67,7 +67,7 @@ def create_shel_db():
                               L real, L_err real, rho real, rho_err real,
                               Av real, Av_err real);"""
 
-    create_results_table = """CREATE TABLE IF NOT EXISTS results (
+    create_results_table = """CREATE TABLE IF NOT EXISTS system_parameters (
                             id integer PRIMARY KEY,
                             target_id int NOT NULL,
                             parameter text,
@@ -488,7 +488,16 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     cur.close()
     conn.close()
 
+def load_priors(target, P, t0, a, b, ecc, p, duration):
+    """
+    Load prior values and error from the literature.
+    """
+    pass
+
 def load_results(target, n_planets=1):
+    """
+    Load the results for the parameters we're interested in.
+    """
     dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
     results = dataset.fit(use_dynesty=True, dynamic=True)
     parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
@@ -506,9 +515,9 @@ def load_results(target, n_planets=1):
             err_upper = param_upper - param_med
             err_lower = param_med - param_lower
 
-            stmt = ("insert into results (target_id, parameter, posterior, posterior_err_upper,"
-                    f"posterior_err_lower) values ({target_id}, '{param_id}', {param_med}, "
-                    f"{err_upper}, {err_lower})")
+            stmt = ("insert into system_parameters (target_id, parameter, posterior, "
+                    f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
+                    f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
             cur.execute(stmt)
 
     conn.commit()
