@@ -488,14 +488,17 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     cur.close()
     conn.close()
 
-def load_priors(target, P, t0, a, b, ecc, p, duration):
+def load_priors(target, n_planet=1, P=None, t0=None, a=None, b=None, 
+                ecc=None, p=None, duration=None):
     """
     Load prior values and error from the literature.
     """
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
 
-    parameters = ['P', 't0', 'a', 'b', 'ecc', 'p', 'duration']
+    target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
+
+    parameters = {'P': P, 't0': t0, 'a': a, 'b': b, 'ecc': ecc, 'p': p, 'duration': duration}
     for param in parameters:
         pass
 
@@ -508,9 +511,20 @@ def load_results(target, n_planets=1):
     """
     Load the results for the parameters we're interested in.
     """
-    dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
-    results = dataset.fit(use_dynesty=True, dynamic=True)
+
+    #dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
+    #results = dataset.fit(use_dynesty=True, dynamic=True)
     parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
+    posteriors = {}
+    
+    with open(f'juliet_fits/{target}/posteriors.dat', 'r') as f:
+        freader = csv.reader(f, delimiter=' ')
+        for row in freader:
+            if row[0][0] == "#":
+                continue
+            data = [x for x in row if x != ""]
+            posteriors[data[0]] = [data[1], data[2], data[3]]
+
 
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
@@ -520,10 +534,12 @@ def load_results(target, n_planets=1):
     for i in range(1, n_planets+1):
         for param in parameters:
             param_id = f"{param}_p{i}"
-            result = results.posteriors['posterior_samples'][param_id]
-            param_med, param_upper, param_lower = juliet.utils.get_quantiles(result)
-            err_upper = param_upper - param_med
-            err_lower = param_med - param_lower
+
+            #result = results.posteriors['posterior_samples'][param_id]
+            #param_med, param_upper, param_lower = juliet.utils.get_quantiles(result)
+            #err_upper = param_upper - param_med
+            #err_lower = param_med - param_lower
+            param_med, err_upper, err_lower = posteriors[param_id]
 
             stmt = ("insert into system_parameters (target_id, parameter, posterior, "
                     f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
