@@ -67,14 +67,15 @@ def create_shel_db():
                               L real, L_err real, rho real, rho_err real,
                               Av real, Av_err real);"""
 
-    create_results_table = """CREATE TABLE IF NOT EXISTS results (
+    create_results_table = """CREATE TABLE IF NOT EXISTS system_parameters (
                             id integer PRIMARY KEY,
                             target_id int NOT NULL,
                             parameter text,
                             prior real,
                             prior_err real,
                             posterior real,
-                            posterior_err real,
+                            posterior_err_upper real,
+                            posterior_err_lower real,
                             FOREIGN KEY (target_id) REFERENCES targets (id)
                             );"""
 
@@ -487,7 +488,26 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     cur.close()
     conn.close()
 
+def load_priors(target, P, t0, a, b, ecc, p, duration):
+    """
+    Load prior values and error from the literature.
+    """
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
+
+    parameters = ['P', 't0', 'a', 'b', 'ecc', 'p', 'duration']
+    for param in parameters:
+        pass
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
 def load_results(target, n_planets=1):
+    """
+    Load the results for the parameters we're interested in.
+    """
     dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
     results = dataset.fit(use_dynesty=True, dynamic=True)
     parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
@@ -495,13 +515,22 @@ def load_results(target, n_planets=1):
     conn = sql.connect('shel_database.sqlite')
     cur = conn.cursor()
 
+    target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
+
     for i in range(1, n_planets+1):
         for param in parameters:
             param_id = f"{param}_p{i}"
-            result = np.median(results.posteriors['posterior_samples'][param_id])
-            result_err = 0
-            prior = 0
-            prior_err = 0
+            result = results.posteriors['posterior_samples'][param_id]
+            param_med, param_upper, param_lower = juliet.utils.get_quantiles(result)
+            err_upper = param_upper - param_med
+            err_lower = param_med - param_lower
+
+            stmt = ("insert into system_parameters (target_id, parameter, posterior, "
+                    f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
+                    f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
+            cur.execute(stmt)
+
+    conn.commit()
 
     cur.close()
     conn.close()
