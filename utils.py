@@ -488,8 +488,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     cur.close()
     conn.close()
 
-def load_priors(target, n_planet=1, P=None, t0=None, a=None, b=None, 
-                ecc=None, p=None, duration=None):
+def load_prior(target, param_name, prior, prior_err, debug=False):
     """
     Load prior values and error from the literature.
     """
@@ -498,16 +497,26 @@ def load_priors(target, n_planet=1, P=None, t0=None, a=None, b=None,
 
     target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
 
-    parameters = {'P': P, 't0': t0, 'a': a, 'b': b, 'ecc': ecc, 'p': p, 'duration': duration}
-    for param in parameters:
-        pass
+    row_id = cur.execute(f"select id from system_parameters where target_id={target_id} and"
+                              f" parameter='{param_name}'").fetchone()[0]
+    if row_id is None:
+        stmt = ("insert into system_parameters (target_id, parameter, prior, prior_err)"
+                f" values ({target_id}, {param_name}, {prior}, {prior_err})")
+    else:
+        stmt = (f"update system_parameters set prior={prior}, prior_err={prior_err}"
+                f" where id={row_id} and target_id={target_id}")
+
+    if debug:
+        print(stmt)
+    else:
+        cur.execute(stmt)
 
     conn.commit()
 
     cur.close()
     conn.close()
 
-def load_results(target, n_planets=1):
+def load_results(target, n_planets=1, debug=False):
     """
     Load the results for the parameters we're interested in.
     """
@@ -544,7 +553,10 @@ def load_results(target, n_planets=1):
             stmt = ("insert into system_parameters (target_id, parameter, posterior, "
                     f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
                     f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
-            cur.execute(stmt)
+            if debug:
+                print(stmt)
+            else:
+                cur.execute(stmt)
 
     conn.commit()
 
