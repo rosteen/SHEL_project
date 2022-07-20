@@ -492,7 +492,17 @@ def load_priors(target, P, t0, a, b, ecc, p, duration):
     """
     Load prior values and error from the literature.
     """
-    pass
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
+
+    parameters = ['P', 't0', 'a', 'b', 'ecc', 'p', 'duration']
+    for param in parameters:
+        pass
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
 
 def load_results(target, n_planets=1):
     """
