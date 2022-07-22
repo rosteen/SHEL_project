@@ -288,7 +288,7 @@ class SHEL_Fitter():
 
         params = ["K_p1",]
         dists = ["uniform",]
-        hyperps = [[-400,400],]
+        hyperps = [[-600,600],]
 
         for instrument in rv_inst_names:
             inst_params = [f'mu_{instrument}',
