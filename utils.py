@@ -44,6 +44,7 @@ def create_shel_db():
                             bjd real,
                             rv real,
                             rv_err real,
+                            exclude bool default FALSE,
                             FOREIGN KEY (target_id) REFERENCES targets (id),
                             FOREIGN KEY (instrument) REFERENCES instruments (id),
                             FOREIGN KEY (reference_id) REFERENCES data_refs (id));"""

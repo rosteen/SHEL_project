@@ -1,8 +1,6 @@
 # From https://iopscience.iop.org/article/10.1088/0004-637X/726/1/52#apj374090t4
 #Table 4 
 #Relative Radial Velocities, Bisector Spans, and Activity Index Measurements of HAT-P-18
-#
-#
 #BJD^a RV^b sigma_RV^c BS sigma_BS S^d sigma_S 
 #(2,454,000+) (m s^-1) (m s^-1) (m s^-1) (m s^-1)   
 397.73420  ...  -11.23 3.79 -28.29 13.90 0.8595 0.0099 

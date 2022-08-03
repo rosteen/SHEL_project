@@ -104,7 +104,7 @@ class SHEL_Fitter():
             stmt = ("select bjd, rv, rv_err from radial_velocities a join "
                     "instruments b on a.instrument = b.id where "
                     f"a.target_id = {self.target_id} and b.name = '{instrument}' "
-                    f"and reference_id = {ref_id}")
+                    f"and reference_id = {ref_id} and exclude is not TRUE")
             if self.debug:
                 print(stmt)
             res = self.cur.execute(stmt).fetchall()

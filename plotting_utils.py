@@ -1,11 +1,12 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set_style('ticks')
-import numpy as np
-import juliet
-
-import matplotlib as mpl
 from brokenaxes import brokenaxes
+import juliet
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import sqlite3 as sql
+
+sns.set_style('ticks')
 mpl.rcParams['figure.dpi']= 200
 
 
@@ -143,4 +144,28 @@ def plot_priors_posteriors(parameter):
     Retrieve the priors and posteriors for all targets for the parameter
     we're interested in and create a scatter plot.
     """
-    pass
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
+    data = {}
+    for field in ("name", "prior", "prior_err", "posterior", 
+                  "posterior_err_upper", "posterior_err_lower"):
+        res = cur.execute(f"select {field} from system_parameters s join targets " 
+                          f"t on s.target_id = t.id where parameter='{parameter}'").fetchall()
+        data[field] = np.array(res).flatten()
+
+    data['prior_err'][np.where(data['prior_err'] < 0)] = 0
+
+    fig = plt.figure(figsize=(5,5))
+    plt.errorbar(data['prior'], data['posterior'], fmt='o', xerr=data['prior_err'],
+                 yerr=[data['posterior_err_lower'], data['posterior_err_upper']])
+
+    # Add a line showing where perfect agreement would be
+    if parameter == 't0_p1':
+        plt.axline([2.454e6, 2.454e6], slope=1, alpha = 0.5, color = 'gray')
+    else:
+        plt.axline([0,0], slope=1, alpha = 0.5, color = 'gray')
+
+    plt.savefig(f'plots/{parameter}_comparison_plot.png')
+
+    cur.close()
+    conn.close()
