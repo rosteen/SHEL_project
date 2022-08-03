@@ -562,3 +562,38 @@ def load_results(target, n_planets=1, debug=False):
 
     cur.close()
     conn.close()
+
+def detect_outlier_results():
+    """
+    Detect any target/parameter combinations where the 3-sigma range of prior 
+    and posterior do not overlap
+    """
+    conn = sql.connect('shel_database.sqlite')
+    cur = conn.cursor()
+
+    stmt = ("select name, parameter, prior, prior_err, posterior, posterior_err_lower, "
+            "posterior_err_upper from system_parameters s join targets t on s.target_id = t.id")
+    res = cur.execute(stmt)
+    for row in res:
+        if row[2] < row[4]:
+            posterior_3sigma = row[5]*3
+        else:
+            posterior_3sigma = row[6]*3
+        
+        diff = abs(row[2] - row[4])
+        
+        if float(row[3]) > 0:
+            overlap_3sigma = posterior_3sigma + row[3]*3
+            prior_err = row[3]
+        else:
+            overlap_3sigma = posterior_3sigma
+            prior_err = "None"
+
+        if diff > overlap_3sigma:
+            print(f"Outlier: {row[0]} {row[1]}. Prior: {row[2]} +/- {prior_err},"
+                  f" Posterior: {row[4]} +/- {posterior_3sigma/3}")
+            print(f"Diff: {diff}, 3 sigma range: {overlap_3sigma}")
+            print()
+
+    cur.close()
+    conn.close()
