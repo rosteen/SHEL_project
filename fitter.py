@@ -285,7 +285,7 @@ class SHEL_Fitter():
 
 
         # Concat ref_id with instrument name for rv data keys
-        rv_inst_names = self._get_rv_inst_names()
+        rv_inst_names = self._get_rv_inst_names(exclude_sources=exclude_rv_sources)
 
         params = ["K_p1",]
         dists = ["uniform",]
