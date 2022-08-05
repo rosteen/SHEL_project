@@ -545,15 +545,23 @@ def load_results(target, n_planets=1, debug=False):
         for param in parameters:
             param_id = f"{param}_p{i}"
 
-            #result = results.posteriors['posterior_samples'][param_id]
-            #param_med, param_upper, param_lower = juliet.utils.get_quantiles(result)
-            #err_upper = param_upper - param_med
-            #err_lower = param_med - param_lower
             param_med, err_upper, err_lower = posteriors[param_id]
 
-            stmt = ("insert into system_parameters (target_id, parameter, posterior, "
-                    f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
-                    f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
+            # Check to see if we're updating existing results
+            stmt = (f"select id from system_parameters where target_id = {target_id} and "
+                    f"parameter = '{param_id}'")
+            row_id = cur.execute(stmt).fetchone()
+
+            if row_id is None:
+                stmt = ("insert into system_parameters (target_id, parameter, posterior, "
+                        f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
+                        f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
+            else:
+                row_id = row_id[0]
+                stmt = (f"update system_parameters set posterior={param_med}, "
+                        f"posterior_err_upper={err_upper}, posterior_err_lower={err_lower}"
+                        f" where id={row_id}")
+
             if debug:
                 print(stmt)
             else:
