@@ -162,7 +162,7 @@ def plot_tess(target, phased=True):
     fig = plt.figure(tight_layout=True)
 
     # Divide figure using gridspec:
-    gs = GridSpec(4, split_inds.shape[0]-1, figure = fig)
+    gs = GridSpec(split_inds.shape[0]-1, 4, figure = fig)
 
     if phased:
         t,f,ferr = dataset.times_lc['TESS'], dataset.data_lc['TESS'], dataset.errors_lc['TESS']
