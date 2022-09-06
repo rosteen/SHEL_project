@@ -2,6 +2,7 @@ from brokenaxes import brokenaxes
 import juliet
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 import numpy as np
 import seaborn as sns
 import sqlite3 as sql
@@ -138,6 +139,77 @@ def plot_rvs(target, max_time_diff = 50):
     bax.legend(fontsize=17, loc = 'upper right')
     #plt.tight_layout()
     plt.savefig(f'juliet_fits/{target}/{target}_rvs_phased.pdf')
+
+def plot_tess(target, phased=True):
+
+    instrument="TESS"
+
+    # This should just load the existing fit
+    dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
+    results = dataset.fit(use_dynesty=True, dynamic=True)
+
+    period = np.median(results.posteriors['posterior_samples']['P_p1'])
+    t0 = np.median(results.posteriors['posterior_samples']['t0_p1'])
+
+    tess_times = dataset.times_lc['TESS']
+    tdiffs = tess_times[1:]-tess_times[:-1]
+
+    split_times = np.where(tdiffs>10)[0]
+    split_inds = np.append([0,], split_times)
+    split_inds = np.append(split_inds, [-1])
+    split_inds
+
+    fig = plt.figure(tight_layout=True)
+
+    # Divide figure using gridspec:
+    gs = GridSpec(4, split_inds.shape[0]-1, figure = fig)
+
+    if phased:
+        t,f,ferr = dataset.times_lc['TESS'], dataset.data_lc['TESS'], dataset.errors_lc['TESS']
+
+        model, components = results.lc.evaluate('TESS', return_components = True)
+        gp = model - components['transit']
+
+        phases = juliet.utils.get_phases(t, period, t0) * period * 24
+
+        plt.errorbar(phases, f - gp , ferr, fmt = '.', elinewidth=1,ms=2, zorder=1, alpha = 0.5)
+
+        idx = np.argsort(phases)
+
+        plt.plot(phases[idx], components['transit'][idx],zorder=2)
+
+        plt.xlim(-3,3)
+        plt.ylim(f.min()-0.005, 1.01)
+        plt.ylabel('Relative flux')
+        plt.xlabel('Time from mid-transit (hours)')
+        plt.savefig(f'juliet_fits/{target}/tess_phased_lc_{target}.png')
+    else:
+        t,f,ferr = dataset.times_lc['TESS'], dataset.data_lc['TESS'], dataset.errors_lc['TESS']
+
+        for i in range(len(split_inds)-1):
+            ax = fig.add_subplot(gs[i,:])
+            
+            model, components = results.lc.evaluate('TESS', return_components = True)
+            gp = model - components['transit']
+
+            t_plot = t[split_inds[i]+1:split_inds[i+1]] - 2400000.5
+            fgp_plot = (f - gp)[split_inds[i]+1:split_inds[i+1]]
+            ferr_plot = ferr[split_inds[i]+1:split_inds[i+1]]
+            
+            ax.errorbar(t_plot, fgp_plot, ferr_plot, fmt = '.', elinewidth=1,ms=2, zorder=1, alpha = 0.5)
+            
+            ax.plot(t_plot, components['transit'][split_inds[i]+1:split_inds[i+1]],zorder=2)
+            
+            ax.set_xlim(t[split_inds[i]+1] - 2400000.5, t[split_inds[i+1]] - 2400000.5)
+            ax.set_ylim(f.min()-0.005, 1.01)
+            #plt.text(-2.5,0.985,'Sector '+sector.split('TESS')[-1], fontsize=13)
+            ax.set_ylabel('Relative flux')
+
+        ax.set_xlabel('Tess Time (days)')
+        plt.savefig(f'juliet_fits/{target}/tess_lcs_{target}.png')
+
+def plot_non_tess_lcs(target):
+    pass
 
 def plot_priors_posteriors(parameter):
     """
