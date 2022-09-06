@@ -37,7 +37,7 @@ class SHEL_Fitter():
                          not in exclude_sources]
         return rv_inst_names
 
-    def _get_lc_inst_names(self):
+    def _get_lc_inst_names(self, exclude_sources=[]):
         # Get all instruments used for LC observations of this target, grouped by
         # reference so we can treat the same instrument separately for different refs.
         stmt = ("select reference_id, name from light_curves "
@@ -47,10 +47,11 @@ class SHEL_Fitter():
         lc_insts = self.cur.execute(stmt).fetchall()
 
         # Concat ref_id with instrument name for
-        lc_inst_names = [f"{x[1]}-{x[0]}".replace("-None", "") for x in lc_insts]
+        lc_inst_names = [f"{x[1]}-{x[0]}".replace("-None", "") for x in lc_insts if x[0]
+                         not in exclude_sources]
         return lc_inst_names
 
-    def get_light_curve_data(self, TESS_only=False):
+    def get_light_curve_data(self, TESS_only=False, exclude_sources=[]):
         """
         Get the light curve data for the target, optionally returning
         only the TESS data.
@@ -70,6 +71,9 @@ class SHEL_Fitter():
                         f"a.target_id = {self.target_id} and b.name = '{instrument}'")
             else:
                 instrument, ref_id = lc_inst_name.split("-")
+                if exclude_sources is not None:
+                    if int(ref_id) in exclude_sources:
+                        continue
                 stmt = ("select bjd, flux, flux_err from light_curves a join "
                         "instruments b on a.instrument = b.id where "
                         f"a.target_id = {self.target_id} and b.name = '{instrument}' "
@@ -191,7 +195,7 @@ class SHEL_Fitter():
 
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
-                       duration=None, exclude_rv_sources=[]):
+                       duration=None, exclude_rv_sources=[], exclude_lc_sources=[]):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet. If self.tess_systematics is populated, the fit will use those

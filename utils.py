@@ -584,6 +584,9 @@ def detect_outlier_results():
             "posterior_err_upper from system_parameters s join targets t on s.target_id = t.id")
     res = cur.execute(stmt)
     for row in res:
+        if row[2] is None:
+            print(f"No prior: {row}")
+            continue
         if row[2] < row[4]:
             posterior_3sigma = row[5]*3
         else:
