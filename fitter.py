@@ -128,7 +128,7 @@ class SHEL_Fitter():
 
         return times_rv, data_rv, errors_rv
 
-    def fit_tess_systematics(self, period, center, duration=None):
+    def fit_tess_systematics(self, period, center, duration=None, out_folder_suffix=""):
         """
         Fit the out of transit TESS data to get the TESS systematics, so we
         can fix them in the planetary parameter fitting.
@@ -180,9 +180,10 @@ class SHEL_Fitter():
             priors[param]['distribution'], priors[param]['hyperparameters'] = dist, hyperp
 
         # Perform the juliet fit. Load dataset first (note the GP regressor will be the times):
+        out_folder = f'juliet_fits/{self.target}{out_folder_suffix}/detrend_TESS'
         detrend_dataset = juliet.load(priors=priors, t_lc = times, y_lc = fluxes,
                                       yerr_lc = fluxes_error, GP_regressors_lc = times,
-                                      out_folder = f'juliet_fits/{self.target}/detrend_TESS')
+                                      out_folder = out_folder)
         # Fit:
         results = detrend_dataset.fit()
         ts = {}
@@ -195,7 +196,8 @@ class SHEL_Fitter():
 
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
-                       duration=None, exclude_rv_sources=[], exclude_lc_sources=[]):
+                       duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
+                       out_folder_suffix=""):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet. If self.tess_systematics is populated, the fit will use those
@@ -353,7 +355,7 @@ class SHEL_Fitter():
                 fluxes[inst] = fluxes[inst][idx_oot][sort_times]
                 fluxes_error[inst] = fluxes_error[inst][idx_oot][sort_times]
 
-        out_folder = f"juliet_fits/{self.target}"
+        out_folder = f"juliet_fits/{self.target}{out_folder_suffix}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
                   "yerr_lc": fluxes_error, "out_folder": out_folder}
 
