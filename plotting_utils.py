@@ -226,9 +226,12 @@ def plot_non_tess_lcs(target):
     non_tess_insts = list(dataset.times_lc.keys())
     non_tess_insts.remove("TESS")
 
-    if len(non_tess_insts) == 0:
+    n_insts = len(non_tess_insts)
+    if n_insts == 0:
         print(f"\nNo non-TESS light curves for {target}!\n")
         return
+
+    n_rows = np.ceil(n_insts/3)
 
     t, lc, lcerr = {}, {}, {}
 
@@ -238,15 +241,25 @@ def plot_non_tess_lcs(target):
         lc[instrument] = dataset.data_lc[instrument]
         lcerr[instrument] = dataset.errors_lc[instrument]
 
-    fig = plt.figure(figsize=(13,3))
+    fig = plt.figure(figsize=(3*np.min([n_insts, 3]),3*n_rows))
 
     # Divide figure using gridspec:
-    gs = GridSpec(5, len(non_tess_insts), figure = fig)
+    gs = GridSpec(int(5*n_rows), int(np.min([n_insts, 3])), figure = fig)
 
-    counter = 0
-    for instrument in non_tess_insts:
-        ax = fig.add_subplot(gs[0:4, counter])
-        ax_residuals = fig.add_subplot(gs[4:, counter])
+    for i in range(n_insts):
+
+        instrument = non_tess_insts[i]
+        counter = i%3
+        min_gs = int(np.floor(i/3)*5)
+
+        print(f"{instrument}, {counter}, {min_gs}")
+
+        t = dataset.times_lc[instrument]
+        lc = dataset.data_lc[instrument]
+        lcerr = dataset.errors_lc[instrument]
+
+        ax = fig.add_subplot(gs[min_gs:min_gs+4, counter])
+        ax_residuals = fig.add_subplot(gs[min_gs+4:min_gs+5, counter])
         
         # Extract jitters; add them to the errors:
         sigma_w = np.median(results.posteriors['posterior_samples']['sigma_w_'+instrument])
@@ -313,7 +326,7 @@ def plot_non_tess_lcs(target):
         counter += 1
 
     plt.tight_layout()
-    plt.savefig(f'juliet_fits/{target}/non_tess_lcs_{target}.pdf')
+    plt.savefig(f'juliet_fits/{target}/non_tess_lcs_{target}.png')
 
 def plot_priors_posteriors(parameter):
     """
