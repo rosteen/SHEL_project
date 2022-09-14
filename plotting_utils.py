@@ -141,6 +141,9 @@ def plot_rvs(target, max_time_diff = 50):
     plt.savefig(f'juliet_fits/{target}/{target}_rvs_phased.pdf')
 
 def plot_tess(target, phased=True):
+    '''
+    Plot the TESS light curves, both phase-folded and non-folded
+    '''
 
     instrument="TESS"
 
@@ -209,7 +212,108 @@ def plot_tess(target, phased=True):
         plt.savefig(f'juliet_fits/{target}/tess_lcs_{target}.png')
 
 def plot_non_tess_lcs(target):
-    pass
+    '''
+    Plot the non-TESS light curves. Currently coded to phase-fold each instrument
+    individually - I should probably just plot all the individual transit curves. 
+    '''
+
+    dataset = juliet.load(input_folder = f'juliet_fits/{target}/') 
+    results = dataset.fit(use_dynesty=True, dynamic=True)
+
+    period, t0 = (np.median(results.posteriors['posterior_samples']['P_p1']),
+                  np.median(results.posteriors['posterior_samples']['t0_p1']))
+
+    non_tess_insts = list(dataset.times_lc.keys())
+    non_tess_insts.remove("TESS")
+
+    if len(non_tess_insts) == 0:
+        print(f"\nNo non-TESS light curves for {target}!\n")
+        return
+
+    t, lc, lcerr = {}, {}, {}
+
+    for instrument in non_tess_insts:
+        # Extract lightcurve data:
+        t[instrument] = dataset.times_lc[instrument]
+        lc[instrument] = dataset.data_lc[instrument]
+        lcerr[instrument] = dataset.errors_lc[instrument]
+
+    fig = plt.figure(figsize=(13,3))
+
+    # Divide figure using gridspec:
+    gs = GridSpec(5, len(non_tess_insts), figure = fig)
+
+    counter = 0
+    for instrument in non_tess_insts:
+        ax = fig.add_subplot(gs[0:4, counter])
+        ax_residuals = fig.add_subplot(gs[4:, counter])
+        
+        # Extract jitters; add them to the errors:
+        sigma_w = np.median(results.posteriors['posterior_samples']['sigma_w_'+instrument])
+        lcerr = np.sqrt(lcerr**2 + (sigma_w*1e-6)**2)
+        
+        # Phases:
+        phases = juliet.utils.get_phases(t, period, t0) * period * 24.
+        
+        # Evaluate model:
+        model, upper, lower, components = results.lc.evaluate(instrument, return_components = True, return_err = True)
+        model, upper95, lower95, components = results.lc.evaluate(instrument, return_components = True, return_err = True, \
+                                                                  alpha = 0.95)
+     
+        gp = model - components['transit']
+        transit_upper = upper - gp
+        transit_lower = lower - gp
+        transit_upper95 = upper95 - gp
+        transit_lower95 = lower95 - gp
+        
+        # Evaluate the transit model only on the entire time-range:
+        transit_times = np.linspace(t0 - (5./24.), t0 + (5./24.), 1000)
+        transit_model = results.lc.evaluate(instrument, t = transit_times, evaluate_transit=True)
+        
+        transit_model = transit_model / np.max(transit_model)
+        transit_phases = juliet.utils.get_phases(transit_times, period, t0) * period * 24.
+        transit_idx = np.argsort(transit_phases)
+        
+        nbins = 15
+        # Plot detrended data:
+        idx = np.argsort(phases)
+        ax.errorbar(phases, lc - gp, lcerr, fmt = '.', color = 'black', alpha = 0.1, ms=2, rasterized=True, zorder = 1)
+        # Plot binned data:
+        xbin, ybin, ybinerr = juliet.utils.bin_data(phases[idx], lc[idx]-gp[idx], nbins)
+        ax.errorbar(xbin, ybin, ybinerr, fmt = 'o', mec = 'black', ecolor = 'black', mfc = 'white', \
+                    elinewidth=1, rasterized=True, zorder = 5)
+        
+        # Plot transit models and errors:
+        ax.plot(transit_phases[transit_idx], transit_model[transit_idx], color = 'blue', zorder = 6)
+        
+        # Residuals:
+        ax_residuals.errorbar(phases, (lc-model)*1e6, lcerr*1e6, fmt = '.', color = 'black', alpha = 0.1, ms=2, rasterized=True)
+        
+        ax_residuals.plot([-5,5], [0., 0.], '--', color = 'grey', zorder = 1)
+        xbin, ybin, ybinerr = juliet.utils.bin_data(phases[idx], (lc[idx]-model[idx])*1e6, nbins)
+        ax_residuals.errorbar(xbin, ybin, ybinerr, fmt = 'o', mec = 'black', ecolor = 'black', mfc = 'white', \
+                    elinewidth=1, rasterized=True, zorder = 5)
+        
+        # Details for top plots:
+        ax.set_xlim(-3,3)
+        ax.set_ylim(0.97,1.01)
+        ax.set_xticklabels([])
+        
+        if counter == 0:
+            
+            ax.set_ylabel('Relative flux', fontsize = 12)
+            ax_residuals.set_ylabel('O-C (ppm)', fontsize = 12)
+            
+
+        ax.text(0, 1, f"{instrument}", horizontalalignment='center', fontsize = 12)
+        # Details for bottom plots:
+        ax_residuals.set_xlim(-3,3)
+        ax_residuals.set_ylim(-2000, 2000)
+        ax_residuals.set_xlabel('Time from mid-transit (hours)', fontsize = 12)
+        counter += 1
+
+    plt.tight_layout()
+    plt.savefig(f'juliet_fits/{target}/non_tess_lcs_{target}.pdf')
 
 def plot_priors_posteriors(parameter):
     """
