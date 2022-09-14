@@ -345,13 +345,17 @@ def plot_priors_posteriors(parameter):
     data['prior_err'][np.where(data['prior_err'] < 0)] = 0
 
     fig = plt.figure(figsize=(5,5))
-    plt.errorbar(data['prior'], data['posterior'], fmt='o', xerr=data['prior_err'],
+
+    if parameter in ['P_p1', 't0_p1']:
+        plt.errorbar(data['prior']-data['posterior'],data['prior']-data['posterior'],
+                     fmt='o', xerr=data['prior_err'],
+                     yerr=[data['posterior_err_lower'], data['posterior_err_upper']])
+    else:
+        plt.errorbar(data['prior'], data['posterior'], fmt='o', xerr=data['prior_err'],
                  yerr=[data['posterior_err_lower'], data['posterior_err_upper']])
 
     # Add a line showing where perfect agreement would be
-    if parameter == 't0_p1':
-        plt.axline([2.454e6, 2.454e6], slope=1, alpha = 0.5, color = 'gray')
-    else:
+    if parameter not in ['P_p1', 't0_p1']:
         plt.axline([0,0], slope=1, alpha = 0.5, color = 'gray')
 
     plt.savefig(f'plots/{parameter}_comparison_plot.png')
