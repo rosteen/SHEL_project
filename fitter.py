@@ -320,7 +320,7 @@ class SHEL_Fitter():
         # Light curve data
         times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
 
-        # Intialize priors for the non-TESS light curve instruments
+        # Initialize priors for the non-TESS light curve instruments
         for inst in times.keys():
             if inst == "TESS":
                 continue
