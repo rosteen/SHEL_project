@@ -32,10 +32,18 @@ def create_shel_db():
                             url text NOT NULL,
                             local_filename text);"""
 
-    create_int_table = """CREATE TABLE IF NOT EXISTS instruments (
+    create_inst_table = """CREATE TABLE IF NOT EXISTS instruments (
                             id integer PRIMARY KEY,
                             name text NOT NULL,
                             sitename text);"""
+
+    create_filter_table = """CREATE TABLE IF NOT EXISTS filters (
+                            id integer PRIMARY KEY,
+                            name text NOT NULL);"""
+
+    create_detector_table = """CREATE TABLE IF NOT EXISTS detectors (
+                            id integer PRIMARY KEY,
+                            name text NOT NULL);"""
 
     create_rv_table = """CREATE TABLE IF NOT EXISTS radial_velocities (
                             target_id int,
@@ -53,12 +61,16 @@ def create_shel_db():
                             target_id int,
                             reference_id int,
                             instrument int,
+                            filter_id int,
+                            detector_id int,
                             bjd real,
                             flux real,
                             flux_err real,
                             FOREIGN KEY (target_id) REFERENCES targets (id),
                             FOREIGN KEY (reference_id) REFERENCES data_refs (id),
-                            FOREIGN KEY (instrument) REFERENCES instruments (id));"""
+                            FOREIGN KEY (instrument) REFERENCES instruments (id));
+                            FOREIGN KEY (filter_id) REFERENCES filters (id));
+                            FOREIGN KEY (detector_id) REFERENCES detectors (id));"""
 
     create_stellar_table = """CREATE TABLE IF NOT EXISTS stellar_parameters (
                               target_id integer PRIMARY KEY,
@@ -126,6 +138,40 @@ def helio_to_bary(coords, hjd, obs_name):
 
     return guess.tdb + ltt
 
+def convert_to_bjd_utc(time_type, t, cur):
+    # Convert other time standards to BJD-TDB
+    if time_type in ("JD", "HJD"):
+        stmt = f'select sitename from instruments where name = "{instrument}"'
+        obsname = cur.execute(stmt).fetchone()[0]
+        if obsname is None or ra is None or dec is None:
+            raise ValueError(f"Observatory sitename and RA and Dec  for {target}"
+                             " must be populated to convert to BJD")
+
+    if time_type == "HJD":
+        bjd = helio_to_bary((ra, dec), t, obsname)
+    elif time_type == "JD":
+        JDUTC = Time(t, format='jd', scale='utc')
+        star = coords_to_SkyCoord((ra, dec))
+        bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
+                                      obsname=obsname)[0][0]
+    elif time_type == "BJD-UTC":
+        utc = Time(t, format='jd', scale='utc')
+        bjd = utc.tdb.value
+
+    return bjd
+
+def get_reference_id(filename, ref_url, cur):
+    # Get the row ID for the reference URL
+    ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()
+
+    if ref_id is None:
+        stmt = f"insert into data_refs (local_filename, url) values ('{filename}', '{ref_url}')"
+        cur.execute(stmt)
+        ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()[0]
+    else:
+        ref_id = ref_id[0]
+
+    return ref_id
 
 def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
                    target=None, target_prefix = None, instrument=None, inst_list=None,
@@ -150,13 +196,7 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
     cur = conn.cursor()
 
     # get reference ID
-    ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()
-    if ref_id is None:
-        stmt = f"insert into data_refs (local_filename, url) values ('{filename}', '{ref_url}')"
-        cur.execute(stmt)
-        ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()[0]
-    else:
-        ref_id = ref_id[0]
+    ref_id = get_reference_id(filename, ref_url, cur)
     if debug:
         print(f"Refnum: {ref_id}")
 
@@ -225,23 +265,8 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
             t = float(data[t_col]) + time_offset
             if time_type == "BJD-TDB":
                 bjd = t
-            elif time_type in ("JD", "HJD"):
-                stmt = f'select sitename from instruments where name = "{instrument}"'
-                obsname = cur.execute(stmt).fetchone()[0]
-                if obsname is None or ra is None or dec is None:
-                    raise ValueError(f"Observatory sitename and RA and Dec  for {target}"
-                                     " must be populated to convert to BJD")
-
-            if time_type == "HJD":
-                bjd = helio_to_bary((ra, dec), t, obsname)
-            elif time_type == "JD":
-                JDUTC = Time(t, format='jd', scale='utc')
-                star = coords_to_SkyCoord((ra, dec))
-                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
-                                              obsname=obsname)[0][0]
-            elif time_type == "BJD-UTC":
-                utc = Time(t, format='jd', scale='utc')
-                bjd = utc.tdb.value
+            else:
+                bjd = convert_to_bjd_utc(time_type, t, cur)
 
             if debug:
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
@@ -276,7 +301,7 @@ def ingest_rv_data(filename, ref_url, t_col, rv_col, err_col, target_col=None,
     conn.close()
 
 
-def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
+def ingest_tess_data(directory, target, sector, db_path="shel_database.sqlite",
                      debug=False):
     """
     Ingest any TESS light curves in subdirectories of given directory.
@@ -343,11 +368,39 @@ def ingest_tess_data(directory, target, db_path="shel_database.sqlite",
 def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                    target=None, instrument=None, inst_list=None, inst_col=None,
                    delimiter="\t", time_type="BJD-TDB", time_offset=0,
-                   data_type="flux", filter_target=None, constant_error=None,
+                   data_type="flux", filter=None, detector=None,
+                   filter_target=None, constant_error=None,
                    debug=False):
     """
     Ingest non-TESS light curve data. Most of this code is shared with the RV
     file ingestion code and should be consolidated.
+
+    Parameters
+
+    filename: str
+    ref_url: str
+    t_col: int
+    lc_col: int
+    err_col: int
+    target_col: int, optional
+    target: str, optional
+    instrument: str, optional
+    inst_list: list, optional
+    inst_col: int, optional
+    delimiter: str
+
+    filter: str, optional
+        Filter used for this observation. Currently only handles single-filter files.
+
+    Detector: str, optional
+        Detector for the file being loaded. Currently only used for JWST.
+
+    filter_target: str, optional
+        Only load the specified target. Used for files with data for multiple targets,
+        to reload or update data for target.
+
+    constant_error: float, optional
+
     """
     if target_col is None and target is None:
         raise ValueError("Must specify either a target (for single-target file) or"
@@ -363,13 +416,7 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     cur = conn.cursor()
 
     # get reference ID
-    ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()
-    if ref_id is None:
-        stmt = f"insert into data_refs (local_filename, url) values ('{filename}', '{ref_url}')"
-        cur.execute(stmt)
-        ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()[0]
-    else:
-        ref_id = ref_id[0]
+    ref_id = get_reference_id(filename, ref_url, cur)
     if debug:
         print(f"Refnum: {ref_id}")
 
@@ -384,6 +431,16 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
     if instrument is not None:
         instrument_id = cur.execute("select id from instruments where "
                                     f"name='{instrument}'").fetchone()[0]
+
+    # Get filter ID
+    if filter is not None:
+        filter_id = cur.execute("select id from filters where "
+                                f"name='{filter}'").fetchone()[0]
+
+    # Get detector ID
+    if detector is not None:
+        detector_id = cur.execute("select id from detectors where "
+                                  f"name='{detector}'").fetchone()[0]
 
     with open(f"data/light_curves/{filename}", "r") as f:
         freader = csv.reader(f, delimiter=delimiter)
@@ -441,23 +498,8 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
             t = float(data[t_col]) + time_offset
             if time_type == "BJD-TDB":
                 bjd = t
-            elif time_type in ("JD", "HJD"):
-                stmt = f'select sitename from instruments where name = "{instrument}"'
-                obsname = cur.execute(stmt).fetchone()[0]
-                if obsname is None or ra is None or dec is None:
-                    raise ValueError(f"Observatory sitename and RA and Dec  for {target}"
-                                     " must be populated to convert to BJD")
-
-            if time_type == "HJD":
-                bjd = helio_to_bary((ra, dec), t, obsname)
-            elif time_type == "JD":
-                JDUTC = Time(t, format='jd', scale='utc')
-                star = coords_to_SkyCoord((ra, dec))
-                bjd = utc_tdb.JDUTC_to_BJDTDB(JDUTC, ra=star.ra.deg, dec=star.dec.deg,
-                                              obsname=obsname)[0][0]
-            elif time_type == "BJD-UTC":
-                utc = Time(t, format='jd', scale='utc')
-                bjd = utc.tdb.value
+            else:
+                bjd = convert_to_bjd_utc(time_type, t, cur)
 
             if debug:
                 print(f"Original time: {t}, BJD-TDB: {bjd}")
