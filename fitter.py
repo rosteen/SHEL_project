@@ -52,13 +52,13 @@ class SHEL_Fitter():
         for x in lc_insts:
             temp_name = x[1]
             if x[0] is not None:
-                temp_name += f"-ref-{x[0]}"
+                temp_name += f"-ref{x[0]}"
             if x[2] is not None:
-                temp_name += f"-filt-{x[2]}"
+                temp_name += f"-filt{x[2]}"
             if x[3] is not None:
-                temp_name += f"-det-{x[3]}"
+                temp_name += f"-det{x[3]}"
             if x[4] is not None:
-                temp_name += f"-sec-{x[4]}"
+                temp_name += f"-sec{x[4]}"
             lc_inst_names.append(temp_name)
 
         print(f"Light curve instrument keys: {lc_inst_names}")
@@ -78,20 +78,27 @@ class SHEL_Fitter():
             lc_inst_names = self._get_lc_inst_names()
 
         for lc_inst_name in lc_inst_names:
-            if len(lc_inst_name.split("-")) == 1:
-                instrument = lc_inst_name
-                stmt = ("select bjd, flux, flux_err from light_curves a join "
-                        "instruments b on a.instrument = b.id where "
-                        f"a.target_id = {self.target_id} and b.name = '{instrument}'")
-            else:
-                instrument, ref_id = lc_inst_name.split("-")
-                if exclude_sources is not None:
-                    if int(ref_id) in exclude_sources:
-                        continue
-                stmt = ("select bjd, flux, flux_err from light_curves a join "
-                        "instruments b on a.instrument = b.id where "
-                        f"a.target_id = {self.target_id} and b.name = '{instrument}' "
-                        f"and reference_id = {ref_id}")
+            inst_spec = lc_inst_name.split("-")
+            # Always have at least a name for the instrument
+            instrument = inst_spec[0]
+            stmt = ("select bjd, flux, flux_err from light_curves a join "
+                    "instruments b on a.instrument = b.id where "
+                    f"a.target_id = {self.target_id} and b.name = '{instrument}'")
+            if len(inst_spec) > 1:
+                for i in range(1, len(inst_spec)):
+                    spec = inst_spec[i]
+                    if spec[:3] == "ref":
+                        ref_id = spec[3:]
+                        if exclude_sources is not None:
+                            if int(ref_id) in exclude_sources:
+                                continue
+                        stmt += f" and reference_id = {ref_id}"
+                    elif spec[:4] == "filt":
+                        stmt += f" and filter_id = {spec[4:]}"
+                    elif spec[:3] == "det":
+                        stmt += f" and detector_id = {spec[3:]}"
+                    elif spec[:3] == "sec":
+                        stmt += f" and sector = {spec[3:]}"
 
             if self.debug:
                 print(stmt)
