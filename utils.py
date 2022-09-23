@@ -162,6 +162,9 @@ def convert_to_bjd_utc(time_type, t, cur):
 
 def get_reference_id(filename, ref_url, cur):
     # Get the row ID for the reference URL
+    if ref_url == "Unpublished":
+        return "Null"
+
     ref_id = cur.execute(f"select id from data_refs where url='{ref_url}'").fetchone()
 
     if ref_id is None:
@@ -520,8 +523,20 @@ def ingest_lc_data(filename, ref_url, t_col, lc_col, err_col, target_col=None,
                 flux = flux[0]
                 flux_err = flux_err[0]
 
-            stmt = ("insert into light_curves (target_id, reference_id, instrument, bjd, flux, flux_err) "
-                    f"values ({target_id}, {ref_id}, {instrument_id}, {bjd}, {flux}, {flux_err})")
+            field_stmt = ("insert into light_curves (target_id, reference_id, "
+                          "instrument, bjd, flux, flux_err")
+            values_stmt = f"values ({target_id}, {ref_id}, {instrument_id}, {bjd}, {flux}, {flux_err}"
+            
+            if filter is not None:
+                field_stmt += ", filter_id"
+                values_stmt += f", {filter_id}"
+            if detector is not None:
+                field_stmt += ", detector_id"
+                values_stmt += f", {detector_id}"
+            field_stmt += ") "
+            values_stmt += ") "
+
+            stmt = field_stmt + values_stmt
             if debug:
                 print(stmt)
             else:

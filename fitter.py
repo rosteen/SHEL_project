@@ -40,15 +40,29 @@ class SHEL_Fitter():
     def _get_lc_inst_names(self, exclude_sources=[]):
         # Get all instruments used for LC observations of this target, grouped by
         # reference so we can treat the same instrument separately for different refs.
-        stmt = ("select reference_id, name from light_curves "
-                "a join instruments b on a.instrument = b.id where "
-                f"a.target_id = {self.target_id} group by reference_id, name")
+        stmt = ("select reference_id, name, filter_id, detector_id, sector from "
+                "light_curves a join instruments b on a.instrument = b.id where "
+                f"a.target_id = {self.target_id} group by reference_id, name, "
+                "filter_id, detector_id, sector")
 
         lc_insts = self.cur.execute(stmt).fetchall()
 
         # Concat ref_id with instrument name for
-        lc_inst_names = [f"{x[1]}-{x[0]}".replace("-None", "") for x in lc_insts if x[0]
-                         not in exclude_sources]
+        lc_inst_names = []
+        for x in lc_insts:
+            temp_name = x[1]
+            if x[0] is not None:
+                temp_name += f"-ref-{x[0]}"
+            if x[2] is not None:
+                temp_name += f"-filt-{x[2]}"
+            if x[3] is not None:
+                temp_name += f"-det-{x[3]}"
+            if x[4] is not None:
+                temp_name += f"-sec-{x[4]}"
+            lc_inst_names.append(temp_name)
+
+        print(f"Light curve instrument keys: {lc_inst_names}")
+
         return lc_inst_names
 
     def get_light_curve_data(self, TESS_only=False, exclude_sources=[]):
