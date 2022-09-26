@@ -337,7 +337,7 @@ class SHEL_Fitter():
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}", f"'p_p1_{inst}'," f"GP_sigma_{inst}",
+                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}" f"GP_sigma_{inst}",
                       f"GP_rho_{inst}"]
             hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
                        [1e-6, 1e6], [1e-3,1e3]]
