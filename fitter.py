@@ -218,7 +218,7 @@ class SHEL_Fitter():
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
-                       out_folder_suffix=""):
+                       out_folder_suffix="", linear_models={}):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet. If self.tess_systematics is populated, the fit will use those
@@ -245,6 +245,10 @@ class SHEL_Fitter():
             Flag to fit TESS out of transit data separately to set systematics
         TESS_only: bool
             Flag to drop non-TESS photometry
+        linear_models: dict, optional
+            Dictionary with keys specifying which instruments to fit with an LM instead of GP.
+            Value is either None, in which case just a linear fit will be done, or an index 
+            at which a jump occurs, in which case a jump will also be fitted.
         """
 
         # Name of the parameters to be fit. We always at least want TESS photometry
@@ -335,12 +339,30 @@ class SHEL_Fitter():
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}", f"GP_sigma_{inst}",
-                      f"GP_rho_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
-                       [1e-6, 1e6], [1e-3,1e3]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform',
-                     'loguniform', 'loguniform']
+                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}"]
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3]]
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform']
+
+            # Initialize linear model parameters for fitting systematics if desired
+            if inst in linear_models:
+                params += [f'theta0_{inst}']
+                hyperps += [[-10, 10]]
+                dists += ['uniform']
+                regressor = np.zeros((times[inst].shape[0], 1))
+                regressor[:, 0] = (times[inst] - np.mean(times[inst]))/np.std(times[inst])
+
+                if linear_models[inst] is not None:
+                    params += [f'theta1_{inst}']
+                    hyperps += [[-10, 10]]
+                    dists += ['uniform']
+                    regressor = np.hstack((regressor, np.zeros((times[inst].shape[0], 1))))
+                    regressor[linear_models[inst]:, 1] = 1
+
+            # Otherwise we always fit a GP for the systematics
+            else:
+                params += [f"GP_sigma_{inst}", f"GP_rho_{inst}"]
+                hyperps = [[1e-6, 1e6], [1e-3,1e3]]
+                dists += ['loguniform', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
