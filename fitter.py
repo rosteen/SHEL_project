@@ -251,40 +251,31 @@ class SHEL_Fitter():
         params = ['P_p1',
                   't0_p1',
                   'b_p1',
-                  'p_p1',
-                  'q1_TESS',
-                  'q2_TESS',
                   'ecc_p1',
                   'omega_p1',
-                  'rho',
-                  'mdilution_TESS',
-                  'mflux_TESS',
-                  'sigma_w_TESS',
-                  'GP_rho_TESS',
-                  'GP_sigma_TESS']
+                  'rho']
 
         # Distribution for each of the parameters:
-        dists = ['normal','normal', 'normal','uniform','uniform',
-                 'uniform','uniform','fixed','loguniform', 'fixed']
+        dists = ['normal','normal', 'normal',
+                 'uniform','fixed','loguniform', 'fixed']
 
         hyperps = [[period, period_err],
                    [t0, t0_err],
                    [b, b_err],
-                   [0, 0.3],
                    [0., 1.],
                    [0., 1.],
                    [0., 0.5],
                    90.,
-                   [100., 10000.],
-                   1.0,]
+                   [100., 10000.]]
 
         # Add the appropriate distributions and values for TESS systematics
-        if self.tess_systematics is None:
-            dists += ['normal', 'loguniform', 'loguniform', 'loguniform']
-            hyperps += [[0.,0.1], [0.1, 1000.], [1e-6, 1e6], [1e-3, 1e3]]
-        else:
-            dists += ['fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [self.tess_systematics['mflux_TESS'],
+        if self.tess_systematics is not None:
+            params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 
+                       'mflux_TESS', 'sigma_w_TESS', 
+                       'GP_rho_TESS', 'GP_sigma_TESS']
+            dists += ['fixed', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
+            hyperps += [1, [0., 1.], [0., 1.],
+                        self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
                         self.tess_systematics['GP_rho_TESS'],
                         self.tess_systematics['GP_sigma_TESS']]
@@ -343,14 +334,14 @@ class SHEL_Fitter():
 
         # Initialize priors for the non-TESS light curve instruments
         for inst in times.keys():
-            if inst == "TESS":
+            if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}", f"GP_sigma_{inst}",
+                      f"q1_{inst}", f"q2_{inst}", f"'p_p1_{inst}'," f"GP_sigma_{inst}",
                       f"GP_rho_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0],
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
                        [1e-6, 1e6], [1e-3,1e3]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform',
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform'
                      'loguniform', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
