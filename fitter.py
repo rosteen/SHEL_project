@@ -257,13 +257,11 @@ class SHEL_Fitter():
 
         # Distribution for each of the parameters:
         dists = ['normal','normal', 'normal',
-                 'uniform','fixed','loguniform', 'fixed']
+                 'uniform','fixed','loguniform']
 
         hyperps = [[period, period_err],
                    [t0, t0_err],
                    [b, b_err],
-                   [0., 1.],
-                   [0., 1.],
                    [0., 0.5],
                    90.,
                    [100., 10000.]]
@@ -337,11 +335,11 @@ class SHEL_Fitter():
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}", f"'p_p1_{inst}'," f"GP_sigma_{inst}",
+                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}", f"GP_sigma_{inst}",
                       f"GP_rho_{inst}"]
             hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
                        [1e-6, 1e6], [1e-3,1e3]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform'
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform',
                      'loguniform', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
