@@ -270,6 +270,10 @@ class SHEL_Fitter():
                    90.,
                    [100., 10000.]]
 
+        # We'll need these later
+        linear_regressors_lc = {}
+        GP_regressors_lc = {}
+
         # Add the appropriate distributions and values for TESS systematics
         if self.tess_systematics is not None:
             params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 
@@ -357,12 +361,15 @@ class SHEL_Fitter():
                     dists += ['uniform']
                     regressor = np.hstack((regressor, np.zeros((times[inst].shape[0], 1))))
                     regressor[linear_models[inst]:, 1] = 1
+                linear_regressors_lc[inst] = regressor
 
             # Otherwise we always fit a GP for the systematics
             else:
                 params += [f"GP_sigma_{inst}", f"GP_rho_{inst}"]
                 hyperps = [[1e-6, 1e6], [1e-3,1e3]]
                 dists += ['loguniform', 'loguniform']
+                GP_regressors_lc[inst] = times[inst]
+
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
@@ -390,6 +397,12 @@ class SHEL_Fitter():
         out_folder = f"juliet_fits/{self.target}{out_folder_suffix}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
                   "yerr_lc": fluxes_error, "out_folder": out_folder}
+        
+        if GP_regressors_lc != {}:
+            kwargs["GP_regressors_lc"] = GP_regressors_lc
+
+        if linear_regressors_lc != {}:
+            kwargs["linear_regressors_lc"] = linear_regressors_lc
 
         # Get RV data
         if not TESS_only:
