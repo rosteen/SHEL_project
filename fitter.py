@@ -257,13 +257,11 @@ class SHEL_Fitter():
 
         # Distribution for each of the parameters:
         dists = ['normal','normal', 'normal',
-                 'uniform','fixed','loguniform', 'fixed']
+                 'uniform','fixed','loguniform']
 
         hyperps = [[period, period_err],
                    [t0, t0_err],
                    [b, b_err],
-                   [0., 1.],
-                   [0., 1.],
                    [0., 0.5],
                    90.,
                    [100., 10000.]]
