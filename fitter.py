@@ -341,7 +341,7 @@ class SHEL_Fitter():
                       f"GP_rho_{inst}"]
             hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
                        [1e-6, 1e6], [1e-3,1e3]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform'
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform',
                      'loguniform', 'loguniform']
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
