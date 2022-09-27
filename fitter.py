@@ -289,7 +289,9 @@ class SHEL_Fitter():
         # Set either a or rho, preference to rho if defined
         stmt = ("select rho, rho_err from stellar_parameters where "
                 f"target_id = {self.target_id}")
+
         res = self.cur.execute(stmt).fetchone()
+
         if res is not None:
             rho, rho_err = res
             params += ['rho',]
@@ -340,6 +342,7 @@ class SHEL_Fitter():
 
         # Initialize priors for the non-TESS light curve instruments
         for inst in times.keys():
+
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
@@ -366,7 +369,7 @@ class SHEL_Fitter():
             # Otherwise we always fit a GP for the systematics
             else:
                 params += [f"GP_sigma_{inst}", f"GP_rho_{inst}"]
-                hyperps = [[1e-6, 1e6], [1e-3,1e3]]
+                hyperps += [[1e-6, 1e6], [1e-3,1e3]]
                 dists += ['loguniform', 'loguniform']
                 GP_regressors_lc[inst] = times[inst]
 
@@ -374,7 +377,6 @@ class SHEL_Fitter():
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
                 self.priors[param]['hyperparameters'] = hyperp
-
 
         if not fit_oot:
             if duration is None:
