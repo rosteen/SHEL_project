@@ -61,8 +61,6 @@ class SHEL_Fitter():
                 temp_name += f"-sec{x[4]}"
             lc_inst_names.append(temp_name)
 
-        print(f"Light curve instrument keys: {lc_inst_names}")
-
         return lc_inst_names
 
     def get_light_curve_data(self, TESS_only=False, exclude_sources=[]):
@@ -218,7 +216,7 @@ class SHEL_Fitter():
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
-                       out_folder_suffix=""):
+                       out_folder_suffix="", linear_models={}):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
         single-planet. If self.tess_systematics is populated, the fit will use those
@@ -245,6 +243,10 @@ class SHEL_Fitter():
             Flag to fit TESS out of transit data separately to set systematics
         TESS_only: bool
             Flag to drop non-TESS photometry
+        linear_models: dict, optional
+            Dictionary with keys specifying which instruments to fit with an LM instead of GP.
+            Value is either None, in which case just a linear fit will be done, or an index 
+            at which a jump occurs, in which case a jump will also be fitted.
         """
 
         # Name of the parameters to be fit. We always at least want TESS photometry
@@ -266,13 +268,17 @@ class SHEL_Fitter():
                    90.,
                    [100., 10000.]]
 
+        # We'll need these later
+        linear_regressors_lc = {}
+        GP_regressors_lc = {}
+
         # Add the appropriate distributions and values for TESS systematics
         if self.tess_systematics is not None:
-            params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 
+            params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 'p_p1_TESS',
                        'mflux_TESS', 'sigma_w_TESS', 
                        'GP_rho_TESS', 'GP_sigma_TESS']
-            dists += ['fixed', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [1, [0., 1.], [0., 1.],
+            dists += ['fixed', 'uniform', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
+            hyperps += [1, [0., 1.], [0., 1.], [0, 0.3],
                         self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
                         self.tess_systematics['GP_rho_TESS'],
@@ -281,7 +287,9 @@ class SHEL_Fitter():
         # Set either a or rho, preference to rho if defined
         stmt = ("select rho, rho_err from stellar_parameters where "
                 f"target_id = {self.target_id}")
+
         res = self.cur.execute(stmt).fetchone()
+
         if res is not None:
             rho, rho_err = res
             params += ['rho',]
@@ -332,20 +340,42 @@ class SHEL_Fitter():
 
         # Initialize priors for the non-TESS light curve instruments
         for inst in times.keys():
+
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
+
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
-                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}", f"GP_sigma_{inst}",
-                      f"GP_rho_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3],
-                       [1e-6, 1e6], [1e-3,1e3]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform',
-                     'loguniform', 'loguniform']
+                      f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}"]
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3]]
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform']
+
+            # Initialize linear model parameters for fitting systematics if desired
+            if inst in linear_models:
+                params += [f'theta0_{inst}']
+                hyperps += [[-10, 10]]
+                dists += ['uniform']
+                regressor = np.zeros((times[inst].shape[0], 1))
+                regressor[:, 0] = (times[inst] - np.mean(times[inst]))/np.std(times[inst])
+
+                if linear_models[inst] is not None:
+                    params += [f'theta1_{inst}']
+                    hyperps += [[-10, 10]]
+                    dists += ['uniform']
+                    regressor = np.hstack((regressor, np.zeros((times[inst].shape[0], 1))))
+                    regressor[linear_models[inst]:, 1] = 1
+                linear_regressors_lc[inst] = regressor
+
+            # Otherwise we always fit a GP for the systematics
+            else:
+                params += [f"GP_sigma_{inst}", f"GP_rho_{inst}"]
+                hyperps += [[1e-6, 1e6], [1e-3,1e3]]
+                dists += ['loguniform', 'loguniform']
+                GP_regressors_lc[inst] = times[inst]
+
             for param, dist, hyperp in zip(params, dists, hyperps):
                 self.priors[param] = {}
                 self.priors[param]['distribution'] = dist
                 self.priors[param]['hyperparameters'] = hyperp
-
 
         if not fit_oot:
             if duration is None:
@@ -364,10 +394,20 @@ class SHEL_Fitter():
                 times[inst] = times[inst][idx_oot][sort_times]
                 fluxes[inst] = fluxes[inst][idx_oot][sort_times]
                 fluxes_error[inst] = fluxes_error[inst][idx_oot][sort_times]
+                if inst in GP_regressors_lc:
+                    GP_regressors_lc[inst] = GP_regressors_lc[inst][idx_oot][sort_times]
+                elif inst in linear_regressors_lc:
+                    linear_regressors_lc[inst] = linear_regressors_lc[inst][idx_oot][sort_times]
 
         out_folder = f"juliet_fits/{self.target}{out_folder_suffix}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
                   "yerr_lc": fluxes_error, "out_folder": out_folder}
+        
+        if GP_regressors_lc != {}:
+            kwargs["GP_regressors_lc"] = GP_regressors_lc
+
+        if linear_regressors_lc != {}:
+            kwargs["linear_regressors_lc"] = linear_regressors_lc
 
         # Get RV data
         if not TESS_only:
