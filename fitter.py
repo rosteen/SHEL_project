@@ -61,8 +61,6 @@ class SHEL_Fitter():
                 temp_name += f"-sec{x[4]}"
             lc_inst_names.append(temp_name)
 
-        print(f"Light curve instrument keys: {lc_inst_names}")
-
         return lc_inst_names
 
     def get_light_curve_data(self, TESS_only=False, exclude_sources=[]):
@@ -276,11 +274,11 @@ class SHEL_Fitter():
 
         # Add the appropriate distributions and values for TESS systematics
         if self.tess_systematics is not None:
-            params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 
+            params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 'p_p1_TESS',
                        'mflux_TESS', 'sigma_w_TESS', 
                        'GP_rho_TESS', 'GP_sigma_TESS']
-            dists += ['fixed', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [1, [0., 1.], [0., 1.],
+            dists += ['fixed', 'uniform', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
+            hyperps += [1, [0., 1.], [0., 1.], [0, 0.3],
                         self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
                         self.tess_systematics['GP_rho_TESS'],
@@ -345,6 +343,7 @@ class SHEL_Fitter():
 
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
                 continue
+
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
                       f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}"]
             hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3]]
@@ -395,6 +394,10 @@ class SHEL_Fitter():
                 times[inst] = times[inst][idx_oot][sort_times]
                 fluxes[inst] = fluxes[inst][idx_oot][sort_times]
                 fluxes_error[inst] = fluxes_error[inst][idx_oot][sort_times]
+                if inst in GP_regressors_lc:
+                    GP_regressors_lc[inst] = GP_regressors_lc[inst][idx_oot][sort_times]
+                elif inst in linear_regressors_lc:
+                    linear_regressors_lc[inst] = linear_regressors_lc[inst][idx_oot][sort_times]
 
         out_folder = f"juliet_fits/{self.target}{out_folder_suffix}"
         kwargs = {"priors": self.priors, "t_lc": times, "y_lc": fluxes,
