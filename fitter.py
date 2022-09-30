@@ -253,8 +253,8 @@ class SHEL_Fitter():
         params = ['P_p1',
                   't0_p1',
                   'b_p1',
-                  'sesinomega',
-                  'secosomega',
+                  'sesinomega_p1',
+                  'secosomega_p1',
                   'rho']
 
         # Distribution for each of the parameters:
