@@ -50,6 +50,8 @@ class SHEL_Fitter():
         # Concat ref_id with instrument name for
         lc_inst_names = []
         for x in lc_insts:
+            if x[0] in exclude_sources:
+                continue
             temp_name = x[1]
             if x[0] is not None:
                 temp_name += f"-ref{x[0]}"
@@ -73,7 +75,7 @@ class SHEL_Fitter():
         if TESS_only:
             lc_inst_names = ["TESS"]
         else:
-            lc_inst_names = self._get_lc_inst_names()
+            lc_inst_names = self._get_lc_inst_names(exclude_sources=exclude_sources)
 
         for lc_inst_name in lc_inst_names:
             inst_spec = lc_inst_name.split("-")
@@ -214,7 +216,7 @@ class SHEL_Fitter():
         self.tess_systematics = ts
 
     def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
-                       b_err=0.1, ecc="Fixed", fit_oot=False, debug=False, TESS_only=False,
+                       b_err=0.1, fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
         """
@@ -237,8 +239,6 @@ class SHEL_Fitter():
             the database will be used as prior instead.
         duration: float
             Transit duration in hours, optional.
-        ecc: str, float
-            Eccentricity of planet orbit, defaults to "Fixed" at 0.
         fit_oot: bool
             Flag to fit TESS out of transit data separately to set systematics
         TESS_only: bool
@@ -253,19 +253,19 @@ class SHEL_Fitter():
         params = ['P_p1',
                   't0_p1',
                   'b_p1',
-                  'ecc_p1',
-                  'omega_p1',
+                  'sesinomega',
+                  'secosomega',
                   'rho']
 
         # Distribution for each of the parameters:
         dists = ['normal','normal', 'normal',
-                 'uniform','fixed','loguniform']
+                 'uniform','uniform','loguniform']
 
         hyperps = [[period, period_err],
                    [t0, t0_err],
                    [b, b_err],
-                   [0., 0.5],
-                   90.,
+                   [-1, 1],
+                   [-1, 1],
                    [100., 10000.]]
 
         # We'll need these later
@@ -336,7 +336,7 @@ class SHEL_Fitter():
             self.priors[param]['hyperparameters'] = hyperp
 
         # Light curve data
-        times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only)
+        times, fluxes, fluxes_error = self.get_light_curve_data(TESS_only, exclude_sources=exclude_lc_sources)
 
         # Initialize priors for the non-TESS light curve instruments
         for inst in times.keys():
@@ -368,7 +368,11 @@ class SHEL_Fitter():
             # Otherwise we always fit a GP for the systematics
             else:
                 params += [f"GP_sigma_{inst}", f"GP_rho_{inst}"]
-                hyperps += [[1e-6, 1e6], [1e-3,1e3]]
+                # Smaller range for JWST
+                if inst[:3] == "NIR":
+                    hyperps += [[1e-3, 100], [0.01,100]]
+                else:
+                    hyperps += [[1e-6, 1e6], [1e-3,1e3]]
                 dists += ['loguniform', 'loguniform']
                 GP_regressors_lc[inst] = times[inst]
 
@@ -430,9 +434,22 @@ class SHEL_Fitter():
         # Load the dataset
         self.dataset = juliet.load(**kwargs)
 
+        if debug:
+            n_live_points = 0
+            for k in self.dataset.priors.keys():
+                if self.dataset.priors[k]['distribution'] != "fixed":
+                    n_live_points += 1
+            n_live_points = n_live_points**2 + 20
+            print(f"Live points = {n_live_points}")
+
     def run_fit(self):
+        n_live_points = 0
+        for k in self.dataset.priors.keys():
+            if self.dataset.priors[k]['distribution'] != "fixed":
+                n_live_points += 1
+        n_live_points = n_live_points**2 + 20
         # And now let's fit it! We default to Dynesty since we generally have >20 parameters
-        self.results = self.dataset.fit(n_live_points = 20+len(self.priors)**2,
+        self.results = self.dataset.fit(n_live_points = n_live_points,
                                         sampler="dynamic_dynesty")
 
     def plot_results(self, type, instrument=None):
