@@ -260,7 +260,7 @@ class SHEL_Fitter():
          # Get some priors from the database
         for param in params:
             stmt = ("select prior from system_parameters sp join targets t on sp.target_id =t.id"
-                    f" where parameter='{param}' and t.name='{target}'")
+                    f" where parameter='{param}' and t.name='{self.target}'")
             temp_params[param] = self.cur.execute(stmt).fetchone()[0]
 
         hyperps = [[temp_params['P_p1'], period_err],
