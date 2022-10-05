@@ -581,7 +581,7 @@ def load_results(target, n_planets=1, debug=False):
 
     #dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
     #results = dataset.fit(use_dynesty=True, dynamic=True)
-    parameters = ['P', 't0', 'a', 'b', 'ecc', 'p']
+    parameters = ['P', 't0', 'a', 'b', 'ecc']
     posteriors = {}
     
     with open(f'juliet_fits/{target}/posteriors.dat', 'r') as f:
