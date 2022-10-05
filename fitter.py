@@ -253,7 +253,7 @@ class SHEL_Fitter():
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
-                  'b_p1'
+                  'b_p1']
 
         dists = ['normal','normal', 'normal']
 
