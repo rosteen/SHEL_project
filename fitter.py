@@ -258,15 +258,15 @@ class SHEL_Fitter():
         dists = ['normal','normal', 'normal']
 
          # Get some priors from the database
-         temp_params = {}
+        db_params = {}
         for param in params:
             stmt = ("select prior from system_parameters sp join targets t on sp.target_id =t.id"
                     f" where parameter='{param}' and t.name='{self.target}'")
-            temp_params[param] = self.cur.execute(stmt).fetchone()[0]
+            db_params[param] = self.cur.execute(stmt).fetchone()[0]
 
-        hyperps = [[temp_params['P_p1'], period_err],
-                   [temp_params['t0_p1'], t0_err],
-                   [temp_params['b_p1'], b_err]]
+        hyperps = [[db_params['P_p1'], period_err],
+                   [db_params['t0_p1'], t0_err],
+                   [db_params['b_p1'], b_err]]
 
         params += ['sesinomega_p1',
                   'secosomega_p1',
@@ -398,11 +398,11 @@ class SHEL_Fitter():
                 self.oot_phase_limit = 0.05
             else:
                 # We'll include +/- one transit duration as in-transit
-                self.oot_phase_limit = duration/(period*24)
+                self.oot_phase_limit = duration/(db_params['P_p1']*24)
 
             # Get phases and sort data
             for inst in times:
-                phases = juliet.get_phases(times[inst], period, t0)
+                phases = juliet.get_phases(times[inst], db_params['P_p1'], db_params['t0_p1'])
                 idx_oot = np.where(np.abs(phases)<=self.oot_phase_limit)[0]
                 sort_times = np.argsort(times[inst][idx_oot])
 
@@ -429,9 +429,9 @@ class SHEL_Fitter():
             times_rv, data_rv, errors_rv = self.get_rv_data(exclude_sources=exclude_rv_sources)
             # Exclude in-transit RVs to avoid RM effect
             if duration is not None:
-                oot_rv_phase_limit = 0.5*duration/(period*24)
+                oot_rv_phase_limit = 0.5*duration/(db_params['P_p1']*24)
                 for inst in times_rv:
-                    phases = juliet.get_phases(times_rv[inst], period, t0)
+                    phases = juliet.get_phases(times_rv[inst], db_params['P_p1'], db_params['t0_p1'])
                     idx_oot = np.where(np.abs(phases)>=oot_rv_phase_limit)[0]
                     sort_times = np.argsort(times_rv[inst][idx_oot])
                     times_rv[inst] = times_rv[inst][idx_oot][sort_times]
