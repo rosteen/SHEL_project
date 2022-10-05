@@ -258,6 +258,7 @@ class SHEL_Fitter():
         dists = ['normal','normal', 'normal']
 
          # Get some priors from the database
+         temp_params = {}
         for param in params:
             stmt = ("select prior from system_parameters sp join targets t on sp.target_id =t.id"
                     f" where parameter='{param}' and t.name='{self.target}'")
