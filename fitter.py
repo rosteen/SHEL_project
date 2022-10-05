@@ -215,7 +215,7 @@ class SHEL_Fitter():
         self.tess_systematics_results = results
         self.tess_systematics = ts
 
-    def initialize_fit(self, period, t0, b, a=None, period_err=0.1, t0_err=0.1, a_err=1,
+    def initialize_fit(self, a=None, period_err=0.1, t0_err=0.1, a_err=1,
                        b_err=0.1, fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
@@ -249,22 +249,33 @@ class SHEL_Fitter():
             at which a jump occurs, in which case a jump will also be fitted.
         """
 
+        # Get some priors from the database
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
-                  'b_p1',
-                  'sesinomega_p1',
+                  'b_p1']
+
+        dists = ['normal','normal', 'normal']
+
+         # Get some priors from the database
+         temp_params = {}
+        for param in params:
+            stmt = ("select prior from system_parameters sp join targets t on sp.target_id =t.id"
+                    f" where parameter='{param}' and t.name='{self.target}'")
+            temp_params[param] = self.cur.execute(stmt).fetchone()[0]
+
+        hyperps = [[temp_params['P_p1'], period_err],
+                   [temp_params['t0_p1'], t0_err],
+                   [temp_params['b_p1'], b_err]]
+
+        params += ['sesinomega_p1',
                   'secosomega_p1',
                   'rho']
 
         # Distribution for each of the parameters:
-        dists = ['normal','normal', 'normal',
-                 'uniform','uniform','loguniform']
+        dists += ['uniform','uniform','loguniform']
 
-        hyperps = [[period, period_err],
-                   [t0, t0_err],
-                   [b, b_err],
-                   [-1, 1],
+        hyperps += [[-1, 1],
                    [-1, 1],
                    [100., 10000.]]
 
