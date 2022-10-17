@@ -290,7 +290,7 @@ class SHEL_Fitter():
             params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 'p_p1_TESS',
                        'mflux_TESS', 'sigma_w_TESS', 
                        'GP_rho_TESS', 'GP_sigma_TESS']
-            dists += ['fixed', 'uniform', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
+            dists += ['fixed', 'uniform', 'uniform', 'normal', 'fixed', 'fixed', 'fixed', 'fixed']
             hyperps += [1, [0., 1.], [0., 1.], [db_params['p_p1'], db_params['p_p1']*0.1],
                         self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
@@ -363,7 +363,7 @@ class SHEL_Fitter():
                       f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}"]
             hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], 
                        [db_params['p_p1'], db_params['p_p1']*0.1]]
-            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform']
+            dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'normal']
 
             # Initialize linear model parameters for fitting systematics if desired
             if inst in linear_models:
