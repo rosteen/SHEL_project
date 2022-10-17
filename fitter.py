@@ -260,13 +260,16 @@ class SHEL_Fitter():
          # Get some priors from the database
         db_params = {}
         for param in params:
-            stmt = ("select prior from system_parameters sp join targets t on sp.target_id =t.id"
-                    f" where parameter='{param}' and t.name='{self.target}'")
-            db_params[param] = self.cur.execute(stmt).fetchone()[0]
+            stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                    f" sp.target_id=t.id where parameter='{param}' and t.name='{self.target}'")
+            res = self.cur.execute(stmt).fetchone()
+            db_params[param] = res[0]
+            db_params[f"{param}_err"] = res[1]
 
-        hyperps = [[db_params['P_p1'], period_err],
-                   [db_params['t0_p1'], t0_err],
-                   [db_params['b_p1'], b_err]]
+        # The prior errors on P and t0 tend to be very small, we allow a little more wiggle room.
+        hyperps = [[db_params['P_p1'], db_params['P_p1_err']*10],
+                   [db_params['t0_p1'], db_params['t0_p1_err']*10],
+                   [db_params['b_p1'], db_params['b_p1_err']]]
 
         params += ['sesinomega_p1',
                   'secosomega_p1',
