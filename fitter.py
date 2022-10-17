@@ -253,14 +253,13 @@ class SHEL_Fitter():
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
-                  'b_p1',
-                  'p_p1']
+                  'b_p1']
 
         dists = ['normal','normal', 'normal']
 
          # Get some priors from the database
         db_params = {}
-        for param in params:
+        for param in params+['p_p1']:
             stmt = ("select prior, prior_err from system_parameters sp join targets t on"
                     f" sp.target_id=t.id where parameter='{param}' and t.name='{self.target}'")
             res = self.cur.execute(stmt).fetchone()
