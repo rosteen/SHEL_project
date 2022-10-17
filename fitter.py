@@ -253,7 +253,8 @@ class SHEL_Fitter():
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
-                  'b_p1']
+                  'b_p1',
+                  'p_p1']
 
         dists = ['normal','normal', 'normal']
 
@@ -291,7 +292,7 @@ class SHEL_Fitter():
                        'mflux_TESS', 'sigma_w_TESS', 
                        'GP_rho_TESS', 'GP_sigma_TESS']
             dists += ['fixed', 'uniform', 'uniform', 'uniform', 'fixed', 'fixed', 'fixed', 'fixed']
-            hyperps += [1, [0., 1.], [0., 1.], [0, 0.3],
+            hyperps += [1, [0., 1.], [0., 1.], [db_params['p_p1'], db_params['p_p1']*0.1],
                         self.tess_systematics['mflux_TESS'],
                         self.tess_systematics['sigma_w_TESS'],
                         self.tess_systematics['GP_rho_TESS'],
@@ -361,7 +362,8 @@ class SHEL_Fitter():
 
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
                       f"q1_{inst}", f"q2_{inst}", f"p_p1_{inst}"]
-            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], [0, 0.3]]
+            hyperps = [1, [0.,0.1], [0.1, 10000.], [0, 1.0], [0, 1.0], 
+                       [db_params['p_p1'], db_params['p_p1']*0.1]]
             dists = ['fixed', 'normal', 'loguniform', 'uniform', 'uniform', 'uniform']
 
             # Initialize linear model parameters for fitting systematics if desired
