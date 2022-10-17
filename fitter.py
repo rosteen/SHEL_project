@@ -266,9 +266,8 @@ class SHEL_Fitter():
             db_params[param] = res[0]
             db_params[f"{param}_err"] = res[1]
 
-        # The prior errors on P and t0 tend to be very small, we allow a little more wiggle room.
-        hyperps = [[db_params['P_p1'], db_params['P_p1_err']*10],
-                   [db_params['t0_p1'], db_params['t0_p1_err']*10],
+        hyperps = [[db_params['P_p1'], db_params['P_p1_err']],
+                   [db_params['t0_p1'], db_params['t0_p1_err']],
                    [db_params['b_p1'], db_params['b_p1_err']]]
 
         params += ['sesinomega_p1',
