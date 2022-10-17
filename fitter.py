@@ -353,6 +353,8 @@ class SHEL_Fitter():
         for inst in times.keys():
 
             if inst[0:4] == "TESS" and self.tess_systematics is not None:
+                # Have to include the GP regressors even if we already fit the GP
+                GP_regressors_lc[inst] = times[inst]
                 continue
 
             params = [f"mdilution_{inst}", f"mflux_{inst}", f"sigma_w_{inst}",
@@ -370,7 +372,8 @@ class SHEL_Fitter():
 
                 if linear_models[inst] is not None:
                     params += [f'theta1_{inst}']
-                    hyperps += [[-10, 10]]
+                    # These were originally +/-10, testing smaller limits
+                    hyperps += [[-2, 2]]
                     dists += ['uniform']
                     regressor = np.hstack((regressor, np.zeros((times[inst].shape[0], 1))))
                     regressor[linear_models[inst]:, 1] = 1
