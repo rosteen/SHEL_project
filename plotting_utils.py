@@ -176,7 +176,7 @@ def plot_tess(target, phased=True):
         phases = juliet.utils.get_phases(t, period, t0) * period * 24
 
         plt.errorbar(phases, f - gp , ferr, fmt = '.', elinewidth=1,ms=2, zorder=1, alpha = 0.5)
-        plt.errorbar(phases, lc, fmt='.', color='red', alpha=0.2, ms=2)
+        plt.errorbar(phases, f, fmt='.', color='red', alpha=0.2, ms=2)
 
         idx = np.argsort(phases)
 
