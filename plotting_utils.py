@@ -176,6 +176,7 @@ def plot_tess(target, phased=True):
         phases = juliet.utils.get_phases(t, period, t0) * period * 24
 
         plt.errorbar(phases, f - gp , ferr, fmt = '.', elinewidth=1,ms=2, zorder=1, alpha = 0.5)
+        plt.errorbar(phases, lc, fmt='.', color='red', alpha=0.2, ms=2)
 
         idx = np.argsort(phases)
 
@@ -291,6 +292,7 @@ def plot_non_tess_lcs(target):
         # Plot detrended data:
         idx = np.argsort(phases)
         ax.errorbar(phases, lc - gp, lcerr, fmt = '.', color = 'black', alpha = 0.1, ms=2, rasterized=True, zorder = 1)
+        ax.errorbar(phases, lc, fmt='.', color='red', alpha=0.2, ms=2)
         # Plot binned data:
         xbin, ybin, ybinerr = juliet.utils.bin_data(phases[idx], lc[idx]-gp[idx], nbins)
         ax.errorbar(xbin, ybin, ybinerr, fmt = 'o', mec = 'black', ecolor = 'black', mfc = 'white', \
@@ -308,7 +310,7 @@ def plot_non_tess_lcs(target):
                     elinewidth=1, rasterized=True, zorder = 5)
         
         # Details for top plots:
-        ax.set_xlim(-3,3)
+        ax.set_xlim(-10,10)
         ax.set_ylim(0.97,1.01)
         ax.set_xticklabels([])
         
