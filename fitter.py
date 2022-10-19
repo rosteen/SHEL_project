@@ -271,15 +271,13 @@ class SHEL_Fitter():
                    [db_params['b_p1'], db_params['b_p1_err']]]
 
         params += ['ecc_p1',
-                  'omega_p1',
-                  'rho']
+                  'omega_p1']
 
         # Distribution for each of the parameters:
-        dists += ['truncatednormal','normal','loguniform']
+        dists += ['truncatednormal','normal']
 
         hyperps += [[ecc, .2, 0, .6],
-                   [omega, 0.3],
-                   [100., 10000.]]
+                   [omega, 0.3]]
 
         # We'll need these later
         linear_regressors_lc = {}
