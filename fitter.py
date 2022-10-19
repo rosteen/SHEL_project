@@ -271,15 +271,13 @@ class SHEL_Fitter():
                    [db_params['b_p1'], db_params['b_p1_err']]]
 
         params += ['sesinomega_p1',
-                  'secosomega_p1',
-                  'rho']
+                  'secosomega_p1']
 
         # Distribution for each of the parameters:
-        dists += ['uniform','uniform','loguniform']
+        dists += ['uniform','uniform']
 
         hyperps += [[-1, 1],
-                   [-1, 1],
-                   [100., 10000.]]
+                   [-1, 1]]
 
         # We'll need these later
         linear_regressors_lc = {}
