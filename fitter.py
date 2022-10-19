@@ -216,7 +216,8 @@ class SHEL_Fitter():
         self.tess_systematics = ts
 
     def initialize_fit(self, a=None, period_err=0.1, t0_err=0.1, a_err=1,
-                       b_err=0.1, ecc=0, omega=90, fit_oot=False, debug=False, TESS_only=False,
+                       b_err=0.1, ecc=0, omega=90, omega_err=5, fit_oot=False, 
+                       debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
         """
@@ -277,7 +278,7 @@ class SHEL_Fitter():
         dists += ['truncatednormal','normal']
 
         hyperps += [[ecc, .2, 0, .6],
-                   [omega, 5]]
+                   [omega, omega_err]]
 
         # We'll need these later
         linear_regressors_lc = {}
