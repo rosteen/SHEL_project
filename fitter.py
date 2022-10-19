@@ -216,7 +216,7 @@ class SHEL_Fitter():
         self.tess_systematics = ts
 
     def initialize_fit(self, a=None, period_err=0.1, t0_err=0.1, a_err=1,
-                       b_err=0.1, fit_oot=False, debug=False, TESS_only=False,
+                       b_err=0.1, ecc=0, omega=90, fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
         """
@@ -270,15 +270,15 @@ class SHEL_Fitter():
                    [db_params['t0_p1'], db_params['t0_p1_err']],
                    [db_params['b_p1'], db_params['b_p1_err']]]
 
-        params += ['sesinomega_p1',
-                  'secosomega_p1',
+        params += ['ecc_p1',
+                  'omega_p1',
                   'rho']
 
         # Distribution for each of the parameters:
-        dists += ['uniform','uniform','loguniform']
+        dists += ['truncatednormal','normal','loguniform']
 
-        hyperps += [[-1, 1],
-                   [-1, 1],
+        hyperps += [[ecc, .2, 0, .6],
+                   [omega, 0.3],
                    [100., 10000.]]
 
         # We'll need these later
