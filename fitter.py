@@ -277,7 +277,7 @@ class SHEL_Fitter():
         dists += ['truncatednormal','normal']
 
         hyperps += [[ecc, .2, 0, .6],
-                   [omega, 0.3]]
+                   [omega, 5]]
 
         # We'll need these later
         linear_regressors_lc = {}
