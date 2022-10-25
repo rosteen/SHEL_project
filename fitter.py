@@ -264,7 +264,10 @@ class SHEL_Fitter():
                     f" sp.target_id=t.id where parameter='{param}' and t.name='{self.target}'")
             res = self.cur.execute(stmt).fetchone()
             db_params[param] = res[0]
-            db_params[f"{param}_err"] = res[1]
+            if res[1] == -1:
+                db_params[f"{param}_err"] = 0.05
+            else:
+                db_params[f"{param}_err"] = res[1]
 
         hyperps = [[db_params['P_p1'], db_params['P_p1_err']],
                    [db_params['t0_p1'], db_params['t0_p1_err']],
