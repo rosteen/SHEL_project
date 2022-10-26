@@ -149,20 +149,24 @@ class SHEL_Fitter():
 
         return times_rv, data_rv, errors_rv
 
-    def fit_tess_systematics(self, period, center, duration=None, out_folder_suffix=""):
+    def fit_tess_systematics(self, duration=None, out_folder_suffix=""):
         """
         Fit the out of transit TESS data to get the TESS systematics, so we
         can fix them in the planetary parameter fitting.
 
         Parameters
         ----------
-        period: float
-            Planet period in days
         duration: float
             Tranit duration in hours
-        center:
-            Center of transit, in BJD-UTC
         """
+        stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                f" sp.target_id=t.id where parameter='P_p1' and t.name='{self.target}'")
+        period = self.cur.execute(stmt).fetchone()
+
+        stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                f" sp.target_id=t.id where parameter='t0_p1' and t.name='{self.target}'")
+        center = self.cur.execute(stmt).fetchone()
+
         # Set our phase boundary to be considered in/out of transit
         if duration is None:
             print("No transit duration provided, defaulting to using +/-0.05 phase oot")
