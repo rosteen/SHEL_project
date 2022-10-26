@@ -219,8 +219,7 @@ class SHEL_Fitter():
         self.tess_systematics_results = results
         self.tess_systematics = ts
 
-    def initialize_fit(self, a=None, period_err=0.1, t0_err=0.1, a_err=1,
-                       b_err=0.1, fit_oot=False, debug=False, TESS_only=False,
+    def initialize_fit(self, a=None, a_err=1, fit_oot=False, debug=False, TESS_only=False,
                        duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
         """
@@ -230,27 +229,29 @@ class SHEL_Fitter():
 
         Parameters
         ----------
-        target: str
-            String target name as in database
-        period: float
-            Period of planet in days
-        t0: float
-            Time of transit center in BJD-TDB
-        b: float
-            Impact parameter of the orbit.
         a: float
             Scaled semi-major axis of the orbit (a/R*). If none, Rho value from
             the database will be used as prior instead.
+
         duration: float
             Transit duration in hours, optional.
+
         fit_oot: bool
             Flag to fit TESS out of transit data separately to set systematics
+
         TESS_only: bool
             Flag to drop non-TESS photometry
+
         linear_models: dict, optional
             Dictionary with keys specifying which instruments to fit with an LM instead of GP.
-            Value is either None, in which case just a linear fit will be done, or an index 
-            at which a jump occurs, in which case a jump will also be fitted.
+            Value for each key is either None, in which case just a linear fit will be done,
+            or an index at which a jump occurs, in which case a jump will also be fitted.
+
+        exclude_rv_sources: list, optional
+            List of integer reference IDs to exclude for RV data retrieval.
+
+        exclude_lc_sources: list, optional
+            List of integer reference IDs to exclude for light curve data retrieval.
         """
 
         # Get some priors from the database
