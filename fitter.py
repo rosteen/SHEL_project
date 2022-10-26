@@ -149,7 +149,7 @@ class SHEL_Fitter():
 
         return times_rv, data_rv, errors_rv
 
-    def fit_tess_systematics(self, duration=None, out_folder_suffix=""):
+    def fit_tess_systematics(self, out_folder_suffix=""):
         """
         Fit the out of transit TESS data to get the TESS systematics, so we
         can fix them in the planetary parameter fitting.
@@ -159,21 +159,24 @@ class SHEL_Fitter():
         duration: float
             Tranit duration in hours
         """
+        # Get period
         stmt = ("select prior, prior_err from system_parameters sp join targets t on"
                 f" sp.target_id=t.id where parameter='P_p1' and t.name='{self.target}'")
         period = self.cur.execute(stmt).fetchone()
 
+        # Get t0
         stmt = ("select prior, prior_err from system_parameters sp join targets t on"
                 f" sp.target_id=t.id where parameter='t0_p1' and t.name='{self.target}'")
         center = self.cur.execute(stmt).fetchone()
 
+        # Get transit duration
+        stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                f" sp.target_id=t.id where parameter='duration_p1' and t.name='{self.target}'")
+        duration, duration_err = self.cur.execute(stmt).fetchone()
+
         # Set our phase boundary to be considered in/out of transit
-        if duration is None:
-            print("No transit duration provided, defaulting to using +/-0.05 phase oot")
-            self.oot_phase_limit = 0.05
-        else:
-            # We'll include +/- one transit duration as in-transit
-            self.oot_phase_limit = duration/(period*24)
+        # We'll include +/- one transit duration as in-transit
+        self.oot_phase_limit = duration/(period*24)
 
         # Get the TESS data
         t, f, ferr = self.get_light_curve_data(TESS_only=True)
@@ -219,8 +222,8 @@ class SHEL_Fitter():
         self.tess_systematics_results = results
         self.tess_systematics = ts
 
-    def initialize_fit(self, a=None, a_err=1, fit_oot=False, debug=False, TESS_only=False,
-                       duration=None, exclude_rv_sources=[], exclude_lc_sources=[],
+    def initialize_fit(self, debug=False, fit_oot=False, TESS_only=False,
+                       exclude_rv_sources=[], exclude_lc_sources=[],
                        out_folder_suffix="", linear_models={}):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
@@ -229,15 +232,9 @@ class SHEL_Fitter():
 
         Parameters
         ----------
-        a: float
-            Scaled semi-major axis of the orbit (a/R*). If none, Rho value from
-            the database will be used as prior instead.
-
-        duration: float
-            Transit duration in hours, optional.
 
         fit_oot: bool
-            Flag to fit TESS out of transit data separately to set systematics
+            Flag to fit only +/- one transit duration rather than all light curve data
 
         TESS_only: bool
             Flag to drop non-TESS photometry
@@ -255,6 +252,12 @@ class SHEL_Fitter():
         """
 
         # Get some priors from the database
+
+        # Get transit duration
+        stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                f" sp.target_id=t.id where parameter='duration_p1' and t.name='{self.target}'")
+        duration, duration_err = self.cur.execute(stmt).fetchone()
+
         # Name of the parameters to be fit. We always at least want TESS photometry
         params = ['P_p1',
                   't0_p1',
@@ -315,8 +318,9 @@ class SHEL_Fitter():
             dists += ['truncatednormal',]
             hyperps += [[rho, rho_err, 0, 20000],]
         else:
-            if a is None:
-                raise ValueError("Rho is not populated in DB, must provide a")
+            stmt = ("select prior, prior_err from system_parameters sp join targets t on"
+                f" sp.target_id=t.id where parameter='a_p1' and t.name='{self.target}'")
+            a, a_err = self.cur.execute(stmt).fetchone()
             params += ['a_p1',]
             dists += ['normal']
             hyperps += [[a, a_err],]
@@ -405,12 +409,8 @@ class SHEL_Fitter():
                 self.priors[param]['hyperparameters'] = hyperp
 
         if not fit_oot:
-            if duration is None:
-                print("No transit duration provided, defaulting to using +/-0.05 phase oot")
-                self.oot_phase_limit = 0.05
-            else:
-                # We'll include +/- one transit duration as in-transit
-                self.oot_phase_limit = duration/(db_params['P_p1']*24)
+            # We'll include +/- one transit duration as in-transit
+            self.oot_phase_limit = duration/(db_params['P_p1']*24)
 
             # Get phases and sort data
             for inst in times:
@@ -440,15 +440,14 @@ class SHEL_Fitter():
         if not TESS_only:
             times_rv, data_rv, errors_rv = self.get_rv_data(exclude_sources=exclude_rv_sources)
             # Exclude in-transit RVs to avoid RM effect
-            if duration is not None:
-                oot_rv_phase_limit = 0.5*duration/(db_params['P_p1']*24)
-                for inst in times_rv:
-                    phases = juliet.get_phases(times_rv[inst], db_params['P_p1'], db_params['t0_p1'])
-                    idx_oot = np.where(np.abs(phases)>=oot_rv_phase_limit)[0]
-                    sort_times = np.argsort(times_rv[inst][idx_oot])
-                    times_rv[inst] = times_rv[inst][idx_oot][sort_times]
-                    data_rv[inst] = data_rv[inst][idx_oot][sort_times]
-                    errors_rv[inst] = errors_rv[inst][idx_oot][sort_times]
+            oot_rv_phase_limit = 0.5*duration/(db_params['P_p1']*24)
+            for inst in times_rv:
+                phases = juliet.get_phases(times_rv[inst], db_params['P_p1'], db_params['t0_p1'])
+                idx_oot = np.where(np.abs(phases)>=oot_rv_phase_limit)[0]
+                sort_times = np.argsort(times_rv[inst][idx_oot])
+                times_rv[inst] = times_rv[inst][idx_oot][sort_times]
+                data_rv[inst] = data_rv[inst][idx_oot][sort_times]
+                errors_rv[inst] = errors_rv[inst][idx_oot][sort_times]
 
             kwargs["t_rv"] = times_rv
             kwargs["y_rv"] = data_rv
