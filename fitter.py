@@ -162,12 +162,12 @@ class SHEL_Fitter():
         # Get period
         stmt = ("select prior, prior_err from system_parameters sp join targets t on"
                 f" sp.target_id=t.id where parameter='P_p1' and t.name='{self.target}'")
-        period = self.cur.execute(stmt).fetchone()
+        period, period_err = self.cur.execute(stmt).fetchone()
 
         # Get t0
         stmt = ("select prior, prior_err from system_parameters sp join targets t on"
                 f" sp.target_id=t.id where parameter='t0_p1' and t.name='{self.target}'")
-        center = self.cur.execute(stmt).fetchone()
+        center, center_err = self.cur.execute(stmt).fetchone()
 
         # Get transit duration
         stmt = ("select prior, prior_err from system_parameters sp join targets t on"

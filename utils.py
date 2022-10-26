@@ -556,11 +556,12 @@ def load_prior(target, param_name, prior, prior_err, debug=False):
     target_id = cur.execute(f"select id from targets where name='{target}'").fetchone()[0]
 
     row_id = cur.execute(f"select id from system_parameters where target_id={target_id} and"
-                              f" parameter='{param_name}'").fetchone()[0]
+                              f" parameter='{param_name}'").fetchone()
     if row_id is None:
         stmt = ("insert into system_parameters (target_id, parameter, prior, prior_err)"
-                f" values ({target_id}, {param_name}, {prior}, {prior_err})")
+                f" values ({target_id}, '{param_name}', {prior}, {prior_err})")
     else:
+        row_id = row_id[0]
         stmt = (f"update system_parameters set prior={prior}, prior_err={prior_err}"
                 f" where id={row_id} and target_id={target_id}")
 
