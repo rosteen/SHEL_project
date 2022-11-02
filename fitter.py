@@ -111,7 +111,7 @@ class SHEL_Fitter():
 
             # We don't need the ref number for TESS after this point
             if lc_inst_name[0:4] == "TESS":
-                lc_inst_name = TESS
+                lc_inst_name = "TESS"
 
             times[lc_inst_name] = t
             fluxes[lc_inst_name] = flux
