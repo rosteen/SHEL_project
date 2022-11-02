@@ -295,7 +295,7 @@ class SHEL_Fitter():
         GP_regressors_lc = {}
 
         # Add the appropriate distributions and values for TESS systematics
-        if self.tess_systematics is not None:
+        if self.tess_systematics is not None and 67 not in exclude_lc_sources:
             params += ['mdilution_TESS', 'q1_TESS', 'q2_TESS', 'p_p1_TESS',
                        'mflux_TESS', 'sigma_w_TESS', 
                        'GP_rho_TESS', 'GP_sigma_TESS']
