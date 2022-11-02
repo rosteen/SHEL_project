@@ -109,6 +109,10 @@ class SHEL_Fitter():
             flux = res[:,1]
             flux_error = res[:,2]
 
+            # We don't need the ref number for TESS after this point
+            if lc_inst_name[0:4] == "TESS":
+                lc_inst_name = TESS
+
             times[lc_inst_name] = t
             fluxes[lc_inst_name] = flux
             fluxes_error[lc_inst_name] = flux_error
@@ -257,7 +261,7 @@ class SHEL_Fitter():
                 f" sp.target_id=t.id where parameter='duration_p1' and t.name='{self.target}'")
         duration, duration_err = self.cur.execute(stmt).fetchone()
 
-        # Name of the parameters to be fit. We always at least want TESS photometry
+        # Name of the parameters to be fit.
         params = ['P_p1',
                   't0_p1',
                   'b_p1']
