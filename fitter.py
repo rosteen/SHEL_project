@@ -90,7 +90,7 @@ class SHEL_Fitter():
                     ref_id = spec[3:]
                     if exclude_sources is not None:
                         if int(ref_id) in exclude_sources:
-                        continue
+                            continue
                     stmt += f" and reference_id = {ref_id}"
                 elif spec[:4] == "filt":
                     stmt += f" and filter_id = {spec[4:]}"
