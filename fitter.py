@@ -84,21 +84,20 @@ class SHEL_Fitter():
             stmt = ("select bjd, flux, flux_err from light_curves a join "
                     "instruments b on a.instrument = b.id where "
                     f"a.target_id = {self.target_id} and b.name = '{instrument}'")
-            if len(inst_spec) > 1:
-                for i in range(1, len(inst_spec)):
-                    spec = inst_spec[i]
-                    if spec[:3] == "ref":
-                        ref_id = spec[3:]
-                        if exclude_sources is not None:
-                            if int(ref_id) in exclude_sources:
-                                continue
-                        stmt += f" and reference_id = {ref_id}"
-                    elif spec[:4] == "filt":
-                        stmt += f" and filter_id = {spec[4:]}"
-                    elif spec[:3] == "det":
-                        stmt += f" and detector_id = {spec[3:]}"
-                    elif spec[:3] == "sec":
-                        stmt += f" and sector = {spec[3:]}"
+            for i in range(1, len(inst_spec)):
+                spec = inst_spec[i]
+                if spec[:3] == "ref":
+                    ref_id = spec[3:]
+                    if exclude_sources is not None:
+                        if int(ref_id) in exclude_sources:
+                        continue
+                    stmt += f" and reference_id = {ref_id}"
+                elif spec[:4] == "filt":
+                    stmt += f" and filter_id = {spec[4:]}"
+                elif spec[:3] == "det":
+                    stmt += f" and detector_id = {spec[3:]}"
+                elif spec[:3] == "sec":
+                    stmt += f" and sector = {spec[3:]}"
 
             if self.debug:
                 print(stmt)
