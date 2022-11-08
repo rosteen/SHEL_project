@@ -633,7 +633,7 @@ def load_results(target, n_planets=1, debug=False):
     cur.close()
     conn.close()
 
-def detect_outlier_results():
+def detect_outlier_results(last_update_min=0):
     """
     Detect any target/parameter combinations where the 3-sigma range of prior 
     and posterior do not overlap
@@ -642,7 +642,8 @@ def detect_outlier_results():
     cur = conn.cursor()
 
     stmt = ("select name, parameter, prior, prior_err, posterior, posterior_err_lower, "
-            "posterior_err_upper from system_parameters s join targets t on s.target_id = t.id")
+            "posterior_err_upper from system_parameters s join targets t on s.target_id = t.id"
+            f" where s.last_update > {last_update_min}")
     res = cur.execute(stmt)
     for row in res:
         if row[2] is None:
