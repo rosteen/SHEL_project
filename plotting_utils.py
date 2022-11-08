@@ -244,13 +244,13 @@ def plot_non_tess_lcs(target):
     fig = plt.figure(figsize=(3*np.min([n_insts, 3]),3*n_rows))
 
     # Divide figure using gridspec:
-    gs = GridSpec(int(5*n_rows), int(np.min([n_insts, 3])), figure = fig)
+    gs = GridSpec(int(6*n_rows), int(np.min([n_insts, 3])), figure = fig)
 
     for i in range(n_insts):
 
         instrument = non_tess_insts[i]
         counter = i%3
-        min_gs = int(np.floor(i/3)*5)
+        min_gs = int(np.floor(i/3)*6)
 
         print(f"{instrument}, {counter}, {min_gs}")
 
@@ -328,7 +328,7 @@ def plot_non_tess_lcs(target):
     plt.tight_layout()
     plt.savefig(f'juliet_fits/{target}/non_tess_lcs_{target}.png')
 
-def plot_priors_posteriors(parameter):
+def plot_priors_posteriors(parameter, last_update_min=0):
     """
     Retrieve the priors and posteriors for all targets for the parameter
     we're interested in and create a scatter plot.
@@ -339,7 +339,8 @@ def plot_priors_posteriors(parameter):
     for field in ("name", "prior", "prior_err", "posterior", 
                   "posterior_err_upper", "posterior_err_lower"):
         res = cur.execute(f"select {field} from system_parameters s join targets " 
-                          f"t on s.target_id = t.id where parameter='{parameter}'").fetchall()
+                          f"t on s.target_id = t.id where parameter='{parameter}'"
+                          f" and s.last_update > {last_update_min}").fetchall()
         data[field] = np.array(res).flatten()
 
     data['prior_err'][np.where(data['prior_err'] < 0)] = 0
