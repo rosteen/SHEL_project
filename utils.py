@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 import numpy as np
 import os
 import sqlite3 as sql
@@ -89,6 +90,7 @@ def create_shel_db():
                             posterior real,
                             posterior_err_upper real,
                             posterior_err_lower real,
+                            last_update int,
                             FOREIGN KEY (target_id) REFERENCES targets (id)
                             );"""
 
@@ -582,6 +584,7 @@ def load_results(target, n_planets=1, debug=False):
 
     #dataset = juliet.load(input_folder = f'juliet_fits/{target}/')
     #results = dataset.fit(use_dynesty=True, dynamic=True)
+    now = int(datetime.now().timestamp())
     parameters = ['P', 't0', 'a', 'b', 'ecc']
     posteriors = {}
     
@@ -612,13 +615,13 @@ def load_results(target, n_planets=1, debug=False):
 
             if row_id is None:
                 stmt = ("insert into system_parameters (target_id, parameter, posterior, "
-                        f"posterior_err_upper, posterior_err_lower) values ({target_id}, "
-                        f"'{param_id}', {param_med}, {err_upper}, {err_lower})")
+                        f"posterior_err_upper, posterior_err_lower, last_update) values ({target_id}, "
+                        f"'{param_id}', {param_med}, {err_upper}, {err_lower}, {now})")
             else:
                 row_id = row_id[0]
                 stmt = (f"update system_parameters set posterior={param_med}, "
-                        f"posterior_err_upper={err_upper}, posterior_err_lower={err_lower}"
-                        f" where id={row_id}")
+                        f"posterior_err_upper={err_upper}, posterior_err_lower={err_lower}, "
+                        f"last_update={now} where id={row_id}")
 
             if debug:
                 print(stmt)
