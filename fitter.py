@@ -227,6 +227,8 @@ class SHEL_Fitter():
 
     def initialize_fit(self, debug=False, fit_oot=False, TESS_only=False,
                        exclude_rv_sources=[], exclude_lc_sources=[],
+                       set_ecc = None, set_ecc_uncertainty=None,
+                       set_omega = None, set_omega_uncertainty=None,
                        out_folder_suffix="", linear_models={}):
         """
         Sets up prior distributions and runs the juliet fit. Currently assumes
@@ -284,14 +286,33 @@ class SHEL_Fitter():
                    [db_params['t0_p1'], db_params['t0_p1_err']],
                    [db_params['b_p1'], db_params['b_p1_err']]]
 
-        params += ['sesinomega_p1',
-                  'secosomega_p1']
+        if set_ecc is None:
+            params += ['sesinomega_p1',
+                      'secosomega_p1']
 
-        # Distribution for each of the parameters:
-        dists += ['uniform','uniform']
+            # Distribution for each of the parameters:
+            dists += ['uniform','uniform']
 
-        hyperps += [[-1, 1],
-                   [-1, 1]]
+            hyperps += [[-1, 1],
+                       [-1, 1]]
+        else:
+            params += ['ecc_p1', 'omega_p1']
+            if set_ecc_uncertainty is None:
+                dists += ['fixed']
+                hyperps += [set_ecc]
+            else:
+                dists += ['truncatednormal']
+                hyperps = [set_ecc, set_ecc_uncertainty, 0, 0.5]
+            if set_omega is None:
+                dists += ['uniform']
+                hyperps += [-90, 90]
+            else:
+                if set_omega_uncertainty is None:
+                    dists += ['fixed']
+                    hyperps = [set_omega]
+                else:
+                    dists += ['truncatednormal']
+                    hyperps += [set_omega, set_omega_uncertainty, -90, 90]
 
         # We'll need these later
         linear_regressors_lc = {}
@@ -480,6 +501,9 @@ class SHEL_Fitter():
     def plot_results(self, type, instrument=None):
         """
         Plot some or all (either RV or LC) of the fitted result and input data.
+
+        Note: This currently doesn't do anything, see plotting_utils.py for the
+        current plotting code. TO DO: call that code from here.
 
         Parameters
         ----------
