@@ -298,21 +298,21 @@ class SHEL_Fitter():
         else:
             params += ['ecc_p1', 'omega_p1']
             if set_ecc_uncertainty is None:
-                dists += ['fixed']
-                hyperps += [set_ecc]
+                dists += ['fixed',]
+                hyperps += [set_ecc,]
             else:
                 dists += ['truncatednormal']
-                hyperps = [set_ecc, set_ecc_uncertainty, 0, 0.5]
+                hyperps += [[set_ecc, set_ecc_uncertainty, 0, 0.5]]
             if set_omega is None:
-                dists += ['uniform']
-                hyperps += [-90, 90]
+                dists += ['uniform',]
+                hyperps += [[-90, 90]]
             else:
                 if set_omega_uncertainty is None:
-                    dists += ['fixed']
-                    hyperps = [set_omega]
+                    dists += ['fixed',]
+                    hyperps += [set_omega,]
                 else:
-                    dists += ['truncatednormal']
-                    hyperps += [set_omega, set_omega_uncertainty, -90, 90]
+                    dists += ['truncatednormal',]
+                    hyperps += [[set_omega, set_omega_uncertainty, -90, 90]]
 
         # We'll need these later
         linear_regressors_lc = {}
